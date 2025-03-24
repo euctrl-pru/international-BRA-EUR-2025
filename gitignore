@@ -1,1 +1,4 @@
 /.quarto/
+
+#local folder for book
+_book/
