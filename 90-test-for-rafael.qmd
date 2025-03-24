@@ -1,4 +1,11 @@
-# test
+# Next chapter
 
-Actually I think this is much more sexier than the version you posted.
+This placeholder chapter is used to practice the git workflow. 
+
+As a reminder: we can always toggle between the `docs` folder that is used to serve the site and the **internal** (local testing) by switching the output-dir in `_quarto.yml` to `_books`.
+
+We can mock around with it without impacting the exising material.
+
+The workflow will be to update chapter by chapter - and use this for experimental purposes. In the end we simply delete / remove this file.
+
 

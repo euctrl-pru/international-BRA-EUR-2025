@@ -4,3 +4,6 @@
 .Ruserdata
 
 /.quarto/
+
+# remove _book from tracking
+_book/
