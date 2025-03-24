@@ -1,6 +1,7 @@
 project:
   type: book
-  output-dir: docs
+#  output-dir: docs
+  output-dir: _book
 
 # do not show output of code chunks - outside errors
 execute:
@@ -16,6 +17,7 @@ book:
   - 00-foreword.qmd
   - 00-executive-summary.qmd
   - 01-intro.qmd
+  - 90-test-for-rafael.qmd
   #- 02-system_overview.qmd
   # - 03-traffic_characterisation.qmd
   # - 04-predictability.qmd
