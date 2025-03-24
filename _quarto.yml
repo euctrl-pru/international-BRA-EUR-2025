@@ -12,6 +12,7 @@ book:
   title: "Operational Comparison of ANS Performance"
   author: "DECEA Performance Section, EUROCONTROL Performance Review Unit"
   date: today
+  downloads: [pdf, docx]
   chapters:
   - index.qmd
   - 00-foreword.qmd
@@ -26,9 +27,8 @@ book:
  # - 07-environment.qmd
   # - 08-conclusions.qmd
   - 99-references.qmd
-appendices:
-  - A1-appendix.qmd
-downloads: [pdf, docx]
+  #appendices:
+  #- A1-appendix.qmd
 
 #bibliography: book.bib   #, packages.bib]
 bibliography: references.bib
