@@ -92,11 +92,11 @@
   {
     "objectID": "90-test-for-rafael.html",
     "href": "90-test-for-rafael.html",
-    "title": "2  test",
+    "title": "2  Next chapter",
     "section": "",
-    "text": "Actually I think this is much more sexier than the version you posted.",
+    "text": "This placeholder chapter is used to practice the git workflow.\nAs a reminder: we can always toggle between the docs folder that is used to serve the site and the internal (local testing) by switching the output-dir in _quarto.yml to _books.\nWe can mock around with it without impacting the exising material.\nThe workflow will be to update chapter by chapter - and use this for experimental purposes. In the end we simply delete / remove this file.",
     "crumbs": [
-      "<span class='chapter-number'>2</span>  <span class='chapter-title'>test</span>"
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Next chapter</span>"
     ]
   },
   {
