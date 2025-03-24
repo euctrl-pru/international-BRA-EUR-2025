@@ -1,0 +1,21 @@
+# Foreword {.unnumbered}
+
+<!--
+... add a bit of whitespace ... also make sure to keep empty lines to let the code breathe!
+-->
+
+::: {.content-hidden unless-format="pdf"}
+
+$$\\[1in]$$
+
+:::
+
+:::{layout-nrow=3}
+
+![](figures/foreword-alcides.png)
+
+$$\\[0.5in]$$
+
+![](figures/foreword-peter.png)
+
+:::
