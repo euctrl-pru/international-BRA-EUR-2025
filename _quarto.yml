@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 
 # do not show output of code chunks - outside errors
 execute:
