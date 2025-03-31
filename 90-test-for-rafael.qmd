@@ -8,4 +8,5 @@ We can mock around with it without impacting the exising material.
 
 The workflow will be to update chapter by chapter - and use this for experimental purposes. In the end we simply delete / remove this file.
 
+Just some new text and cool add ons.
 
