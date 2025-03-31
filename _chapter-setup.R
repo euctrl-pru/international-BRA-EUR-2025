@@ -21,6 +21,9 @@ library(devtools)
 # library(tinytex)
 library(arrow)
 
+# ============== DEFAULTS and DEFINITIONS =====================================
+# max_date
+max_date <- lubridate::ymd("2024-12-31")
 
 # set ggplot2 default theme
 ggplot2::theme_set(theme_minimal())
@@ -35,15 +38,46 @@ flextable::set_flextable_defaults(
 # set flextable border properties
 ft_border = flextable::fp_border_default(width = 0.5)
 
+# study airports and names ====================================================
+bra_apts <- c("SBGR","SBGL","SBRJ","SBCF","SBBR","SBSV","SBKP","SBSP","SBCT","SBPA")
+eur_apts <- c("EGLL","EGKK","EHAM","EDDF","EDDM","LSZH","LIRF","LFPG","LEMD","LEBL")
+
+bra_apts_names <- tibble::tribble(
+  ~ICAO  , ~NAME
+  ,"SBGR", "Guarulhos"
+  ,"SBGL", "Galeão"
+  ,"SBRJ", "Rio Dumont"
+  ,"SBCF", "Belo Horizonte"
+  ,"SBBR", "Brasília"
+  ,"SBSV", "Salvador"
+  ,"SBKP", "Campinas"
+  ,"SBSP", "Congonhas"
+  ,"SBCT", "Curitiba"
+  ,"SBPA", "Porto Alegre"
+)
+
+eur_apts_names <- tibble::tribble(
+  ~ICAO  , ~NAME
+  ,"EGLL", "Heathrow"
+  ,"EGKK", "Gatwick"
+  ,"EHAM", "Amsterdam"
+  ,"EDDF", "Frankfurt"
+  ,"EDDM", "Munich"
+  ,"LSZH", "Zurich"
+  ,"LIRF", "Rome"
+  ,"LFPG", "Paris"
+  ,"LEMD", "Madrid"
+  ,"LEBL", "Barcelona"
+)
+
+
 
 # define standard theme aspects for Brazil and Europe =========================
 bra_eur_colours <- c(BRA = "#52854C",EUR = "#4E84C4")
-bra_apts <- c("SBGR","SBGL","SBRJ","SBCF","SBBR","SBSV","SBKP","SBSP","SBCT","SBPA")
-eur_apts <- c("EGLL","EGKK","EHAM","EDDF","EDDM","LSZH","LIRF","LFPG","LEMD","LEBL")
+bra_col         <- getElement(bra_eur_colours, "BRA")
+eur_col         <- getElement(bra_eur_colours, "EUR")
 
 # theme setting - tbd or replaced
 bra_eur_theme_minimal <- theme_minimal() + theme(axis.title = element_text(size = 9))
 bra_eur_theme_bw      <- theme_bw() + theme(axis.title = element_text(size = 9))
 
-# max_date
-# max_date <- lubridate::ymd("2023-07-01")

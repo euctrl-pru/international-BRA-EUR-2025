@@ -1,7 +1,7 @@
 project:
   type: book
-  output-dir: docs    # use this output dir for anything updated on the public site
-#  output-dir: _book
+#  output-dir: docs    # use this output dir for anything updated on the public site
+  output-dir: _book
 
 # do not show output of code chunks - outside errors
 execute:
@@ -18,14 +18,14 @@ book:
   - 00-foreword.qmd
   - 00-executive-summary.qmd
   - 01-intro.qmd
-  - 90-test-for-rafael.qmd
   #- 02-system_overview.qmd
-  # - 03-traffic_characterisation.qmd
+  - 03-traffic_characterisation.qmd
   # - 04-predictability.qmd
   # - 05-capacity_and_throughput.qmd
   # - 06-efficiency.qmd
  # - 07-environment.qmd
   # - 08-conclusions.qmd
+  - 90-test-for-rafael.qmd
   - 99-references.qmd
   #appendices:
   #- A1-appendix.qmd
