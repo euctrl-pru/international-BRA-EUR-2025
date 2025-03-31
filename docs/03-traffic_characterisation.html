@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Operational Comparison of ANS Performance - 2&nbsp; Traffic Characterisation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./90-test-for-rafael.html" rel="next">
+<link href="./01-intro.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-traffic_characterisation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Operational Comparison of ANS Performance</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Operational-Comparison-of-ANS-Performance.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Operational-Comparison-of-ANS-Performance.docx">
+              <i class="bi bi-bi-file-word pe-1"></i>
+            Download Docx
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-executive-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Executive Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-traffic_characterisation.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./90-test-for-rafael.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Next chapter</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#network-level-air-traffic" id="toc-network-level-air-traffic" class="nav-link active" data-scroll-target="#network-level-air-traffic"><span class="header-section-number">2.1</span> Network Level Air Traffic</a></li>
+  <li><a href="#airport-level-air-traffic" id="toc-airport-level-air-traffic" class="nav-link" data-scroll-target="#airport-level-air-traffic"><span class="header-section-number">2.2</span> Airport Level Air Traffic</a></li>
+  <li><a href="#peak-day-traffic" id="toc-peak-day-traffic" class="nav-link" data-scroll-target="#peak-day-traffic"><span class="header-section-number">2.3</span> Peak Day Traffic</a></li>
+  <li><a href="#peak-day" id="toc-peak-day" class="nav-link" data-scroll-target="#peak-day"><span class="header-section-number">2.4</span> Peak Day</a></li>
+  <li><a href="#fleet-mix" id="toc-fleet-mix" class="nav-link" data-scroll-target="#fleet-mix"><span class="header-section-number">2.5</span> Fleet Mix</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2.6</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>To facilitate operational comparisons, it is crucial to have a good understanding of the level and composition of air traffic. The preceding section provided an overview of the context and organisation of air navigation services in Brazil and Europe. This chapter presents some air traffic characteristics for both regions to provide a framework for the observed operational performance in subsequent parts of the report.</p>
+<section id="network-level-air-traffic" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="network-level-air-traffic"><span class="header-section-number">2.1</span> Network Level Air Traffic</h2>
+<p><a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> shows the regional traffic development in Brazil and Europe. In both regions the unprecedented decline in air traffic occurred in March 2020 in the aftermath of the pandemic-declaration by the World Health Organisation. However, there is a difference in terms of the overall recovery. The European recovery is characterised by two waves, while a single setback is observed in Brazil in second quarter of 2021. The European pattern demonstrates the difficulty in the coordination of a joint policy of curbing the pandemic and managing travel related constraints. With different states in Europe introducing public health and travel constraints at differnt times, intra-European traffic was affected by the piece-meal approach. Brazil - and its policy on air transport - benefitted from single stance on policy implementation.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-annual-traffic-timeline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-annual-traffic-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-annual-traffic-timeline-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-annual-traffic-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.1: Regional daily air traffic
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For Brazil, it is important to remember that <a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> shows the aggregated movements per airport at the whole network level. The shown total does not necessarily reflect the total number of flights. Another important observation related to the data is that Brazil’s number of airports served with the TATIC tool (Tower ATC System) has increased. Despite raising the processed total daily flight number, this difference is mostly transparent for this study as these additional airports handle only a small number of movements on a day-to-day basis.</p>
+<p>The movements already surpassed the 2019 levels for the Brazilian region, confirming some economic recovery in the market. According to the CGNA (Brazilian Network Manager) assessment, general aviation is the leading actor in this frame. The share of “Light” aircraft in the fleet mix observed at Brazilian airports and the prevailing airline traffic levels still below the 2019 traffic in the airlines’ preferred airports help to confirm this thesis.</p>
+<p>In terms of total network level air traffic, the European region is still lagging behind its pre-pandemic levels. Other analyses showed that low-cost carriers recovered more agile than the classical mainline carriers. The low-cost sector, thus, shows a higher numbers of operations than pre-pandemic as their financial model allowed for a more agile reaction in terms of staffing/crewing/servicing flights. The higher share can also be explained by a side-effect of the national support measures for some of the mainline carriers. These measures included freeing slots at major hubs and the reduction of domestic / short-haul operations. Accordingly, the European network is characterised by a change in the level of connectivity and frequency of services between the different airports.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-annual-network" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-annual-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-annual-network-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-annual-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.2: Evolution of annual network traffic
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<ul>
+<li>For Brazil, traffic in the first half of 2023 exceeded the pre-pandemic traffic level</li>
+<li>On a network level, the continual recovery of the traffic is on-going in Europe.</li>
+<li>The first half of 2023 saw traffic levels at about 90-95% of the pre-pandemic network traffic and started following a classical <em>seasonal</em> pattern. However, traffic recovery in Europe is not at the same level for each pre-pandemic service/connection. The recovery also resulted in a light modification of network connectivity. The Russian invasion of Ukraine resulted in the closure of a significant portion of the airspace (about 20%). However, the overall impact of the closure on air traffic - on a network level - was relatively small.</li>
+</ul>
+<p>This high-level network perspective shows that traffic in both regions is comparable to pre-pandemic levels. It will be interesting to observe the further evolution and growth of air traffic.</p>
+</section>
+<section id="airport-level-air-traffic" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="airport-level-air-traffic"><span class="header-section-number">2.2</span> Airport Level Air Traffic</h2>
+<p>The previous section showed the air traffic development on the network level. As airports represent nodes in this overall network, changes to the overall traffic situation will ripple down to the airport level. This demand on terminal and airport air navigation services forms a substantial input to understand how the operational performance measures in this report developed over time for the selected study airports. This reports looks in particular at the performance levels observed at 10 key airports in each region (c.f. scope)</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-traffic_characterisation_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-eur-apt-level-tfc" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eur-apt-level-tfc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-eur-apt-level-tfc-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eur-apt-level-tfc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.3: Europeaan airport level traffic
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-traffic_characterisation_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Analyzing the movement of the leading Brazilian airports, it is evident that they were not responsible for the return to 2019 levels, considering that only Campinas - SBKP and Santos Dumont - SBRJ slightly exceeded 2019 levels. This phenomenon can be explained by the greater difficulty of airlines in resuming activity in contrast to general/business aviation. This last share is an essential component of the Brazilian air movement but is a rare user of main airports.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-apt-annual-change" class="quarto-figure quarto-figure-center quarto-float anchored" data-fig-pos="H">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-apt-annual-change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-apt-annual-change-1.png" class="img-fluid figure-img" data-fig-pos="H" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-apt-annual-change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.4: Annual traffic at study airports in 2022 and variation 2022/2019
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-apt-annual-change" class="quarto-xref">Figure&nbsp;<span>2.4</span></a> shows the annual change of the traffic served at the study airports in 2022 and the associated change of the traffic levels comparing 2022 and 2019.</p>
+<p>With Campinas (SBKP) and Rio de Janeiro (SBRJ), there are two study airports in Brazil that serviced a higher level of traffic in 2022 than in 2019. Both airports are key nodes for the domestic traffic in Brazil. Salvador (SBSV) ranged at the pre-pandemic level. The other Brazilian airports have seen - on average - a decrease of 10-20% of traffic. This suggests that the observed network level increase in movements is distributed across the Brazilian network and not focussed on the airports covered in this study.</p>
+<p>The European airport level traffic - on average - ranged at 20% below the pre-pandemic levels. Munich (EDDM) and Rome (LIRF) observed higher reductions. With an overall weaker recovery of the air traffic demand across Europe in 2022, a similar pattern emerged. The increased network level traffic (ranging about 10% under the pre-pandemic level) is distributed across the European network and other aerodrome connections.</p>
+</section>
+<section id="peak-day-traffic" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="peak-day-traffic"><span class="header-section-number">2.3</span> Peak Day Traffic</h2>
+<p>While the annual traffic provides insights in the total air traffic volume and the associated demand, it does not provide insights on the upper bound of achievable daily movement numbers. The latter depends on demand, operational procedures and/or associated constraints, and the use of the runway system infrastructure. The peak day traffic is determined as the 99th percentile of the total number of daily movements (arrivals and departures). The measure represents thus an upper bound for comparison purposes.</p>
+</section>
+<section id="peak-day" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="peak-day"><span class="header-section-number">2.4</span> Peak Day</h2>
+<pre><code>.years &lt;- c(2023,2024)
+pk_day_plot(.years)</code></pre>
+<pre><code>#| label: fig-peak-day
+#| fig-cap: Airport peak daily traffic (2024)
+#| message: false
+
+peak_day_pct_plot(2024)</code></pre>
+<p><span class="quarto-unresolved-ref">?fig-peak-day</span> shows the peak day traffic in 2022 for the study airports with reference to the number of runways. A varied picture can be seen for Europe. For European with more than 2 runways it needs to be noted that the runway system does not support independent operations of all available runways. Thus, the serviced peak traffic is also impacted by the runway system configuration.</p>
+<p>The measure signals the use of the available runway system.</p>
+<pre><code>#| label: fig-timeline-peak-day
+#| fig-cap: Evolution of peak-day traffic at study airports
+#| message: false
+
+timeline_peak_day(c(2019:2024))</code></pre>
+<p>The year-to-year change of the peak day traffic between 2019 and 2022 is shown in <span class="quarto-unresolved-ref">?fig-timeline-peak-day</span>. For the European study airports, Frankfurt (EDDF), Munich (EDDM), Paris (LFPG), and Rome (LIRF) experienced a higher drop of the daily peak traffic in comparison to 2019. Despite the not yet fully recovered demand situation at London Gatwick (EGKK) and Zurich (LSZH) showed a moderate reduction of the daily peak traffic in 2022. This suggest that airports with limited airport runway capacity managed</p>
+</section>
+<section id="fleet-mix" class="level2" data-number="2.5">
+<h2 data-number="2.5" class="anchored" data-anchor-id="fleet-mix"><span class="header-section-number">2.5</span> Fleet Mix</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fleet-mix" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fleet-mix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-fleet-mix-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fleet-mix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.5: Fleet mix observed at the study airports in 2024
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-fleet-mix" class="quarto-xref">Figure&nbsp;<span>2.5</span></a> depicts the observed share of different wake turbulence categories (WTC) across the study airports in 2024. In both regions, “medium” aircraft types are the predominant aircraft type. The fleet mix - and in particular the separation requirements between the different aircraft types - is an important influencing factor for the capacity and observed (and achievable) throughput. In general, a larger proportions of heavy aircraft or aircraft with longer runway occupancy times may result in lower throughput due to the required larger wake turbulence separation or time spent on the runway. The locally defined capacity values may therefore differ based on the predominant fleet mix and operational characteristics, and ultimately result in different observed peak movement numbers or influence surface and terminal operations.</p>
+<p>In Brazil, a significant number of “light” types operated in 2023. For example Salvador (SBSV) serviced about 20% of “light” types. The major hubs, i.e. São Paulo Guarulhos (SBGR), Rio de Janeiro Galeão (SBGL), and Campinas (SBKP) observed a share of 15-20% of “heavy” aircraft. These airports serve also as destinations for international long-haul flights.</p>
+<p>With the exception of Zurich (LSZH), the share of “light” types is negligible at the European study airport in 2023. London Heathrow (EGLL), Paris Charles de Gaule (LFPG), and Frankfurt (EDDF) observed the highest shares of “heavy” types.</p>
+<p>Within the European region - and its multitude of national hubs - a significant number of international long-haul flights is operated at the chosen study airports. In Brazil, the highlighted airports, Guarulhos (SBGR), Galeão (SBGL), and Campinas (SBKP), play a major role in terms of international connectivity. It follows that medium and light types are used predominantly for inter-reginal connections. Based on the selected study airports, the underlying decentralised structure of the European network becomes more visible. Due to the geo-political composition, airports serving capitals or representing a main national hub are more frequent in Europe. This is in contrast to Brazil, where the international and heavy air traffic appears more centralised at 2-3 pre-dominant hubs.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-fleetmix-timeline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fleetmix-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-fleetmix-timeline-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fleetmix-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2.6: Fleet mix change over time observed at study airports
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>On average, <a href="#fig-fleetmix-timeline" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> shows that the fleetmix remained fairly stable over the years. It is interesting to observe that the unprecedented decline in air transport during the pandemic phase did not substantially break this pattern. This suggests that the contraction of the traffic volume hit all segments at a similar rate <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+</section>
+<section id="summary" class="level2" data-number="2.6">
+<h2 data-number="2.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">2.6</span> Summary</h2>
+<p>This chapter described the overall evolution of air traffic in Brazil and Europe on the network and study airport level. Air traffic observed an unprecedented decline in both regions in response to COVID19. However, the recovery path in both regions differed. Overall, the Brazilian demand recovered substantially smoother than the European. As national governments varied in their assessments and introduction of public health measures, including travel restrictions, intra-European air connectivity observed several setbacks. On a network level, air traffic in Brazil exceeded the pre-pandemic level, whereas European traffic reaches about 5-10% below the pre-pandemic level.</p>
+<p>In 2023, medium aircraft types were predominant in both regions across the studied airports. Brazil hosted proportionally more light aircraft, notably in Salvador (SBSV). At the same time, major hubs like São Paulo Guarulhos (SBGR) and Campinas (SBKP) handled substantial shares of heavy aircraft. Conversely, European airports, except Zurich (LSZH), had minimal shares of light types, with London Heathrow (EGLL), Paris Charles de Gaule (LFPG), and Frankfurt (EDDF) witnessing higher shares of heavy types. The European network demonstrated a decentralized structure with numerous international long-haul flights, while Brazil’s international and heavy air traffic was centralized in 3 primary hubs. Despite pandemic-induced declines in air transport, data suggests a stable fleet mix, indicating a consistent impact across traffic segments.</p>
+<p>The overall air traffic demand situation is a key driver for the performance of air navigation services. The observed differences may impact - inter alia - separation and synchronisation of air traffic, and influence the observed performance reported in the other chapters of this report.</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>It must be noted that conceptually, the number of aircraft remained unchanged in the both regions. The higher utilisation of “heavy” aircraft for logistical support appeared to have offset the lower number international / long-haul passenger flights. For the first six month of 2023, this pattern is continued<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./01-intro.html" class="pagination-link  aria-label=" &lt;span="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./90-test-for-rafael.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>Next chapter</span>">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Next chapter</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
