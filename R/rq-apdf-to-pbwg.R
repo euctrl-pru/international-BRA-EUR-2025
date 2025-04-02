@@ -144,3 +144,25 @@ read_and_write_apt_tfc <- function(.apt_apdf, .apt, .yr){
 
 # run for many/all ping_apts
 # ping_apts[-(1:2),] |> purrr::pwalk(.f = ~ read_zip(pth_apdf, "apdf-2024.zip", .files = ..1) |> read_and_write_apt_tfc(.apt = ..2, .yr = ..3))
+
+
+
+# PUNCTUALITY ============================================================
+
+# check what we have and prepare data
+# do for some
+# check_zip_content(pth_apdf, "apdf-2023.zip")[1:2,] |> 
+# run for many
+puncs_eur <- check_zip_content(pth_apdf, "apdf-2023.zip")[1:2,] |>   
+  purrr::pmap(.f = ~ 
+                read_zip(pth_apdf, "apdf-2023.zip", .files = ..1) |> 
+                prep_apdf() |> 
+                add_delay_and_dlygrp() |> 
+                dplyr::mutate(ICAO = stringr::str_sub(..1, 1,4), .before = FLTID) |> 
+                package_pbwg_punc_analytic() 
+              )
+
+# write out ... check year in name!
+what_year <- 2023
+puncs_eur |> dplyr::bind_rows() |> 
+  write_csv(here::here("data", paste0("PBWG-EUR-PUNC-", what_year, ".csv")))

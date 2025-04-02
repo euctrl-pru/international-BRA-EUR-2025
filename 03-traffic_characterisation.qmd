@@ -196,9 +196,6 @@ This suggest that airports with limited airport runway capacity managed
 #| fig-cap: Fleet mix observed at the study airports in 2024
 #| fig-height: 5
 
-key_year <- 2024
-fleet_mix(key_year)
-
 # data is loaded with supporting script - move / clean and functionalise
 # script returns fleetmix for fm_apts_bra and eur
 

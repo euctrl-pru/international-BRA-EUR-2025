@@ -16,8 +16,6 @@ bra_tfc_switch <- lubridate::date("2024-12-31")
 
 #------------ BRA ----------------------
 
-
-
 plot_bra_annual_traffic_function <- function(){
   # Split in years - ax
   year_boundaries <- seq(as.Date("2019-01-01"), as.Date("2024-01-01"), by = "years")
@@ -161,10 +159,6 @@ plot_eur_annual_traffic <- .tfc_eur  |>
 }
 
 
-
-
-
-
 ################################################################################################
 
 plot_timeline_per_year <- function(.df,
@@ -294,26 +288,10 @@ fig_bra_apt_tfc <- function(.years){
     plot_layout(widths = c(1, 4)))
 } 
   
-
-
-
 ################################### EUR #####################################################
 
 tfc_apts_eur <- arrow::read_parquet(
   "./data/traffic_counts_airport_daily.parquet") |> 
-<<<<<<< HEAD
-  filter(REG == "EUR", DATE < lubridate::ymd("2023-01-01"))
-
-tfc_apts_eur_2023 <- arrow::read_parquet(
-  "./data/traffic_counts_airport_daily_partial2023.parquet") |> 
-  select(REG, ICAO, DATE, ARRS, DEPS
-         , HEAVY = H, MED = M, LIGHT = L
-         , ARRS_DOM = ARRS_REG, DEPS_DOM = DEPS_REG) |> 
-  filter(between(DATE, lubridate::ymd("2023-01-01"), max_date))
-
-tfc_apts_eur <- bind_rows(tfc_apts_eur, tfc_apts_eur_2023) |> 
-  filter(ICAO %in% eur_apts)
-=======
   dplyr::filter(REG == "EUR", DATE < lubridate::ymd("2023-01-01"))
 
 tfc_apts_eur_2023 <- arrow::read_parquet(
@@ -325,8 +303,6 @@ tfc_apts_eur_2023 <- arrow::read_parquet(
 
 tfc_apts_eur <- bind_rows(tfc_apts_eur, tfc_apts_eur_2023) |> 
   dplyr::filter(ICAO %in% eur_apts)
->>>>>>> 1e6e8a8 (try to hook up new folder)
-
 
 # annual network level traffic
 annual_tfc_eur <- tfc_eur |> 
@@ -334,33 +310,11 @@ annual_tfc_eur <- tfc_eur |>
   filter( (VERSION == "2024") | (VERSION == "2023" & YEAR %in% 2019:2022) ) |> 
   summarise(N = n(), FLIGHTS = sum(DLY_FLTS), .by = c(REG, YEAR))
 
-<<<<<<< HEAD
-# annual traffic at each airport
-=======
 # annual traffic at each airport -------------
->>>>>>> 1e6e8a8 (try to hook up new folder)
 annual_tfc_apt <- tfc_apts_eur |> 
   #------- filter to 2022 and eur_apts
   filter(ICAO %in% eur_apts, DATE < lubridate::ymd("2023-01-01")) |> 
   #-----------------------------------
-<<<<<<< HEAD
-mutate(TOT_FLTS = ARRS + DEPS) |> 
-  group_by(REG, ICAO, YEAR = lubridate::year(DATE)) |> 
-  summarise(N = n(), TOT_FLTS_YEAR = sum(TOT_FLTS), .groups = "drop") |> 
-  filter(between(YEAR, 2019, 2024)) |> 
-  mutate(YEAR = as.factor(YEAR))
-
-# annualised traffic of all study airports
-annual_all_apts <- annual_tfc_apt |> 
-  summarise(APTS_TOT = sum(TOT_FLTS_YEAR), .by = c(REG, YEAR))
-
-tmp <- annual_tfc_eur |> mutate(YEAR = as.factor(YEAR)) |> 
-  left_join(annual_all_apts, join_by(REG, YEAR)) |> 
-  mutate(SHARE = APTS_TOT / FLIGHTS)
-
-#append airport names
-annual_tfc_apt <- annual_tfc_apt |> 
-=======
   mutate(TOT_FLTS = ARRS + DEPS) |> 
   group_by(REG, ICAO, YEAR = lubridate::year(DATE)) |> 
   summarise(N = n(), TOT_FLTS_YEAR = sum(TOT_FLTS), .groups = "drop") # |> 
@@ -390,16 +344,12 @@ tmp <- annual_tfc_eur |> # mutate(YEAR = as.factor(YEAR)) |>
 
 #append airport names
 annual_tfc_apt <- annual_tfc_apt |>
->>>>>>> 1e6e8a8 (try to hook up new folder)
   left_join(eur_apts_names, by = join_by(ICAO))
 
 
 get_p1_eur <- function(.years){
-<<<<<<< HEAD
-  p1_eur <- annual_tfc_apt  %>% filter(YEAR %in% .years) |>   
-=======
+
   p1_eur <- annual_tfc_apt  |>  filter(YEAR %in% .years) |>   
->>>>>>> 1e6e8a8 (try to hook up new folder)
     ggplot() +
     geom_col(aes(x = NAME, y = TOT_FLTS_YEAR, fill = YEAR)
              , position = position_dodge(preserve = "single")
@@ -417,18 +367,12 @@ get_p1_eur <- function(.years){
 
 
 fig_eur_apt_tfc <- function(.years){
-<<<<<<< HEAD
-  return((p_share_of_network(tmp %>% filter(YEAR %in% .years)) + scale_x_discrete(guide = guide_axis(n.dodge = 2))) + 
-           get_p1_eur(.years) + 
-           plot_layout(widths = c(1, 4)))
-=======
   p1 <- p_share_of_network(tmp |>  filter(YEAR %in% .years)) + scale_x_discrete(guide = guide_axis(n.dodge = 2))
   #p1 <- patchwork::plot_spacer()
   p2 <- get_p1_eur(.years) 
   this_p <- p1 + p2 + plot_layout(widths = c(1, 4))
   
   return(this_p)
->>>>>>> 1e6e8a8 (try to hook up new folder)
 } 
 
 
@@ -647,14 +591,10 @@ peak_day_eur <- tfc_apts_eur |>
   add_nbr_rwy() |> 
   mutate(REGION = "EUR")
 
-<<<<<<< HEAD
-peak_day_comb <- bind_rows(peak_day_bra, peak_day_eur)
-=======
+
 peak_day_comb <- bind_rows(peak_day_bra
                            #, peak_day_eur
                            )
->>>>>>> 1e6e8a8 (try to hook up new folder)
-
 
 plot_peak_day_tfc <- function(.df, .year, ...){
   viz <- ggplot( data = .df %>% filter(YEAR == .year)
@@ -810,36 +750,6 @@ fleet_mix_from_counts <- function(.counts, .reg){
 }
 
 
-<<<<<<< HEAD
-tfc_apts_bra <- read_csv("./data/BRA-airport-tfc.csv", show_col_types = F)
-
-fm_apts_bra <- tfc_apts_bra |> 
-  rename(HEAVY = H, MED = M, LIGHT = L) |> 
-  fleet_mix_from_counts("BRA")
-
-fm_apts_eur <- tfc_apts_eur |> fleet_mix_from_counts("EUR")
-
-
-fm_apts <- bind_rows(fm_apts_bra, fm_apts_eur) |> 
-  left_join(bind_rows(bra_apts_names, eur_apts_names))
-
-
-fleet_mix <- function(key_year){
-  fleet_mix_plot <- ggplot( data    = fm_apts %>% filter(YEAR == key_year)
-                            , mapping = aes(y = paste(ICAO, NAME), x = SHARE, fill = WTC)) +
-    geom_col(position = "stack", width = 0.9)  +
-    scale_fill_manual(values = c("#56B4E9", "#009E73","#F0E442")) +
-    scale_y_discrete(labels = scales::label_wrap(10)) +
-    scale_x_continuous(labels = scales::percent) +
-    # geom_text(aes(x = 0.05, label = NAME), size = 3, hjust = 0) +
-    facet_wrap(.~REGION, scales = "free_y") + 
-    #  my_own_theme_minimal +
-    theme( legend.position = "top"
-           ,legend.title    = element_text(size = 8) 
-           ,legend.text     = element_text(size = 8)
-           ,legend.key.size = unit(0.3, "cm")) +
-    labs(x = NULL, y = NULL)
-=======
 tfc_apts_bra <- read_csv("./data/BRA-airport-tfc.csv", show_col_types = FALSE)
 tfc_apts_eur <- read_csv("./data/EUR-airport-tfc.csv", show_col_types = FALSE)
 
@@ -869,9 +779,7 @@ plot_fleet_mix <- function(.fleetmix_airports , .key_year){
            ,legend.text     = ggplot2::element_text(size = 8)
            ,legend.key.size = ggplot2::unit(0.3, "cm")) +
     ggplot2::labs(x = NULL, y = NULL)
->>>>>>> 1e6e8a8 (try to hook up new folder)
-  
-  
+
     return(fleet_mix_plot)
 }
 
