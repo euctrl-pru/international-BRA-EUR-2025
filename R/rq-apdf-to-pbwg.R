@@ -1,7 +1,8 @@
 ### ------------ DATA PREPARATION - PBWG FORMAT ------- EUR AIRPORTS
 
 # check if files are still there
-# pth_apdf <- here::here(here::here() |> dirname(), "__DATA","APDF")
+#dir_up_one <- here::here() |> dirname()
+#pth_apdf <- here::here(dir_up_one, "__DATA","APDF")
 
 read_apdf_parquet <- function(){}
 
@@ -36,12 +37,13 @@ make_nice_names <- function(.apdf){
 }
 
 add_dof <- function(.apdf){
-  .apdf <- .apdf %>% 
-    mutate(DATE = case_when(
+  .apdf <- .apdf |> 
+    dplyr::mutate(DATE = dplyr::case_when(
        !is.na(BLOCK_TIME) ~ lubridate::date(BLOCK_TIME)
       , is.na(BLOCK_TIME) & !is.na(MVT_TIME) ~ lubridate::date(MVT_TIME)
-      , TRUE ~ as.Date(NA)
-    ))
+      , .default = as.Date(NA)
+      )
+    )
   
   return(.apdf)
 }
@@ -73,46 +75,45 @@ ecac_2digits <- function(){
 extract_daily_stats <- function(.apdf, .apt = apt, .yr = yr, ...){
   
   ecac <- ecac_2digits()
+
+  .apdf <- .apdf |> dplyr::mutate( ICAO = .apt)
   
-  .apdf <- .apdf %>% mutate( ICAO = .apt)
-  
-  arr_dep <- .apdf  %>% 
-    group_by(ICAO, DATE) %>%
-    summarise( ARRS     = sum(PHASE == "ARR", na.rm = TRUE)
+  arr_dep <- .apdf  |> 
+    dplyr::group_by(ICAO, DATE) |>
+    dplyr::reframe( 
+                ARRS     = sum(PHASE == "ARR", na.rm = TRUE)
                ,DEPS     = sum(PHASE == "DEP", na.rm = TRUE)
                ,SRC_NA   = sum(is.na(PHASE))
-               ,.groups = "drop"
     )
   
-  reg_arrs <- .apdf %>% filter(PHASE == "ARR") %>%
-    mutate(ADEP_REG = case_when(
+  reg_arrs <- .apdf |> dplyr::filter(PHASE == "ARR") |>
+    dplyr::mutate(ADEP_REG = dplyr::case_when(
       stringr::str_extract(ADEP, pattern = "^[A-Z]{2}") %in% ecac ~ "EUR")
-    ) %>%
-    group_by(ICAO, DATE) %>%
-    summarise(ARRS_REG = sum(ADEP_REG %in% "EUR"))
+    ) |>
+    dplyr::group_by(ICAO, DATE) |>
+    dplyr::reframe(ARRS_REG = sum(ADEP_REG %in% "EUR"))
   
-  reg_deps <- .apdf %>% filter(PHASE == "DEP") %>%
-    mutate(ADES_REG = case_when(
+  reg_deps <- .apdf |> dplyr::filter(PHASE == "DEP") |>
+    dplyr::mutate(ADES_REG = dplyr::case_when(
       stringr::str_extract(ADES, pattern = "^[A-Z]{2}") %in% ecac ~ "EUR")
-    ) %>%
-    group_by(ICAO, DATE) %>%
-    summarise(DEPS_REG = sum(ADES_REG %in% "EUR"))
+    ) |>
+    dplyr::group_by(ICAO, DATE) |>
+    dplyr::reframe(DEPS_REG = sum(ADES_REG %in% "EUR"))
   
-  hml <- .apdf %>% group_by(ICAO, DATE) %>%
-    summarise( HEL = sum(CLASS %in% "HEL", na.rm = TRUE)
+  hml <- .apdf |> dplyr::group_by(ICAO, DATE) |>
+    dplyr::reframe( HEL = sum(CLASS %in% "HEL", na.rm = TRUE)
                ,H = sum(CLASS %in% c("H"), na.rm = TRUE)
                ,M = sum(CLASS %in% c("M","MJ","MT"), na.rm = TRUE)
                ,L = sum(CLASS %in% c("L","LJ","LT","LP"), na.rm = TRUE)
                ,'NA' = sum(is.na(CLASS))
-               , .groups = "drop"
     )
   
-  reg_tfc <- reg_arrs %>% left_join(reg_deps, by = c("ICAO","DATE"))
-  apt_tfc <- arr_dep %>%  left_join(reg_tfc,  by = c("ICAO","DATE"))
-  apt_tfc <- apt_tfc %>%  left_join(hml,      by = c("ICAO","DATE"))
+  reg_tfc <- reg_arrs |> dplyr::left_join(reg_deps, by = c("ICAO","DATE"))
+  apt_tfc <- arr_dep |>  dplyr::left_join(reg_tfc,  by = c("ICAO","DATE"))
+  apt_tfc <- apt_tfc |>  dplyr::left_join(hml,      by = c("ICAO","DATE"))
   
-  apt_tfc <- apt_tfc %>% filter(lubridate::year(DATE) == .yr)
-  
+  apt_tfc <- apt_tfc |> dplyr::filter(lubridate::year(DATE) == .yr)
+
   return(apt_tfc)
 }
 
@@ -128,10 +129,18 @@ write_out_daily_apt_tfc <- function(
   readr::write_csv(.dly_tfc, out_name)
 }
 
+# test for one:
 # eddf_2023 <- read_zip(pth_apdf, "apdf-2023.zip", "EDDF_APDF_2023.gz.parquet") |> tibble::tibble()
+
+# run for many
+get_names_zip_content <- check_zip_content(pth_apdf, "apdf-2024.zip") |> dplyr::pull(Name)
+ping_apts <- tibble::tibble(NAME = get_names_zip_content, APT = stringr::str_sub(NAME, 1,4), YEAR = 2024 )
 
 read_and_write_apt_tfc <- function(.apt_apdf, .apt, .yr){
   .apt_apdf |> prep_apdf() |> 
     extract_daily_stats(.apt,.yr) |> 
     write_out_daily_apt_tfc(.apt,.yr)
 }
+
+# run for many/all ping_apts
+# ping_apts[-(1:2),] |> purrr::pwalk(.f = ~ read_zip(pth_apdf, "apdf-2024.zip", .files = ..1) |> read_and_write_apt_tfc(.apt = ..2, .yr = ..3))
