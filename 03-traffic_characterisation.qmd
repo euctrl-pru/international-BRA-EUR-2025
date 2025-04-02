@@ -96,16 +96,11 @@ fig_bra_apt_tfc(c(2022,2023,2024))
 fig_eur_apt_tfc(c(2022,2023,2024))
 ```
 
-
-
-
 ```{r}
 .apt = "SBGR"
 .years = c("2023","2024")
 airport_per_year(.apt, .years)
 ```
-
-
 
 Analyzing the movement of the leading Brazilian airports, it is evident that they were not responsible for the return to 2019 levels, considering that only Campinas - SBKP and Santos Dumont - SBRJ slightly exceeded 2019 levels.
 This phenomenon can be explained by the greater difficulty of airlines in resuming activity in contrast to general/business aviation.
@@ -144,6 +139,22 @@ The measure represents thus an upper bound for comparison purposes.
 
 ## Peak Day
 
+:::{callout-note}
+
+THERE IS A LOT OF CODE AND WE WORK WITH INTERIM AND "FIX" FILES.
+
+It is not transparent how these files / values are generated.
+On a first level, I could not fix it.
+What needs to be done:
+
+* [] produce consistent daily traffic files in PBWG format for BRA and EUR
+* [] rewrite functions to read the PBWG format and aggregate as desired
+* [] if desired bind the BRA and EUR data set to build the graphics
+
+== CLEAN UP CODE!
+
+:::
+
 ```{}
 .years <- c(2023,2024)
 pk_day_plot(.years)
@@ -165,8 +176,6 @@ Thus, the serviced peak traffic is also impacted by the runway system configurat
 
 The measure signals the use of the available runway system.
 
-
-
 ```{}
 #| label: fig-timeline-peak-day
 #| fig-cap: Evolution of peak-day traffic at study airports
@@ -186,8 +195,19 @@ This suggest that airports with limited airport runway capacity managed
 #| label: fig-fleet-mix
 #| fig-cap: Fleet mix observed at the study airports in 2024
 #| fig-height: 5
+
 key_year <- 2024
 fleet_mix(key_year)
+
+# data is loaded with supporting script - move / clean and functionalise
+# script returns fleetmix for fm_apts_bra and eur
+
+fm_apts <- bind_rows(fm_apts_bra, fm_apts_eur) |> 
+  left_join(bind_rows(bra_apts_names, eur_apts_names), by = join_by(ICAO))
+
+key_year <- 2024
+
+plot_fleet_mix(fm_apts, key_year)
 ```
 
 @fig-fleet-mix depicts the observed share of different wake turbulence categories (WTC) across the study airports in `r key_year`.
