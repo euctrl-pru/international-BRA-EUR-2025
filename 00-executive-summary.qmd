@@ -1,12 +1,15 @@
 # Executive Summary {.unnumbered}
 
-The Performance Section of the Brazilian Department of Airspace Control and the Performance Review Unit of EUROCONTROL jointly developed this third edition of the Brazil-Europe comparison of Air Navigation System Performance. 
+The Performance Section of the Brazilian Department of Airspace Control and the Performance Review Unit of EUROCONTROL jointly developed this fourth edition of the Brazil-Europe comparison of Air Navigation System Performance. 
 This edition of the bi-regional report builds on the previous comparison reports using commonly agreed metrics and definitions to compare, understand, and improve the performance of air navigation services. 
 This report and previous editions are available at 
 * <https://ansperformance.eu/global/brazil> or 
 * <https://performance.decea.mil.br/>.
 
 This report revises the assessment of both the Brazilian and European air navigation systems, extending the time frame and incorporating additional analyses. 
+:::{callout-note}
+such as point merge system and a short Curitiba and Lisbon ACC comparison
+:::
 The report focuses on a subset of the eleven Key Performance Areas identified by the ICAO Global Air Navigation Plan. 
 The focus of this report is on operational air navigation system performance, in particular Predictability, Capacity and Efficiency.
 

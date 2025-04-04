@@ -70,7 +70,7 @@ In addition to the CINDACTAs, there's the Regional Center of Southeast Airspace 
 knitr::include_graphics("./figures/Europe-ECTRL.png")
 ```
 
-In this report, Europe, i.e. the European airspace, is defined as the area where the 41 EUROCONTROL member states provide air navigation services, excluding the oceanic areas and the Canary islands (c.f. @fig-EUR-airspace).
+In this report, Europe, i.e. the European airspace, is defined as the area where the 42 EUROCONTROL member states provide air navigation services, excluding the oceanic areas and the Canary islands (c.f. @fig-EUR-airspace).
 In 2016, EUROCONTROL signed a comprehensive agreement with Israel and Morocco.
 Both comprehensive agreement States will be successively fully integrated into the working structures of EUROCONTROL, including performance monitoring.
 Within this report, these states are included in the reported network traffic volumes.
@@ -133,7 +133,7 @@ knitr::include_graphics("./figures/scope-airports.png")
 
 ### Temporal Scope
 
-This report focuses on the period from January 2019 to December 2023.
+This report focuses on the period from January 2019 to December 2024.
 With this report, the focus is on building a timeline with comparable data to be augmented in future editions.
 
 Throughout the report, summary statistics will be given with reference to calendar years of this comparison study.
@@ -167,3 +167,7 @@ This third edition of the Brazil-Europe comparison report is organised as follow
 -   **Capacity and Throughput** assessment of the declared capacity at the study airports and the observed throughput, including runway system utilisation comparing achieved peak throughput to the declared capacity;
 -   **Efficiency** analysis of taxi-in, taxi-out, and terminal airspace operations; and
 -   **Conclusions** summary of this report and associated conclusions; and next steps.
+
+:::
+point merge and ACC CTB LIS comparison??????
+:::

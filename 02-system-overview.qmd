@@ -17,7 +17,7 @@ DECEA holds the vital role of overseeing all activities related to the safety an
 
 In 2021, a public company, NAV Brasil, was created to take over some facilities that were linked to an old airport infrastructure provider company in Brazil (INFRAERO). Today, this company has 1698 employees in 44 different units, providing aerodrome control services, nonradar approach, meteorology and aeronautical information for these locations. Despite having important numbers, Nav Brasil does not plan to establish radar facilities or provide en-route services.
 
-The Brazilian airspace, covering an area of approximately 22 million square kilometres (8.5 million square nautical miles of non-oceanic airspace), is divided into five Flight Information Regions. These regions are further subdivided and managed by five Area Control Centers (ACC), 57 Tower facilities (TWR), 42 Approach Units (APP) and 84 AFIS/Remote-AFIS.
+The Brazilian airspace, covering an area of approximately 22 million square kilometres (8.5 million square nautical miles of non-oceanic airspace), is divided into five Flight Information Regions. These regions are further subdivided and managed by five Area Control Centers (ACC), 57 Tower facilities (TWR), one digital tower (D-TWR), 41 Approach Units (APP) and 79 AFIS/Remote-AFIS.
 
 The non-oceanic airspace in Europe covers an area of 11.5 million square kilometres. When it comes to the provision of air traffic services, the European approach involves a multitude of service providers, with 37 distinct en-route Air Navigation Service Providers (ANSPs), each responsible for different geographical regions. These services are primarily organised along state boundaries and FIR (Flight Information Region) borders, with limited cross-border agreements in place between adjacent airspaces and air traffic service units.
 
@@ -29,13 +29,13 @@ Another critical responsibility of the Network Manager is to ensure that air tra
 
 ## High Level System Comparison
 
-@fig-HLC2022 summarises the key characteristics of the Brazilian and European air navigation system for 2023. Comparing the high-level numbers, Brazil utilised an increased number of Air Traffic Controllers (ATCOs) even during the pandemic period. In contrast, the European system showed a reduction of total ATCOs in service. The different behaviour suggests a difference in work force flexibility between the systems. This may be partly explained by the fact that DECEA shares part of the structure used in basic training with other Air Force training processes. This leads to a more centralised and rigid process, in which abrupt reactions in hiring planning are unwanted due to the lengthy process of calling for candidates according to Brazilian laws related to public service jobs. In Europe, there exists a mix of organisational models and labour contracts ranging from public service to fully commercial organisation. En gros, European providers were able to react to the lower demand levels by delaying/stopping recruitment/training and offering early retirement packages.
+@fig-HLC2022 summarises the key characteristics of the Brazilian and European air navigation system for 2024. Comparing the high-level numbers, Brazil utilised an increased number of Air Traffic Controllers (ATCOs) even during the pandemic period. In contrast, the European system showed a reduction of total ATCOs in service. The different behaviour suggests a difference in work force flexibility between the systems. This may be partly explained by the fact that DECEA shares part of the structure used in basic training with other Air Force training processes. This leads to a more centralised and rigid process, in which abrupt reactions in hiring planning are unwanted due to the lengthy process of calling for candidates according to Brazilian laws related to public service jobs. In Europe, there exists a mix of organisational models and labour contracts ranging from public service to fully commercial organisation. En gros, European providers were able to react to the lower demand levels by delaying/stopping recruitment/training and offering early retirement packages.
 
 <!-- Note: this table is imported from powerpoint - check for figures-handmade.pptx in ./figures -->
 
 ```{r}
 #| label: fig-HLC2022
-#| fig-cap: High Level Comparison 2023
+#| fig-cap: High Level Comparison 2024
 #| out-width: 95%
 
 knitr::include_graphics("./figures/HLC-table.png")
