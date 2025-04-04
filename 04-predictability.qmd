@@ -56,8 +56,19 @@ DECEA has already established a forum with the air operator regulator to discuss
 #| label: fig-evolution-ARR-punc
 #| fig-cap: Evolution of arrival punctuality window
 
-punc_evolution_lineplot("ARR",c(0.4, 0.8))
+# punc_evolution_lineplot("ARR", c(0.4, 0.8))
+# punc_evolution_lineplot(punc_bra, "ARR", c(0.4, 0.8))
+punc <- bind_rows(punc_bra, punc_eur)
+# generalisable - only supply arrivals or departures
+# think about whether this is a function of the plot or data prep
+punc_evolution_lineplot(punc, "ARR", c(0.4, 0.8))
 ```
+
+:::{.callout-note}
+
+speak about truncated axes
+
+:::
 
 ```{r}
 #| label: fig-evolution-ARR-punc_by_month
@@ -66,7 +77,13 @@ punc_evolution_lineplot("ARR",c(0.4, 0.8))
 .APT = c("SBBR","SBGR","SBGL")
 .YEAR = 2024
 
-punc_per_month(.APT, .YEAR, "ARR",c(0.4, 0.8))
+# punc_per_month(.APT, .YEAR, "ARR",c(0.4, 0.8))
+punc_monthly <- punc_bra_month
+
+.APT = c(.APT, "EGLL","EHAM")
+punc_monthly <- bind_rows(punc_bra_month, punc_eur_month)
+
+punc_per_month(punc_monthly, .APT, .YEAR, "ARR",c(0.4, 0.8))
 ```
 
 
@@ -164,7 +181,8 @@ p_2023 / p_2024 + plot_layout(guides = "collect") &
 #| label: fig-evolution-DEP-punc
 #| fig-cap: Evolution of departure punctuality window
 
-punc_evolution_lineplot("DEP",c(0.4, 1))
+# punc_evolution_lineplot("DEP",c(0.4, 1))
+punc_evolution_lineplot(punc_bra ,"DEP",c(0.4, 1))
 ```
 
 
@@ -176,7 +194,11 @@ punc_evolution_lineplot("DEP",c(0.4, 1))
 .APT = c("SBBR","SBGR","SBGL")
 .YEAR = 2024
 
-punc_per_month(.APT, .YEAR, "DEP", c(0.4, 1))
+#punc_per_month(.APT, .YEAR, "DEP", c(0.4, 1))
+
+punc_monthly <- punc_bra_month
+
+punc_per_month(punc_monthly, .APT, .YEAR, "DEP",c(0.4, 0.8))
 ```
 
 

@@ -38,6 +38,31 @@ add_dly_early_late_groupings_month <- function(.punc_df){
     )
 }
 
+# --------- clean ==> why did we move to 16 ~ CODA convention <> PBWG -------
+add_dly_early_late_groupings2 <- function(.punc_df){
+  df <- .punc_df |>  
+    dplyr::mutate(
+      EARLY        = rowSums(across(.cols = `(-INF,-60]`:`(-20,-15]`), na.rm = TRUE) / N_VALID
+      ,EARLY_M15M05 = (`(-15,-10]` + `(-10,-5]`) / N_VALID
+      ,EARLY_M05M00 =  `(-5,0]`                  / N_VALID
+      ,LATE_P00P05  =  `(0,5)`                   / N_VALID
+      ,LATE_P05P15  = (`[5,10)` + `[10,15)`)     / N_VALID
+      ,LATE         = rowSums(across(.cols = `[15,20)`:`[60,INF)`), na.rm = TRUE) / N_VALID
+      ,WITHIN_M05P05= (`(-5,0]` + `(0,5)`)       / N_VALID
+      ,WITHIN_M15P15= (`(-15,-10]`+`(-10,-5]`+`(-5,0]`+`(0,5)`+`[5,10)`+`[10,15)`) / N_VALID
+    )
+}
+ ########################
+
+#--------
+# check this, rewritten code introduces monthly counts, grouping over annual 
+# counts and monthly counts ~~ not generalisable or we have to change format /
+# deviate from PBWG
+#
+# think about generalising DATE and not introduce new variables
+# e.g. YEAR = floor(DATE, unit = year)
+#
+#--------------------------------
 
 punc_bra <- read_csv("./data/BRA-punc.csv") |>  
   mutate(REGION = "BRA") |> 
@@ -50,6 +75,22 @@ punc_bra_month <- read_csv("./data/BRA-punc.csv") |>
   group_by(APT, PHASE, YEAR=lubridate::year(DATE), MONTH=lubridate::month(DATE), REGION, N_VALID_MONTH) |> 
   summarise(across(.cols = `(-INF,-60]`:`[60,INF)`, .fns = sum), .groups = "drop") |> 
   add_dly_early_late_groupings_month()
+
+punc_eur_data <- list.files(path = "data", pattern = "PBWG-EUR-PUNC", full.names = TRUE) |> 
+  purrr::map(.f = ~ readr::read_csv(.x, show_col_types = FALSE)) |> dplyr::bind_rows()
+
+punc_eur <- punc_eur_data |> rename(APT = ICAO) |>  
+  mutate(REGION = "EUR") |> 
+  group_by(APT, PHASE, YEAR = lubridate::year(DATE), REGION) |>  #, N_VALID) |> 
+  summarise(across(.cols = N_VALID:`[60,INF)`, .fns = sum), .groups = "drop") |> 
+  add_dly_early_late_groupings2()
+
+punc_eur_month <- punc_eur_data |> rename(APT = ICAO) |>  
+  mutate(REGION = "EUR", YEAR=lubridate::year(DATE), MONTH=lubridate::month(DATE)) |> 
+  group_by(APT, PHASE, YEAR=lubridate::year(DATE)
+           , MONTH=lubridate::month(DATE), REGION) |>  # , N_VALID) |> 
+  summarise(across(.cols = N_VALID:`[60,INF)`, .fns = sum), .groups = "drop") |> 
+  add_dly_early_late_groupings2() # _month()
 
 
 
@@ -100,7 +141,9 @@ prepare_punc_plot_data <- function(.punc, .phase, .year){
 }
 
 
-punc <- punc_bra
+#punc <- punc_bra
+#punc <- punc_eur
+punc <- bind_rows(punc_bra, punc_eur)
 
 # Função para criar o plot
 create_punc_plot <- function(event, year, debug) {
@@ -118,14 +161,21 @@ create_punc_plot <- function(event, year, debug) {
 ######### Punc Evolution
 ####################################################################################################
 
-punc_evolution_lineplot <- function(event,limits){
-  tmp <-  punc_bra |> filter(PHASE == event)
+# Note --> code functions like interfaces, i.e., do not use "absolute" to
+# aovid side-effects
+
+#punc_evolution_lineplot <- function(event,limits){
+#  tmp <-  punc_bra |> filter(PHASE == event)
+ 
+punc_evolution_lineplot <- function(this_data, event, limits){
+  tmp <- this_data |> filter(PHASE == event)
   
   # get color order
   tmp_col <- tmp |> 
     filter(YEAR == 2019) |> select(REGION, APT, N_VALID) |> 
     arrange(REGION, desc(N_VALID)) |> 
-    mutate(COL_SORT = 1:10, .by = REGION)
+   # mutate(COL_SORT = 1:10, .by = REGION)
+    mutate(COL_SORT = row_number())
   
   # position airport labels
   tmp2 <-  tmp |> 
@@ -178,9 +228,13 @@ punc_evolution_lineplot <- function(event,limits){
 ########### Per Month
 ####################################################################################################
 
-punc_per_month <- function(.APT, .YEAR, event, limits){
-  tmp_month <-  punc_bra_month |> filter(PHASE == event, , APT%in%.APT, YEAR==.YEAR)
-  
+# punc_per_month <- function(.APT, .YEAR, event, limits){
+#   tmp_month <-  punc_bra_month |> filter(PHASE == event, , APT%in%.APT, YEAR==.YEAR)
+
+punc_per_month <- function(.punc_month,.APT, .YEAR, event, limits){
+    tmp_month <-  .punc_month |> filter(PHASE == event, , APT%in%.APT, YEAR==.YEAR)
+    
+    
   # Lista com os nomes dos meses
   month_names <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
   

@@ -150,12 +150,13 @@ read_and_write_apt_tfc <- function(.apt_apdf, .apt, .yr){
 # PUNCTUALITY ============================================================
 
 # check what we have and prepare data
+which_zip <- "apdf-2024.zip"
 # do for some
-# check_zip_content(pth_apdf, "apdf-2023.zip")[1:2,] |> 
+#check_zip_content(pth_apdf, which_zip)[1:2,] |> 
 # run for many
-puncs_eur <- check_zip_content(pth_apdf, "apdf-2023.zip")[1:2,] |>   
+puncs_eur <- check_zip_content(pth_apdf, which_zip) |>   
   purrr::pmap(.f = ~ 
-                read_zip(pth_apdf, "apdf-2023.zip", .files = ..1) |> 
+                read_zip(pth_apdf, which_zip, .files = ..1) |> 
                 prep_apdf() |> 
                 add_delay_and_dlygrp() |> 
                 dplyr::mutate(ICAO = stringr::str_sub(..1, 1,4), .before = FLTID) |> 
@@ -163,6 +164,6 @@ puncs_eur <- check_zip_content(pth_apdf, "apdf-2023.zip")[1:2,] |>
               )
 
 # write out ... check year in name!
-what_year <- 2023
+what_year <- 2024
 puncs_eur |> dplyr::bind_rows() |> 
   write_csv(here::here("data", paste0("PBWG-EUR-PUNC-", what_year, ".csv")))
