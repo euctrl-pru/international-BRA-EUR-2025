@@ -93,7 +93,21 @@ fig_bra_apt_tfc(c(2022,2023,2024))
 #| fig-cap: Europeaan airport level traffic
 #| warning: false
 
-fig_eur_apt_tfc(c(2022,2023,2024))
+eur_annual_network_fix <- tfc_eur |> 
+  mutate(MVTS = DEPS) |> select(REG, DATE, MVTS) |> 
+  mutate(YEAR = lubridate::year(DATE)) |> 
+  group_by(REG, YEAR) |> 
+  reframe(MVTS = sum(MVTS)) |> 
+  mutate(MVTS = case_when(
+      YEAR == 2023 ~ first(MVTS) * 0.95
+    , YEAR == 2024 ~ first(MVTS) * 0.97
+    , .default = MVTS)
+    )
+
+#annual_tfc_apt |> 
+#  fig_eur_apt_tfc(.years = c(2022,2023,2024))
+
+annual_tfc_apt |> mutate(YEAR = as.character(YEAR)) |> get_p1_eur(c(2022,2023,2024))
 ```
 
 ```{r}
@@ -155,18 +169,27 @@ What needs to be done:
 
 :::
 
-```{}
-.years <- c(2023,2024)
-pk_day_plot(.years)
+```{r}
+pk_day_bra <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
+our_years  <- c(2023,2024)
+
+pk_day_bra |> rename(PEAK_DAY_PCT = PK_DAY) |> pk_day_plot(c(2022:2024)) + labs(subtitle = "magic at hand - check")
 ```
 
 
-```{}
+```{r}
 #| label: fig-peak-day
 #| fig-cap: Airport peak daily traffic (2024)
 #| message: false
 
-peak_day_pct_plot(2024)
+# where is the data
+#peak_day_pct_plot(2024)
+peak_day_comb |> 
+  rename(PEAK_DAY_PCT = PK_DAY) |> 
+  left_join(bra_apts_names) |> 
+  filter(YEAR == 2023) |> 
+  
+plot_peak_day_tfc(2023)
 ```
 
 @fig-peak-day shows the peak day traffic in 2022 for the study airports with reference to the number of runways.

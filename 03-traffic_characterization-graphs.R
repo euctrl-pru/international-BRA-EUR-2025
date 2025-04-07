@@ -347,9 +347,9 @@ annual_tfc_apt <- annual_tfc_apt |>
   left_join(eur_apts_names, by = join_by(ICAO))
 
 
-get_p1_eur <- function(.years){
+get_p1_eur <- function(.annual_tfc, .years){
 
-  p1_eur <- annual_tfc_apt  |>  filter(YEAR %in% .years) |>   
+  p1_eur <- .annual_tfc  |>  filter(YEAR %in% .years) |>   
     ggplot() +
     geom_col(aes(x = NAME, y = TOT_FLTS_YEAR, fill = YEAR)
              , position = position_dodge(preserve = "single")
@@ -366,8 +366,12 @@ get_p1_eur <- function(.years){
 
 
 
-fig_eur_apt_tfc <- function(.years){
-  p1 <- p_share_of_network(tmp |>  filter(YEAR %in% .years)) + scale_x_discrete(guide = guide_axis(n.dodge = 2))
+fig_eur_apt_tfc <- function(.payload, .years){
+  p1 <- p_share_of_network(
+    .payload |>  
+      dplyr::filter(YEAR %in% .years)
+    ) + 
+    scale_x_discrete(guide = guide_axis(n.dodge = 2))
   #p1 <- patchwork::plot_spacer()
   p2 <- get_p1_eur(.years) 
   this_p <- p1 + p2 + plot_layout(widths = c(1, 4))
@@ -545,15 +549,30 @@ annual_change_eur <- function(.year_ref, .year_comp){
 ######################################################################################
 ## Peak Day
 
-
-pk_day <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
-
-
-pk_day_plot <- function(.years){
-  pk_day <- pk_day |> filter(YEAR%in%.years)
+pk_day_old <- function(.years){
+  this_data <- pk_day_bra |> filter(YEAR %in% .years)
   
-  return (pk_day |> ggplot() + 
-    geom_col(aes(y = ICAO, x = PEAK_DAY_PCT, fill = as.factor(YEAR)), position = position_dodge2(preserve = "single")))
+  this_plot <- this_data |> 
+    ggplot() + 
+    geom_col(aes(y = ICAO, x = PEAK_DAY_PCT, fill = as.factor(YEAR))
+             , position = position_dodge2(preserve = "single")
+    )
+  
+  return(this_plot)
+}
+
+
+
+pk_day_plot <- function(.pk_day_data, .years){
+  this_data <- .pk_day_data |> filter(YEAR %in% .years)
+  
+  this_plot <- this_data |> 
+    ggplot() + 
+    geom_col(aes(y = ICAO, x = PEAK_DAY_PCT, fill = as.factor(YEAR))
+             , position = position_dodge2(preserve = "single")
+             )
+
+  return(this_plot)
 }
 
 
@@ -620,7 +639,10 @@ plot_peak_day_tfc <- function(.df, .year, ...){
 
 peak_day_pct_plot <- function(.year){
   peak_day_comb |> 
-    left_join(bind_rows(bra_apts_names, eur_apts_names), by = join_by(ICAO)) |> 
+    left_join(bind_rows(bra_apts_names
+                        #, eur_apts_names
+                        )
+                        , by = join_by(ICAO)) |> 
     plot_peak_day_tfc(.year)
 }
 
