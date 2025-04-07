@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Operational Comparison of ANS Performance - 2&nbsp; Traffic Characterisation</title>
+<title>Operational Comparison of ANS Performance - 3&nbsp; Traffic Characterisation</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
 <link href="./04-predictability.html" rel="next">
-<link href="./01-intro.html" rel="prev">
+<link href="./02-system-overview.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -81,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-traffic_characterisation.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-traffic_characterisation.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -151,26 +151,32 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="./02-system-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Air Navigation System Characterisation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="./03-traffic_characterisation.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./04-predictability.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Predictability</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Predictability</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./88-add-ons.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">dumping lot</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">dumping lot</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./90-test-for-rafael.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Next chapter</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Next chapter</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -189,12 +195,12 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#network-level-air-traffic" id="toc-network-level-air-traffic" class="nav-link active" data-scroll-target="#network-level-air-traffic"><span class="header-section-number">2.1</span> Network Level Air Traffic</a></li>
-  <li><a href="#airport-level-air-traffic" id="toc-airport-level-air-traffic" class="nav-link" data-scroll-target="#airport-level-air-traffic"><span class="header-section-number">2.2</span> Airport Level Air Traffic</a></li>
-  <li><a href="#peak-day-traffic" id="toc-peak-day-traffic" class="nav-link" data-scroll-target="#peak-day-traffic"><span class="header-section-number">2.3</span> Peak Day Traffic</a></li>
-  <li><a href="#peak-day" id="toc-peak-day" class="nav-link" data-scroll-target="#peak-day"><span class="header-section-number">2.4</span> Peak Day</a></li>
-  <li><a href="#fleet-mix" id="toc-fleet-mix" class="nav-link" data-scroll-target="#fleet-mix"><span class="header-section-number">2.5</span> Fleet Mix</a></li>
-  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">2.6</span> Summary</a></li>
+  <li><a href="#network-level-air-traffic" id="toc-network-level-air-traffic" class="nav-link active" data-scroll-target="#network-level-air-traffic"><span class="header-section-number">3.1</span> Network Level Air Traffic</a></li>
+  <li><a href="#airport-level-air-traffic" id="toc-airport-level-air-traffic" class="nav-link" data-scroll-target="#airport-level-air-traffic"><span class="header-section-number">3.2</span> Airport Level Air Traffic</a></li>
+  <li><a href="#peak-day-traffic" id="toc-peak-day-traffic" class="nav-link" data-scroll-target="#peak-day-traffic"><span class="header-section-number">3.3</span> Peak Day Traffic</a></li>
+  <li><a href="#peak-day" id="toc-peak-day" class="nav-link" data-scroll-target="#peak-day"><span class="header-section-number">3.4</span> Peak Day</a></li>
+  <li><a href="#fleet-mix" id="toc-fleet-mix" class="nav-link" data-scroll-target="#fleet-mix"><span class="header-section-number">3.5</span> Fleet Mix</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">3.6</span> Summary</a></li>
   </ul>
 </nav>
     </div>
@@ -203,7 +209,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></h1>
 </div>
 
 
@@ -221,9 +227,9 @@ ul.task-list li input[type="checkbox"] {
 
 
 <p>To facilitate operational comparisons, it is crucial to have a good understanding of the level and composition of air traffic. The preceding section provided an overview of the context and organisation of air navigation services in Brazil and Europe. This chapter presents some air traffic characteristics for both regions to provide a framework for the observed operational performance in subsequent parts of the report.</p>
-<section id="network-level-air-traffic" class="level2" data-number="2.1">
-<h2 data-number="2.1" class="anchored" data-anchor-id="network-level-air-traffic"><span class="header-section-number">2.1</span> Network Level Air Traffic</h2>
-<p><a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> shows the regional traffic development in Brazil and Europe. In both regions the unprecedented decline in air traffic occurred in March 2020 in the aftermath of the pandemic-declaration by the World Health Organisation. However, there is a difference in terms of the overall recovery. The European recovery is characterised by two waves, while a single setback is observed in Brazil in second quarter of 2021. The European pattern demonstrates the difficulty in the coordination of a joint policy of curbing the pandemic and managing travel related constraints. With different states in Europe introducing public health and travel constraints at differnt times, intra-European traffic was affected by the piece-meal approach. Brazil - and its policy on air transport - benefitted from single stance on policy implementation.</p>
+<section id="network-level-air-traffic" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="network-level-air-traffic"><span class="header-section-number">3.1</span> Network Level Air Traffic</h2>
+<p><a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> shows the regional traffic development in Brazil and Europe. In both regions the unprecedented decline in air traffic occurred in March 2020 in the aftermath of the pandemic-declaration by the World Health Organisation. However, there is a difference in terms of the overall recovery. The European recovery is characterised by two waves, while a single setback is observed in Brazil in second quarter of 2021. The European pattern demonstrates the difficulty in the coordination of a joint policy of curbing the pandemic and managing travel related constraints. With different states in Europe introducing public health and travel constraints at differnt times, intra-European traffic was affected by the piece-meal approach. Brazil - and its policy on air transport - benefitted from single stance on policy implementation.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-annual-traffic-timeline" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -232,13 +238,13 @@ ul.task-list li input[type="checkbox"] {
 <img src="03-traffic_characterisation_files/figure-html/fig-annual-traffic-timeline-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-annual-traffic-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.1: Regional daily air traffic
+Figure&nbsp;3.1: Regional daily air traffic
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>For Brazil, it is important to remember that <a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>2.1</span></a> shows the aggregated movements per airport at the whole network level. The shown total does not necessarily reflect the total number of flights. Another important observation related to the data is that Brazil’s number of airports served with the TATIC tool (Tower ATC System) has increased. Despite raising the processed total daily flight number, this difference is mostly transparent for this study as these additional airports handle only a small number of movements on a day-to-day basis.</p>
+<p>For Brazil, it is important to remember that <a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> shows the aggregated movements per airport at the whole network level. The shown total does not necessarily reflect the total number of flights. Another important observation related to the data is that Brazil’s number of airports served with the TATIC tool (Tower ATC System) has increased. Despite raising the processed total daily flight number, this difference is mostly transparent for this study as these additional airports handle only a small number of movements on a day-to-day basis.</p>
 <p>The movements already surpassed the 2019 levels for the Brazilian region, confirming some economic recovery in the market. According to the CGNA (Brazilian Network Manager) assessment, general aviation is the leading actor in this frame. The share of “Light” aircraft in the fleet mix observed at Brazilian airports and the prevailing airline traffic levels still below the 2019 traffic in the airlines’ preferred airports help to confirm this thesis.</p>
 <p>In terms of total network level air traffic, the European region is still lagging behind its pre-pandemic levels. Other analyses showed that low-cost carriers recovered more agile than the classical mainline carriers. The low-cost sector, thus, shows a higher numbers of operations than pre-pandemic as their financial model allowed for a more agile reaction in terms of staffing/crewing/servicing flights. The higher share can also be explained by a side-effect of the national support measures for some of the mainline carriers. These measures included freeing slots at major hubs and the reduction of domestic / short-haul operations. Accordingly, the European network is characterised by a change in the level of connectivity and frequency of services between the different airports.</p>
 <div class="cell">
@@ -249,7 +255,7 @@ Figure&nbsp;2.1: Regional daily air traffic
 <img src="03-traffic_characterisation_files/figure-html/fig-annual-network-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-annual-network-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.2: Evolution of annual network traffic
+Figure&nbsp;3.2: Evolution of annual network traffic
 </figcaption>
 </figure>
 </div>
@@ -262,8 +268,8 @@ Figure&nbsp;2.2: Evolution of annual network traffic
 </ul>
 <p>This high-level network perspective shows that traffic in both regions is comparable to pre-pandemic levels. It will be interesting to observe the further evolution and growth of air traffic.</p>
 </section>
-<section id="airport-level-air-traffic" class="level2" data-number="2.2">
-<h2 data-number="2.2" class="anchored" data-anchor-id="airport-level-air-traffic"><span class="header-section-number">2.2</span> Airport Level Air Traffic</h2>
+<section id="airport-level-air-traffic" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="airport-level-air-traffic"><span class="header-section-number">3.2</span> Airport Level Air Traffic</h2>
 <p>The previous section showed the air traffic development on the network level. As airports represent nodes in this overall network, changes to the overall traffic situation will ripple down to the airport level. This demand on terminal and airport air navigation services forms a substantial input to understand how the operational performance measures in this report developed over time for the selected study airports. This reports looks in particular at the performance levels observed at 10 key airports in each region (c.f. scope)</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -282,7 +288,7 @@ Figure&nbsp;2.2: Evolution of annual network traffic
 <img src="03-traffic_characterisation_files/figure-html/fig-eur-apt-level-tfc-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eur-apt-level-tfc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.3: Europeaan airport level traffic
+Figure&nbsp;3.3: Europeaan airport level traffic
 </figcaption>
 </figure>
 </div>
@@ -306,22 +312,22 @@ Figure&nbsp;2.3: Europeaan airport level traffic
 <img src="03-traffic_characterisation_files/figure-html/fig-apt-annual-change-1.png" class="img-fluid figure-img" data-fig-pos="H" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-apt-annual-change-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.4: Annual traffic at study airports in 2022 and variation 2022/2019
+Figure&nbsp;3.4: Annual traffic at study airports in 2022 and variation 2022/2019
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-apt-annual-change" class="quarto-xref">Figure&nbsp;<span>2.4</span></a> shows the annual change of the traffic served at the study airports in 2022 and the associated change of the traffic levels comparing 2022 and 2019.</p>
+<p><a href="#fig-apt-annual-change" class="quarto-xref">Figure&nbsp;<span>3.4</span></a> shows the annual change of the traffic served at the study airports in 2022 and the associated change of the traffic levels comparing 2022 and 2019.</p>
 <p>With Campinas (SBKP) and Rio de Janeiro (SBRJ), there are two study airports in Brazil that serviced a higher level of traffic in 2022 than in 2019. Both airports are key nodes for the domestic traffic in Brazil. Salvador (SBSV) ranged at the pre-pandemic level. The other Brazilian airports have seen - on average - a decrease of 10-20% of traffic. This suggests that the observed network level increase in movements is distributed across the Brazilian network and not focussed on the airports covered in this study.</p>
 <p>The European airport level traffic - on average - ranged at 20% below the pre-pandemic levels. Munich (EDDM) and Rome (LIRF) observed higher reductions. With an overall weaker recovery of the air traffic demand across Europe in 2022, a similar pattern emerged. The increased network level traffic (ranging about 10% under the pre-pandemic level) is distributed across the European network and other aerodrome connections.</p>
 </section>
-<section id="peak-day-traffic" class="level2" data-number="2.3">
-<h2 data-number="2.3" class="anchored" data-anchor-id="peak-day-traffic"><span class="header-section-number">2.3</span> Peak Day Traffic</h2>
+<section id="peak-day-traffic" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="peak-day-traffic"><span class="header-section-number">3.3</span> Peak Day Traffic</h2>
 <p>While the annual traffic provides insights in the total air traffic volume and the associated demand, it does not provide insights on the upper bound of achievable daily movement numbers. The latter depends on demand, operational procedures and/or associated constraints, and the use of the runway system infrastructure. The peak day traffic is determined as the 99th percentile of the total number of daily movements (arrivals and departures). The measure represents thus an upper bound for comparison purposes.</p>
 </section>
-<section id="peak-day" class="level2" data-number="2.4">
-<h2 data-number="2.4" class="anchored" data-anchor-id="peak-day"><span class="header-section-number">2.4</span> Peak Day</h2>
+<section id="peak-day" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="peak-day"><span class="header-section-number">3.4</span> Peak Day</h2>
 <div class="{callout-note}">
 <p>THERE IS A LOT OF CODE AND WE WORK WITH INTERIM AND “FIX” FILES.</p>
 <p>It is not transparent how these files / values are generated. On a first level, I could not fix it. What needs to be done:</p>
@@ -348,8 +354,8 @@ peak_day_pct_plot(2024)</code></pre>
 timeline_peak_day(c(2019:2024))</code></pre>
 <p>The year-to-year change of the peak day traffic between 2019 and 2022 is shown in <span class="quarto-unresolved-ref">?fig-timeline-peak-day</span>. For the European study airports, Frankfurt (EDDF), Munich (EDDM), Paris (LFPG), and Rome (LIRF) experienced a higher drop of the daily peak traffic in comparison to 2019. Despite the not yet fully recovered demand situation at London Gatwick (EGKK) and Zurich (LSZH) showed a moderate reduction of the daily peak traffic in 2022. This suggest that airports with limited airport runway capacity managed</p>
 </section>
-<section id="fleet-mix" class="level2" data-number="2.5">
-<h2 data-number="2.5" class="anchored" data-anchor-id="fleet-mix"><span class="header-section-number">2.5</span> Fleet Mix</h2>
+<section id="fleet-mix" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="fleet-mix"><span class="header-section-number">3.5</span> Fleet Mix</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-fleet-mix" class="quarto-figure quarto-figure-center quarto-float anchored">
@@ -358,13 +364,13 @@ timeline_peak_day(c(2019:2024))</code></pre>
 <img src="03-traffic_characterisation_files/figure-html/fig-fleet-mix-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fleet-mix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.5: Fleet mix observed at the study airports in 2024
+Figure&nbsp;3.5: Fleet mix observed at the study airports in 2024
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-fleet-mix" class="quarto-xref">Figure&nbsp;<span>2.5</span></a> depicts the observed share of different wake turbulence categories (WTC) across the study airports in 2024. In both regions, “medium” aircraft types are the predominant aircraft type. The fleet mix - and in particular the separation requirements between the different aircraft types - is an important influencing factor for the capacity and observed (and achievable) throughput. In general, a larger proportions of heavy aircraft or aircraft with longer runway occupancy times may result in lower throughput due to the required larger wake turbulence separation or time spent on the runway. The locally defined capacity values may therefore differ based on the predominant fleet mix and operational characteristics, and ultimately result in different observed peak movement numbers or influence surface and terminal operations.</p>
+<p><a href="#fig-fleet-mix" class="quarto-xref">Figure&nbsp;<span>3.5</span></a> depicts the observed share of different wake turbulence categories (WTC) across the study airports in 2024. In both regions, “medium” aircraft types are the predominant aircraft type. The fleet mix - and in particular the separation requirements between the different aircraft types - is an important influencing factor for the capacity and observed (and achievable) throughput. In general, a larger proportions of heavy aircraft or aircraft with longer runway occupancy times may result in lower throughput due to the required larger wake turbulence separation or time spent on the runway. The locally defined capacity values may therefore differ based on the predominant fleet mix and operational characteristics, and ultimately result in different observed peak movement numbers or influence surface and terminal operations.</p>
 <p>In Brazil, a significant number of “light” types operated in 2023. For example Salvador (SBSV) serviced about 20% of “light” types. The major hubs, i.e. São Paulo Guarulhos (SBGR), Rio de Janeiro Galeão (SBGL), and Campinas (SBKP) observed a share of 15-20% of “heavy” aircraft. These airports serve also as destinations for international long-haul flights.</p>
 <p>With the exception of Zurich (LSZH), the share of “light” types is negligible at the European study airport in 2023. London Heathrow (EGLL), Paris Charles de Gaule (LFPG), and Frankfurt (EDDF) observed the highest shares of “heavy” types.</p>
 <p>Within the European region - and its multitude of national hubs - a significant number of international long-haul flights is operated at the chosen study airports. In Brazil, the highlighted airports, Guarulhos (SBGR), Galeão (SBGL), and Campinas (SBKP), play a major role in terms of international connectivity. It follows that medium and light types are used predominantly for inter-reginal connections. Based on the selected study airports, the underlying decentralised structure of the European network becomes more visible. Due to the geo-political composition, airports serving capitals or representing a main national hub are more frequent in Europe. This is in contrast to Brazil, where the international and heavy air traffic appears more centralised at 2-3 pre-dominant hubs.</p>
@@ -376,16 +382,16 @@ Figure&nbsp;2.5: Fleet mix observed at the study airports in 2024
 <img src="03-traffic_characterisation_files/figure-html/fig-fleetmix-timeline-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fleetmix-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;2.6: Fleet mix change over time observed at study airports
+Figure&nbsp;3.6: Fleet mix change over time observed at study airports
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>On average, <a href="#fig-fleetmix-timeline" class="quarto-xref">Figure&nbsp;<span>2.6</span></a> shows that the fleetmix remained fairly stable over the years. It is interesting to observe that the unprecedented decline in air transport during the pandemic phase did not substantially break this pattern. This suggests that the contraction of the traffic volume hit all segments at a similar rate <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>On average, <a href="#fig-fleetmix-timeline" class="quarto-xref">Figure&nbsp;<span>3.6</span></a> shows that the fleetmix remained fairly stable over the years. It is interesting to observe that the unprecedented decline in air transport during the pandemic phase did not substantially break this pattern. This suggests that the contraction of the traffic volume hit all segments at a similar rate <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </section>
-<section id="summary" class="level2" data-number="2.6">
-<h2 data-number="2.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">2.6</span> Summary</h2>
+<section id="summary" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">3.6</span> Summary</h2>
 <p>This chapter described the overall evolution of air traffic in Brazil and Europe on the network and study airport level. Air traffic observed an unprecedented decline in both regions in response to COVID19. However, the recovery path in both regions differed. Overall, the Brazilian demand recovered substantially smoother than the European. As national governments varied in their assessments and introduction of public health measures, including travel restrictions, intra-European air connectivity observed several setbacks. On a network level, air traffic in Brazil exceeded the pre-pandemic level, whereas European traffic reaches about 5-10% below the pre-pandemic level.</p>
 <p>In 2023, medium aircraft types were predominant in both regions across the studied airports. Brazil hosted proportionally more light aircraft, notably in Salvador (SBSV). At the same time, major hubs like São Paulo Guarulhos (SBGR) and Campinas (SBKP) handled substantial shares of heavy aircraft. Conversely, European airports, except Zurich (LSZH), had minimal shares of light types, with London Heathrow (EGLL), Paris Charles de Gaule (LFPG), and Frankfurt (EDDF) witnessing higher shares of heavy types. The European network demonstrated a decentralized structure with numerous international long-haul flights, while Brazil’s international and heavy air traffic was centralized in 3 primary hubs. Despite pandemic-induced declines in air transport, data suggests a stable fleet mix, indicating a consistent impact across traffic segments.</p>
 <p>The overall air traffic demand situation is a key driver for the performance of air navigation services. The observed differences may impact - inter alia - separation and synchronisation of air traffic, and influence the observed performance reported in the other chapters of this report.</p>
@@ -789,13 +795,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./01-intro.html" class="pagination-link  aria-label=" &lt;span="">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      <a href="./02-system-overview.html" class="pagination-link  aria-label=" &lt;span="" navigation="" system="" characterisation&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Air Navigation System Characterisation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04-predictability.html" class="pagination-link" aria-label="<span class='chapter-number'>3</span>&nbsp; <span class='chapter-title'>Predictability</span>">
-        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Predictability</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./04-predictability.html" class="pagination-link" aria-label="<span class='chapter-number'>4</span>&nbsp; <span class='chapter-title'>Predictability</span>">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Predictability</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
