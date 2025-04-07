@@ -18,7 +18,7 @@ book:
   - 00-foreword.qmd
   - 00-executive-summary.qmd
   - 01-intro.qmd
-  #- 02-system_overview.qmd
+  - 02-system_overview.qmd
   - 03-traffic_characterisation.qmd
   - 04-predictability.qmd
   # - 05-capacity_and_throughput.qmd
