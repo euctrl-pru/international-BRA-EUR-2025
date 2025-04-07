@@ -77,12 +77,22 @@ Both regions operate with similar operational concepts, procedures and supportin
 Yet, Brazil, with lower traffic density related to airspace use, finds probably a more challenging cost-benefit ratio to maintain communication coverage and surveillance for regions with low-traffic.
 In comparison, the European region faces more considerable challenges in coordinating efforts to adress operational constraints and service the current demand.
 
+:::{.callout-note}
+
+The following graphic is a snapshot made in early April.\
+The network analysis is work in progress.
+Thus, the visualisation and section may change, and with a smaller data set.
+
+:::
+
 ```{r, message=FALSE, warning=FALSE}
 #| label: fig-Apt-Rank-Comparison2024
 #| fig-cap: "Airport Rank Comparison 2024"
 #| out-width: 90%
 
-plot_cumulative_percentage_by_apt_rank()
+# funciton - deactivated as it requires 900MB data file ==> side-study == to be completed plot_cumulative_percentage_by_apt_rank()
+
+knitr::include_graphics("./figures/fig-Apt-Rank-Comparison2024-1.png")
 ```
 
 This report launched a first analysis of the systems' network utilisation, taking advantage of the rich experience in comparing two regional aviation systems.

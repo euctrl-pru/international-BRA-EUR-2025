@@ -8,7 +8,8 @@
 # remove _book from tracking
 _book/
 
-
+# BRA processed data 
+data_proc/
 
 # EUR data prep tmp folder
 data-prep-eur/
