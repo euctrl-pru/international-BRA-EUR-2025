@@ -164,12 +164,14 @@ create_punc_plot <- function(event, year, debug) {
 # Note --> code functions like interfaces, i.e., do not use "absolute" to
 # aovid side-effects
 
-#punc_evolution_lineplot <- function(event,limits){
+# funtion reads input to produce output
+
+# punc_evolution_lineplot <- function(event,limits){
 #  tmp <-  punc_bra |> filter(PHASE == event)
  
-punc_evolution_lineplot <- function(this_data, event, limits){
+punc_evolution_lineplot <- function(   this_data     , event, limits){
   tmp <- this_data |> filter(PHASE == event)
-  
+
   # get color order
   tmp_col <- tmp |> 
     filter(YEAR == 2019) |> select(REGION, APT, N_VALID) |> 

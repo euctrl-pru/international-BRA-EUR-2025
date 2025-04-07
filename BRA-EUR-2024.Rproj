@@ -1,5 +1,8 @@
 Version: 1.0
+<<<<<<< HEAD
 ProjectId: 18a24359-de0f-4a6d-98ca-b9a5fd340e81
+=======
+>>>>>>> ff7a8e4 (update data - initial download LPPT)
 
 RestoreWorkspace: Default
 SaveWorkspace: Default

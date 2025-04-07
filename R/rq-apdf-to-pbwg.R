@@ -1,8 +1,8 @@
 ### ------------ DATA PREPARATION - PBWG FORMAT ------- EUR AIRPORTS
 
 # check if files are still there
-#dir_up_one <- here::here() |> dirname()
-#pth_apdf <- here::here(dir_up_one, "__DATA","APDF")
+dir_up_one <- here::here() |> dirname()
+pth_apdf <- here::here(dir_up_one, "__DATA","APDF")
 
 read_apdf_parquet <- function(){}
 
@@ -133,8 +133,8 @@ write_out_daily_apt_tfc <- function(
 # eddf_2023 <- read_zip(pth_apdf, "apdf-2023.zip", "EDDF_APDF_2023.gz.parquet") |> tibble::tibble()
 
 # run for many
-get_names_zip_content <- check_zip_content(pth_apdf, "apdf-2024.zip") |> dplyr::pull(Name)
-ping_apts <- tibble::tibble(NAME = get_names_zip_content, APT = stringr::str_sub(NAME, 1,4), YEAR = 2024 )
+#get_names_zip_content <- check_zip_content(pth_apdf, "apdf-2024.zip") |> dplyr::pull(Name)
+#ping_apts <- tibble::tibble(NAME = get_names_zip_content, APT = stringr::str_sub(NAME, 1,4), YEAR = 2024 )
 
 read_and_write_apt_tfc <- function(.apt_apdf, .apt, .yr){
   .apt_apdf |> prep_apdf() |> 
@@ -165,5 +165,5 @@ puncs_eur <- check_zip_content(pth_apdf, which_zip) |>
 
 # write out ... check year in name!
 what_year <- 2024
-puncs_eur |> dplyr::bind_rows() |> 
-  write_csv(here::here("data", paste0("PBWG-EUR-PUNC-", what_year, ".csv")))
+#puncs_eur |> dplyr::bind_rows() |> 
+#  write_csv(here::here("data", paste0("PBWG-EUR-PUNC-", what_year, ".csv")))

@@ -1,0 +1,54 @@
+---
+title: "Lisbon Airport"
+format: typst
+---
+
+This Quarto document lists the data preparatory action for integrating Lisbon airport, LPPT.
+The APDF data for LPPT was extracted from ECTRL data warehouse and stored locally.    
+This script is not reproducible if the ADPF data are not accessible.
+
+```{r}
+#| label: setup
+
+library(tidyverse)
+
+source(here::here("R","rqutils-zip.R"))
+source(here::here("R","rq-apdf-to-punc.R"))
+source(here::here("R","rq-apdf-to-pbwg.R"))     # todo- clean - need to load punc first.
+```
+
+```{r}
+#| label: read-LPPT-zip
+
+lppt_zip    <- list.files(pth_apdf, pattern = "^LPPT-apdf")
+whats_there <- check_zip_content(pth_apdf, lppt_zip)
+whats_there
+```
+
+## Airport Traffic
+
+For BRA-EUR, we use PBWG daily traffic stats as analytic data.
+
+```{r}
+# let's iterate over each year
+whats_there <- whats_there |> mutate(YEAR = str_sub(Name, 13,16))
+
+# loop for one
+read_one_year <- function(.pth_apdf, .archive, .yr, ...){
+  this_target <- whats_there |> dplyr::filter(YEAR == .yr)
+  this_data   <- read_zip(.pth_apdf, .archive, .files = this_target$Name)
+  this_data |> read_and_write_apt_tfc("LPPT", .yr)
+}
+
+# test-run: read_one_year(pth_apdf, lppt_zip, .yr = 2019) |> print()
+# do all
+whats_there$YEAR |> purrr::walk(.f = ~ read_one_year(pth_apdf, lppt_zip, .x))
+```
+
+Check what we have
+
+```{r}
+tfc_data <- list.files(here::here("data-prep-eur"), pattern = "apt-tfc-LPPT", full.names = T) |> 
+  purrr::map(.f = ~ readr::read_csv(.x, show_col_types = F))
+```
+
