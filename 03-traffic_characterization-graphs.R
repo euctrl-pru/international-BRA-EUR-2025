@@ -549,7 +549,11 @@ annual_change_eur <- function(.year_ref, .year_comp){
 ######################################################################################
 ## Peak Day
 
-pk_day_old <- function(.years){
+#pk_day_old <- function(.years){
+# read brazilian "fix data" 
+pk_day_bra <-  read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
+
+pk_day <- function(.years){
   this_data <- pk_day_bra |> filter(YEAR %in% .years)
   
   this_plot <- this_data |> 

@@ -52,3 +52,19 @@ tfc_data <- list.files(here::here("data-prep-eur"), pattern = "apt-tfc-LPPT", fu
   purrr::map(.f = ~ readr::read_csv(.x, show_col_types = F))
 ```
 
+```{r}
+lppt_annual_tfc <- tfc_data |> bind_rows() |> 
+  mutate(YEAR = lubridate::year(DATE)) |> 
+  group_by(ICAO, YEAR) |> 
+  reframe(MVTS = sum(ARRS) + sum(DEPS))
+
+lppt_annual_tfc |> gt::gt()
+```
+```{r}
+sbgr_tfc_annual <- tfc_apts_bra |> filter(ICAO %in% "SBGR") |> mutate(YEAR = lubridate::year(DATE)) |> group_by(ICAO, YEAR) |> reframe(MVTS = sum(ARRS) + sum(DEPS))
+
+lppt_annual_tfc |> ggplot() + geom_col(aes(y = MVTS, x = YEAR)) +
+  geom_line(data = sbgr_tfc_annual,aes(y = MVTS, x = YEAR, group = ICAO), color = "green" )
+```
+
+

@@ -5,7 +5,12 @@ editor: visual
 
 ```{r}
 source(here::here("R","02-system_overview-graphs.R"))
+
+# magic number
+report_year <- "2024"
 ```
+
+What come here is referring to `r report_year`.
 
 This section presents key characteristics of the air navigation systems of Brazil and Europe.
 In broad strokes, the provision of air navigation services in both regions relies on similar operational concepts, procedures, and supporting technology.
@@ -75,14 +80,13 @@ At the end of 2023, the level reached about 90% of the pre-pandemc air traffic (
 
 Both regions operate with similar operational concepts, procedures and supporting technology.
 Yet, Brazil, with lower traffic density related to airspace use, finds probably a more challenging cost-benefit ratio to maintain communication coverage and surveillance for regions with low-traffic.
+
 In comparison, the European region faces more considerable challenges in coordinating efforts to adress operational constraints and service the current demand.
 
-:::{.callout-note}
-
+::: callout-note
 The following graphic is a snapshot made in early April.\
 The network analysis is work in progress.
 Thus, the visualisation and section may change, and with a smaller data set.
-
 :::
 
 ```{r, message=FALSE, warning=FALSE}
@@ -94,6 +98,24 @@ Thus, the visualisation and section may change, and with a smaller data set.
 
 knitr::include_graphics("./figures/fig-Apt-Rank-Comparison2024-1.png")
 ```
+
+:::{.callout-note}
+
+The distribution of air traffic in Brazil confirms that most flights are concentrated in a small number of airports.
+In 2024, the 10 busiest airports handled 66.23% of all flights.
+The top 18 airports accounted for 80% of operations, while 90% of all flights took place at just 32 airports.
+If we consider the 49 busiest airports, they covered 95% of traffic, and 99% of all flights occurred at the top 100 airports in the country.
+The latest edition of Brazil’s Annual Performance Report (it can be found on http://performance.decea.mil.br reflects this reality. It now includes 100 airport locations instead of only the top 34, ensuring that almost all flights are included in the analysis. This distribution shows that many aerodromes operate with low traffic volumes. Because of that, it is important to study alternative ways to provide air traffic services.
+
+In Brazil, the Aerodrome Flight Information Service (AFIS) has been an effective strategy to ensure safety at locations where the traffic does not justify the installation of a control tower (TWR).
+This service, usually provided via Radio, gives essential information to pilots, helping to use resources efficiently and keeping safe operations.
+Since 2016, Brazil has been expanding the use of remote AFIS units (R-AFIS), especially in strategic areas like the Amazon region.
+These services are provided from ACCs (Area Control Centers), which means they don’t need dedicated local infrastructure.
+Also, in 2024, demand for air traffic services continued to grow.
+This shows the need to review and improve how services are organized in Brazil.
+Expanding the use of the AFIS model in strategic areas may be a smart and safe way to meet future needs and make better use of SISCEAB’s resources.
+
+:::
 
 This report launched a first analysis of the systems' network utilisation, taking advantage of the rich experience in comparing two regional aviation systems.
 Aviation infrastructure is always expensive and complex to maintain, including cost for the provision of air navigation services.
