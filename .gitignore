@@ -5,6 +5,9 @@
 
 /.quarto/
 
+# avoid coughing with different Rproj names
+*.Rproj
+
 # remove annoying temp files from rendering
 *_files/
 
@@ -16,3 +19,5 @@ data_proc/
 
 # EUR data prep tmp folder
 data-prep-eur/
+zz-*
+xx-Duck*

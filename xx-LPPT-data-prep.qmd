@@ -15,6 +15,7 @@ library(tidyverse)
 source(here::here("R","rqutils-zip.R"))
 source(here::here("R","rq-apdf-to-punc.R"))
 source(here::here("R","rq-apdf-to-pbwg.R"))     # todo- clean - need to load punc first.
+source(here::here("03-traffic_characterization-graphs.R"))
 ```
 
 ```{r}
@@ -37,7 +38,7 @@ whats_there <- whats_there |> mutate(YEAR = str_sub(Name, 13,16))
 read_one_year <- function(.pth_apdf, .archive, .yr, ...){
   this_target <- whats_there |> dplyr::filter(YEAR == .yr)
   this_data   <- read_zip(.pth_apdf, .archive, .files = this_target$Name)
-  this_data |> read_and_write_apt_tfc("LPPT", .yr)
+ #  this_data |> read_and_write_apt_tfc("LPPT", .yr)
 }
 
 # test-run: read_one_year(pth_apdf, lppt_zip, .yr = 2019) |> print()
@@ -45,7 +46,11 @@ read_one_year <- function(.pth_apdf, .archive, .yr, ...){
 whats_there$YEAR |> purrr::walk(.f = ~ read_one_year(pth_apdf, lppt_zip, .x))
 ```
 
-Check what we have
+* document write out of traffic (count) data set
+* script changed to 
+
+
+Check what we have - traffic data set
 
 ```{r}
 tfc_data <- list.files(here::here("data-prep-eur"), pattern = "apt-tfc-LPPT", full.names = T) |> 
@@ -61,10 +66,58 @@ lppt_annual_tfc <- tfc_data |> bind_rows() |>
 lppt_annual_tfc |> gt::gt()
 ```
 ```{r}
+tfc_apts_bra <- read_csv("./data/BRA-airport-tfc.csv", show_col_types = FALSE)
 sbgr_tfc_annual <- tfc_apts_bra |> filter(ICAO %in% "SBGR") |> mutate(YEAR = lubridate::year(DATE)) |> group_by(ICAO, YEAR) |> reframe(MVTS = sum(ARRS) + sum(DEPS))
 
-lppt_annual_tfc |> ggplot() + geom_col(aes(y = MVTS, x = YEAR)) +
-  geom_line(data = sbgr_tfc_annual,aes(y = MVTS, x = YEAR, group = ICAO), color = "green" )
+lppt_annual_tfc |> ggplot() + 
+  geom_col(aes(y = MVTS, x = YEAR)) +
+  geom_line(data = sbgr_tfc_annual,aes(y = MVTS, x = YEAR, group = ICAO), color = "green" ) +
+  geom_text( 
+     data = sbgr_tfc_annual |> filter(YEAR == 2024)
+    ,aes(y = MVTS, x = 2024, label = ICAO)
+    , color = "green" 
+    , vjust = 1.2 )
 ```
 
+## Airport Peak Traffic
+
+based on BRA-EUR, i.e. 99th percentile
+
+```{r}
+lppt_annual_peak <- tfc_data |> bind_rows() |> peak_day_from_counts() |> 
+    add_nbr_rwy() |> 
+    mutate(REGION = "EUR")
+
+lppt_annual_peak |> 
+  ggplot(aes(x = YEAR, y = PEAK_DAY_PCT)) +
+  geom_line(aes(group = ICAO)) +
+  geom_point()
+```
+
+
+## Airport Punctuality
+
+```{r}
+lppt_adpf <- read_zip(pth_apdf, lppt_zip)
+
+# do it for one
+calc_punc_for_df_with_delay <- function(.df){
+  this_punc <- .df |> 
+  prep_apdf() |> 
+  distinct() |> 
+  mutate(ICAO = "LPPT") |> 
+  add_delay_and_dlygrp() |> 
+  package_pbwg_punc_analytic()
+  return(this_punc)
+}
+
+punc_2019 <- lppt_adpf[[1]] |> calc_punc_for_df_with_delay()
+
+# iterate over all
+punc_lppt <-  lppt_adpf |> 
+  purrr::map(.f = ~ .x |> calc_punc_for_df_with_delay())
+
+punc_lppt |> bind_rows() |> 
+  readr::write_csv(here::here("data","PBWG-EUR-PUNC-LPPT-2019-2024.csv"))
+```
 

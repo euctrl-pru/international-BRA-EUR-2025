@@ -598,7 +598,8 @@ add_nbr_rwy <- function(.pdfc){
       ,ICAO %in% c("EDDF","LFPG","LEMD","LIRF") ~ 4
       ,ICAO %in% c("LEBL","LSZH") ~ 3
       ,ICAO %in% c("EGLL","EDDM","SBGR","SBSP","SBGL","SBBR","SBRJ","SBSV","SBCT") ~ 2
-      ,ICAO %in% c("EGKK","SBKP","SBCF","SBPA") ~ 1
+      ,ICAO %in% c("EGKK","LPPT"
+                   ,"SBKP","SBCF","SBPA") ~ 1
       ,TRUE ~ as.numeric(NA)
     ))
 }
