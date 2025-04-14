@@ -81,7 +81,8 @@ lppt_annual_tfc |> ggplot() +
 
 ## Airport Peak Traffic
 
-based on BRA-EUR, i.e. 99th percentile
+based on BRA-EUR, i.e. 99th percentile   
+the peak day (99th percentile) is calculated from the daily traffic stats
 
 ```{r}
 lppt_annual_peak <- tfc_data |> bind_rows() |> peak_day_from_counts() |> 
@@ -117,7 +118,135 @@ punc_2019 <- lppt_adpf[[1]] |> calc_punc_for_df_with_delay()
 punc_lppt <-  lppt_adpf |> 
   purrr::map(.f = ~ .x |> calc_punc_for_df_with_delay())
 
-punc_lppt |> bind_rows() |> 
-  readr::write_csv(here::here("data","PBWG-EUR-PUNC-LPPT-2019-2024.csv"))
+# write out --- punctuality data for LPPT
+# punc_lppt |> bind_rows() |> 
+#  readr::write_csv(here::here("data","PBWG-EUR-PUNC-LPPT-2019-2024.csv"))
+```
+
+check what we have
+
+```{r}
+#| message: false
+#| warning: false
+#| echo: false
+
+# load predictability helpers
+source(here::here("R","04-predictability_new-graphs.R"))
+
+# read punc data for LPPT 
+punc_lppt <- read_csv(here::here("data","PBWG-EUR-PUNC-LPPT-2019-2024.csv"), show_col_types = F)
+
+
+punc_lppt |> rename(APT = ICAO) |>  
+    mutate(REGION = "EUR"
+           , YEAR=lubridate::year(DATE)
+           , MONTH=lubridate::month(DATE)
+           ) |> 
+    group_by(APT, PHASE, YEAR, MONTH, REGION) |>  # , N_VALID) |> 
+    reframe(across(.cols = N_VALID:`[60,INF)`, .fns = sum), .groups = "drop") |> 
+    add_dly_early_late_groupings2() |> 
+  
+    mutate(YM = paste0(YEAR,"-", sprintf("%02d", MONTH),"-01") |> 
+             lubridate::ymd() |> lubridate::floor_date(unit = "month")
+           , .before = PHASE) |> 
+  
+  ggplot() + geom_path(aes(x = YM, y = WITHIN_M05P05, group = APT, color = PHASE ))
+```
+
+:::{.callout-note}
+CHECK FOR DATA IN 2nd Half of 2024
+
+Data file has full 2024 -- check data types -- why does function fail?
+:::
+
+## Additional Taxi-Time
+
+Per PBWG convention, we determine the reference times for the year 2024.
+
+```{r}
+source(here::here("R","rq-apdf-to-txxt.R"))
+```
+
+
+```{r}
+lppt_2024 <- read_zip(pth_apdf, lppt_zip, "LPPT_01-JAN-2024_31-DEC-2024.gz.parquet")
+txxt_ref_2024 <- lppt_2024 |> 
+  rename(PHASE = SRC_PHASE, RWY = AP_C_RWY, STND = AP_C_STND) |>  
+  prepare_eur_txxts() |> 
+  calc_pct20_cases(ymd_hms("2024-01-01 00:00:00"), ymd_hms("2024-12-31 24:00:00")) |> 
+  rename(N_2024 = N, REF_20_2024 = REF_20)
+
+# compare with 2019
+lppt_2019 <- read_zip(pth_apdf, lppt_zip, "LPPT_01-JAN-2019_31-DEC-2019.gz.parquet")
+txxt_ref_2019 <- lppt_2019 |> 
+  rename(PHASE = SRC_PHASE, RWY = AP_C_RWY, STND = AP_C_STND) |>  
+  prepare_eur_txxts() |> 
+  calc_pct20_cases(ymd_hms("2019-01-01 00:00:00"), ymd_hms("2019-12-31 24:00:00")) |> 
+  rename(N_2019 = N, REF_20_2019 = REF_20)
+# correct for runway change
+txxt_ref_2019 <- txxt_ref_2019 |> 
+  mutate( RWY_OLD = RWY
+         ,RWY     = case_when(
+                RWY %in% "03" ~ "02"
+              , RWY %in% "21" ~ "20"
+           )
+         )
+```
+
+txxt_ref_2024 |> full_join(txxt_ref_2019, by = join_by(PHASE, RWY, STND)) |> 
+  # mutate(DELTA = REF_20_2024 - REF_20_2019) |> write_csv(here::here("data-prep-eur","apt-txxt-ref-LPPT.csv"))
+
+```{r}
+# load reference taxi times for LPPT
+lppt_txxt_refs <- read_csv(
+      here::here("data-prep-eur","apt-txxt-ref-LPPT.csv")
+    , show_col_types = FALSE) |> 
+  # force ref time for all cases ----------------------------
+  mutate(REF_20_2024 = case_when(
+      is.na(REF_20_2024) & !is.na(REF_20_2019) ~ REF_20_2019
+    , .default = REF_20_2024)
+    ) |> 
+  select(PHASE, RWY, STND, REF = REF_20_2024)
+```
+
+```{r}
+# load all movement data 2019-2024
+lppt_txxts <- read_zip(pth_apdf, lppt_zip) |> bind_rows() |> 
+  rename(PHASE = SRC_PHASE, RWY = AP_C_RWY, STND = AP_C_STND) |> 
+  mutate(ICAO = "LPPT", .before = PHASE) |> 
+  prepare_eur_txxts() |> 
+  # account for runway change
+  mutate(RWY = case_when(
+                RWY %in% "03" ~ "02"
+              , RWY %in% "21" ~ "20"
+           )
+  )
+```
+
+```{r}
+lppt_txxts <- lppt_txxts |> 
+  left_join(lppt_txxt_refs, by = join_by(PHASE, RWY, STND)) |> 
+  mutate(ADD_TXXT = TXXT - REF)
+
+lppt_txxt_add_times <- lppt_txxts |> 
+  mutate(ICAO = "LPPT", DATE = date(BLOCK_TIME_UTC)) |> 
+  group_by(ICAO, DATE, PHASE) |> 
+  reframe( MVTS     = sum(!is.na(ADD_TXXT))
+          ,TXXT     = sum(TXXT, na.rm = TRUE)
+          ,ADD_TIME = sum(ADD_TXXT, na.rm = TRUE)
+          ) |> 
+  mutate(AVG_ADD_TIME = ADD_TIME / MVTS)
+```
+
+lppt_txxt_add_times |> mutate(PHASE = ifelse(PHASE == "ARR", "TXIT", "TXOT")) |> 
+  write_csv(here::here("data","EUR-txxt-LPPT.csv"))
+
+```{r}
+lppt_txxt_add_times |> 
+  ggplot() + 
+  geom_path(aes(x = DATE, y = AVG_ADD_TIME, color = PHASE, group = PHASE)) +
+  facet_wrap(.~ PHASE) +
+  labs(subtitle = "daily variation additional taxi-times") +
+  theme(legend.position = "none")
 ```
 
