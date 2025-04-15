@@ -1,0 +1,125 @@
+---
+title: "BRA-EUR - Towards Refining the Network Analysis"
+format: pdf
+---
+
+```{r}
+source(here::here("_chapter-setup.R")) # all standard packages and defaults
+```
+
+
+# Overview
+
+The idea is to develop a refined network analysis.    
+For this we load the data for 2024 for Brazil (i.e. ANAC data set) and Europe (NM flight table).
+
+```{r}
+# -------------------- load the Brazilian network data ------------------------
+cols <- c(
+  "sg_empresa_icao",
+  "nr_voo",
+  "nm_mes_partida_real",
+  "nr_mes_partida_real",
+  "sg_icao_origem",
+  "sg_icao_destino",
+  "lt_combustivel",
+  "sg_equipamento_icao",
+  "nm_regiao_origem",
+  "nm_pais_origem",
+  "nm_regiao_destino",
+  "nm_pais_destino",
+  "nr_horas_voadas",
+  NULL
+)
+
+bra_mvts <- read_csv("./data_proc/flights_ANAC_2024.csv"
+                     , col_select = cols
+                     , show_col_types = FALSE
+                     ) |> 
+  rename(
+    ADEP = sg_icao_origem,
+    ADES = sg_icao_destino,
+    OPR  = sg_empresa_icao,            # aircraft operator (ICAO)
+    FUEL_BURN = lt_combustivel,
+    TYPE = sg_equipamento_icao,        # aircraft type (ICAO)
+    REGIAO_DEP = nm_regiao_origem,
+    DEP_CNTRY = nm_pais_origem,        # departing country
+    REGIAO_ARR = nm_regiao_destino,
+    DES_CNTRY = nm_pais_destino,       # destination country 
+    FLT_DUR = nr_horas_voadas         # flight duration
+)
+
+summary_routes_dep <- bra_mvts %>%
+  group_by(ADEP) %>%
+  summarise(NBR_DES = n_distinct(ADES)) %>%
+  arrange(desc(NBR_DES))
+
+```
+
+```{r}
+# ---------------- Europe --------------------------------------------------
+# data is stored on local network drive
+source(here::here("R","rqutils-zip.R"))
+pth_to_data <- here::here(here::here() |> dirname(), "__DATA","NM-flight-table")
+payload_zip <- "NM-flt-2024.zip"
+
+check_zip_content(pth_to_data, payload_zip)  # check what we have in zip 
+
+eur_mvts <- read_zip(pth_to_data, payload_zip)
+
+eur_mvts[[1]] |> select(ADEP, ADES, FLTID = AIRCRAFT_ID, OPR = AIRCRAFT_OPERATOR, REG = REGISTRATION, TYPE = AIRCRAFT_TYPE_ICAO_ID, FLT_DUR = FLT_DUR_3, DATE = LOBT, SAM_ID = ID ) |> mutate(DATE = date(DATE))
+```
+
+
+
+```{r}
+summary_routes_dep |> filter(ADEP %in% bra_apts) |> 
+  mutate(ADEP = fct_infreq(ADEP, NBR_DES) |> fct_rev()) |> 
+  ggplot() +
+  geom_col(aes(x = NBR_DES, y = ADEP))
+```
+
+```{r}
+bra_dests <- flights_ANAC_2024_filtered |> filter(ADEP %in% bra_apts) |> 
+  group_by(ADEP, DES_CNTRY) |> 
+  reframe(DEP = n(), DEST = n_distinct(ADES)) |> 
+  group_by(ADEP) |> 
+  mutate(SHARE_DEP = DEP / sum(DEP)
+         , TOP_DEST_SHARE = DEST / sum(DEST)
+         ) |> 
+  arrange(desc(DEP), .by_group = TRUE) |> 
+  ungroup()
+```
+
+```{r}
+p <- bra_dests |> 
+  ggplot() + geom_col(aes(x = SHARE_DEP, y = ADEP, fill = DES_CNTRY)) +
+  theme(
+    legend.text = element_text(size = 7),
+    legend.key.size = unit(0.3, "lines")
+  ) 
+p
+p + theme(legend.position = "none")
+```
+international traffic
+
+```{r}
+bra_dests |> filter(PAIS_DESTINO != "BRASIL") |> 
+  mutate(ADEP = fct_infreq(ADEP, SHARE_DEP) |> fct_rev())
+```
+
+
+```{r}
+bra_dests |> filter(PAIS_DESTINO != "BRASIL") |> 
+  mutate(ADEP = fct_infreq(ADEP, SHARE_DEP) |> fct_rev()) |> 
+  
+  ggplot() + geom_col(aes(x = SHARE_DEP, y = ADEP, fill = PAIS_DESTINO)) +
+  scale_x_continuous(labels = scales::percent_format()) +
+  labs(fill = element_blank()) +
+  theme(
+    legend.text = element_text(size = 7),
+    legend.key.size = unit(0.3, "lines"),
+    legend.position = c(0.75,0.25)
+  ) 
+```
+
