@@ -4,6 +4,10 @@ format: pdf
 ---
 
 ```{r}
+#| label: setup
+#| message: false
+#| warnin: false
+
 source(here::here("_chapter-setup.R")) # all standard packages and defaults
 ```
 
@@ -33,7 +37,7 @@ cols <- c(
 )
 
 bra_mvts <- read_csv("./data_proc/flights_ANAC_2024.csv"
-                     , col_select = cols
+                     , col_select = dplyr::any_of(cols)
                      , show_col_types = FALSE
                      ) |> 
   rename(
@@ -48,12 +52,6 @@ bra_mvts <- read_csv("./data_proc/flights_ANAC_2024.csv"
     DES_CNTRY = nm_pais_destino,       # destination country 
     FLT_DUR = nr_horas_voadas         # flight duration
 )
-
-summary_routes_dep <- bra_mvts %>%
-  group_by(ADEP) %>%
-  summarise(NBR_DES = n_distinct(ADES)) %>%
-  arrange(desc(NBR_DES))
-
 ```
 
 ```{r}
@@ -65,30 +63,129 @@ payload_zip <- "NM-flt-2024.zip"
 
 check_zip_content(pth_to_data, payload_zip)  # check what we have in zip 
 
-eur_mvts <- read_zip(pth_to_data, payload_zip)
+eur_mvts  <- read_zip(pth_to_data, payload_zip)
+apts_meta <- arrow::read_parquet("./data/airport-icao-meta.parquet")
 
-eur_mvts[[1]] |> select(ADEP, ADES, FLTID = AIRCRAFT_ID, OPR = AIRCRAFT_OPERATOR, REG = REGISTRATION, TYPE = AIRCRAFT_TYPE_ICAO_ID, FLT_DUR = FLT_DUR_3, DATE = LOBT, SAM_ID = ID ) |> mutate(DATE = date(DATE))
+#| Utility function to prepare data -------------------------------------------
+#| 
+prep_eur_network_data <- function(.eur_mvts, .apts_meta = apts_meta){
+  this_mvts <- .eur_mvts |> 
+    dplyr::select(ADEP, ADES, FLTID = AIRCRAFT_ID, OPR = AIRCRAFT_OPERATOR
+                  , REG = REGISTRATION, TYPE = AIRCRAFT_TYPE_ICAO_ID
+                  , FLT_DUR = FLT_DUR_3
+                  , DATE = LOBT
+                  , SAM_ID = ID 
+                  ) |> 
+    dplyr::mutate(DATE = date(DATE))
+  
+  # augment airport details
+  this_mvts <- this_mvts |> 
+    dplyr::left_join(.apts_meta |> 
+                       dplyr::select(ADEP = ICAO, DEP_CNTRY = COUNTRY_ISO)
+                     , by = dplyr::join_by(ADEP)) |> 
+    dplyr::left_join(.apts_meta |> 
+                       dplyr::select(ADES = ICAO, DES_CNTRY = COUNTRY_ISO)
+                     , by = dplyr::join_by(ADES))
+
+  return(this_mvts)
+}
+
+eur_mvts <- eur_mvts |> dplyr::bind_rows() |> prep_eur_network_data()
+  # all 2024 flights within EUR airspace ---------------------------
+#  eur_mvts |> arrow::write_parquet(
+#          "./data-prep-eur/EUR-network-connectivity-analytic-2024.parquet"
+#)
+  # write out study airport data -----------------------------------
+# eur_mvts |> 
+#   filter(ADEP %in% eur_apts | ADES %in% eur_apts) |> 
+#   arrow::write_parquet(
+#          "./data/EUR-network-connectivity-analytic-2024.parquet")
+```
+
+
+```{r}
+calc_summary_routes_dep <- function(.mvts){
+  this_summary <- .mvts |> 
+    dplyr::group_by(ADEP) |> 
+    dplyr::reframe(
+       DEPS    = dplyr::n()
+      ,NBR_DES = dplyr::n_distinct(ADES)) |> 
+    dplyr::arrange(dplyr::desc(NBR_DES))
+  
+  return(this_summary)
+}
+
+bra_deps_routes <- bra_mvts |> calc_summary_routes_dep()
+eur_deps_routes <- eur_mvts |> bind_rows() |> calc_summary_routes_dep()
+
+# TODO - save as interim data and work from there
 ```
 
 
 
 ```{r}
-summary_routes_dep |> filter(ADEP %in% bra_apts) |> 
+bind_rows(
+   bra_deps_routes |> filter(ADEP %in% bra_apts) |> mutate(REGION = "BRA")
+  ,eur_deps_routes |> filter(ADEP %in% eur_apts) |> mutate(REGION = "EUR")
+  ) |> 
   mutate(ADEP = fct_infreq(ADEP, NBR_DES) |> fct_rev()) |> 
   ggplot() +
-  geom_col(aes(x = NBR_DES, y = ADEP))
+  geom_col(aes(x = NBR_DES, y = ADEP, fill = REGION)) +
+  scale_fill_manual(values = bra_eur_colours) +
+  facet_wrap(.~ REGION, scales = "free_y") +
+  labs(y = element_blank()) +
+  theme(legend.position = "none")
 ```
 
 ```{r}
-bra_dests <- flights_ANAC_2024_filtered |> filter(ADEP %in% bra_apts) |> 
-  group_by(ADEP, DES_CNTRY) |> 
-  reframe(DEP = n(), DEST = n_distinct(ADES)) |> 
-  group_by(ADEP) |> 
-  mutate(SHARE_DEP = DEP / sum(DEP)
+get_spread_of_destinations <- function(.deps){
+  this_spread <- .deps |> 
+    dplyr::group_by(ADEP, DES_CNTRY) |> 
+    dplyr::reframe(
+            DEPS = dplyr::n()
+          , DEST = dplyr::n_distinct(ADES)) |> 
+    dplyr::group_by(ADEP) |> 
+    dplyr::mutate(
+           SHARE_DEP      = DEPS / sum(DEPS)
          , TOP_DEST_SHARE = DEST / sum(DEST)
          ) |> 
-  arrange(desc(DEP), .by_group = TRUE) |> 
-  ungroup()
+    dplyr::arrange(desc(DEPS), .by_group = TRUE) |> 
+    dplyr::ungroup()
+  
+  return(this_spread)
+}
+
+bra_dests <- bra_mvts |> 
+  filter(ADEP %in% bra_apts) |> 
+  get_spread_of_destinations()
+
+eur_mvts_study <- arrow::read_parquet("./data/EUR-network-connectivity-analytic-2024.parquet")
+ectrl_ms       <- readxl::read_xlsx("./data/ECTRL-ICAOEUR-state-memberships.xlsx") |>   filter(ECTRL == 1) |> select(STATE_ISO = `State-ISO`, STATE = State) |> 
+  mutate(REGION = "EUR")
+
+#------------ STATE and ISO CODES ----------------------------------------
+global_iso2    <- ISOcodes::ISO_3166_1 |> 
+  tibble() |> 
+  select(STATE_ISO = Alpha_2, STATE = Name)
+
+patch_global <- tibble::tribble(
+  ~ STATE_ISO, ~STATE,
+  "AN", "Netherlands Antilles",
+  "XK", "Kosovo"      # need to think how to add to EUR region
+)
+global_iso2 <- global_iso2 |> bind_rows(patch_global)
+#------------------------------------------------------ END ISO ----------
+
+eur_dests <- eur_mvts_study |> 
+  filter(ADEP %in% eur_apts) |> 
+  get_spread_of_destinations() |> 
+  #---------- append ECTRL / EUR ---------
+  left_join(global_iso2 |> 
+              rename(DES_CNTRY = STATE_ISO), by = join_by(DES_CNTRY)
+            ) |>   
+  left_join(ectrl_ms |> select(-STATE) |> 
+              rename(DES_CNTRY = STATE_ISO) , by = join_by(DES_CNTRY)
+            )
 ```
 
 ```{r}
@@ -104,22 +201,39 @@ p + theme(legend.position = "none")
 international traffic
 
 ```{r}
-bra_dests |> filter(PAIS_DESTINO != "BRASIL") |> 
+bra_dests |> filter(DES_CNTRY != "BRASIL") |> 
   mutate(ADEP = fct_infreq(ADEP, SHARE_DEP) |> fct_rev())
 ```
 
 
 ```{r}
-bra_dests |> filter(PAIS_DESTINO != "BRASIL") |> 
+# DES_CNTRY ~ PAIS_DESTINO
+
+bra_dests |> filter(DES_CNTRY != "BRASIL") |> 
   mutate(ADEP = fct_infreq(ADEP, SHARE_DEP) |> fct_rev()) |> 
   
-  ggplot() + geom_col(aes(x = SHARE_DEP, y = ADEP, fill = PAIS_DESTINO)) +
+  ggplot() + geom_col(aes(x = SHARE_DEP, y = ADEP, fill = DES_CNTRY)) +
   scale_x_continuous(labels = scales::percent_format()) +
   labs(fill = element_blank()) +
   theme(
     legend.text = element_text(size = 7),
     legend.key.size = unit(0.3, "lines"),
-    legend.position = c(0.75,0.25)
+    legend.position = "inside", legend.position.inside = c(0.75,0.25)
   ) 
+```
+
+```{r}
+eur_dests |>
+  filter(is.na(REGION)) |>
+  mutate(ADEP = fct_infreq(ADEP, SHARE_DEP) |> fct_rev()) |>
+
+  ggplot() + geom_col(aes(x = SHARE_DEP, y = ADEP, fill = DES_CNTRY)) +
+  scale_x_continuous(labels = scales::percent_format()) +
+  labs(fill = element_blank()) +
+  theme(
+    legend.text = element_text(size = 7),
+    legend.key.size = unit(0.3, "lines"),
+    legend.position = "inside", legend.position.inside = c(0.75,0.25)
+  )
 ```
 

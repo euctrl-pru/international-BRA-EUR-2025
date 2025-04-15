@@ -1,0 +1,219 @@
+ICAO Region,Country/Territory Name,ISO Alpha-2 Code,Sovereign State
+AFI,Algeria,DZ,Yes
+AFI,Angola,AO,Yes
+AFI,Benin,BJ,Yes
+AFI,Botswana,BW,Yes
+AFI,Burkina Faso,BF,Yes
+AFI,Burundi,BI,Yes
+AFI,Cabo Verde,CV,Yes
+AFI,Cameroon,CM,Yes
+AFI,Central African Republic,CF,Yes
+AFI,Chad,TD,Yes
+AFI,Comoros,KM,Yes
+AFI,Congo,CG,Yes
+AFI,Democratic Republic of the Congo,CD,Yes
+AFI,Djibouti,DJ,Yes
+AFI,Egypt,EG,Yes
+AFI,Equatorial Guinea,GQ,Yes
+AFI,Eritrea,ER,Yes
+AFI,Eswatini,SZ,Yes
+AFI,Ethiopia,ET,Yes
+AFI,Gabon,GA,Yes
+AFI,Gambia,GM,Yes
+AFI,Ghana,GH,Yes
+AFI,Guinea,GN,Yes
+AFI,Guinea-Bissau,GW,Yes
+AFI,Ivory Coast,CI,Yes
+AFI,Kenya,KE,Yes
+AFI,Lesotho,LS,Yes
+AFI,Liberia,LR,Yes
+AFI,Libya,LY,Yes
+AFI,Madagascar,MG,Yes
+AFI,Malawi,MW,Yes
+AFI,Mali,ML,Yes
+AFI,Mauritania,MR,Yes
+AFI,Mauritius,MU,Yes
+AFI,Morocco,MA,Yes
+AFI,Mozambique,MZ,Yes
+AFI,Namibia,NA,Yes
+AFI,Niger,NE,Yes
+AFI,Nigeria,NG,Yes
+AFI,Rwanda,RW,Yes
+AFI,Sao Tome and Principe,ST,Yes
+AFI,Senegal,SN,Yes
+AFI,Seychelles,SC,Yes
+AFI,Sierra Leone,SL,Yes
+AFI,Somalia,SO,Yes
+AFI,South Africa,ZA,Yes
+AFI,South Sudan,SS,Yes
+AFI,Sudan,SD,Yes
+AFI,Tanzania,TZ,Yes
+AFI,Togo,TG,Yes
+AFI,Tunisia,TN,Yes
+AFI,Uganda,UG,Yes
+AFI,Zambia,ZM,Yes
+AFI,Zimbabwe,ZW,Yes
+ASIA,Afghanistan,AF,Yes
+ASIA,Armenia,AM,Yes
+ASIA,Azerbaijan,AZ,Yes
+ASIA,Bahrain,BH,Yes
+ASIA,Bangladesh,BD,Yes
+ASIA,Bhutan,BT,Yes
+ASIA,Brunei,BN,Yes
+ASIA,Cambodia,KH,Yes
+ASIA,China,CN,Yes
+ASIA,Georgia,GE,Yes
+ASIA,India,IN,Yes
+ASIA,Indonesia,ID,Yes
+ASIA,Iran,IR,Yes
+ASIA,Iraq,IQ,Yes
+ASIA,Israel,IL,Yes
+ASIA,Japan,JP,Yes
+ASIA,Jordan,JO,Yes
+ASIA,Kazakhstan,KZ,Yes
+ASIA,Kuwait,KW,Yes
+ASIA,Kyrgyzstan,KG,Yes
+ASIA,Lao PDR,LA,Yes
+ASIA,Lebanon,LB,Yes
+ASIA,Malaysia,MY,Yes
+ASIA,Maldives,MV,Yes
+ASIA,Mongolia,MN,Yes
+ASIA,Nepal,NP,Yes
+ASIA,Oman,OM,Yes
+ASIA,Pakistan,PK,Yes
+ASIA,Palestine,PS,No
+ASIA,Philippines,PH,Yes
+ASIA,Qatar,QA,Yes
+ASIA,Republic of Korea,KR,Yes
+ASIA,Saudi Arabia,SA,Yes
+ASIA,Sri Lanka,LK,Yes
+ASIA,Syrian Arab Republic,SY,Yes
+ASIA,Tajikistan,TJ,Yes
+ASIA,Thailand,TH,Yes
+ASIA,Timor-Leste,TL,Yes
+ASIA,Turkey,TR,Yes
+ASIA,Turkmenistan,TM,Yes
+ASIA,United Arab Emirates,AE,Yes
+ASIA,Uzbekistan,UZ,Yes
+ASIA,Viet Nam,VN,Yes
+ASIA,Yemen,YE,Yes
+CAR,Antigua and Barbuda,AG,Yes
+CAR,Bahamas,BS,Yes
+CAR,Belize,BZ,Yes
+CAR,Cuba,CU,Yes
+CAR,Dominica,DM,Yes
+CAR,Dominican Republic,DO,Yes
+CAR,Grenada,GD,Yes
+CAR,Haiti,HT,Yes
+CAR,Jamaica,JM,Yes
+CAR,Montserrat,MS,No
+CAR,Puerto Rico,PR,No
+CAR,Saint Kitts and Nevis,KN,Yes
+CAR,Saint Lucia,LC,Yes
+CAR,Saint Vincent and the Grenadines,VC,Yes
+CAR,Trinidad and Tobago,TT,Yes
+EUR,Albania,AL,Yes
+EUR,Andorra,AD,Yes
+EUR,Austria,AT,Yes
+EUR,Belarus,BY,Yes
+EUR,Belgium,BE,Yes
+EUR,Bosnia and Herzegovina,BA,Yes
+EUR,Bulgaria,BG,Yes
+EUR,Croatia,HR,Yes
+EUR,Cyprus,CY,Yes
+EUR,Czech Republic,CZ,Yes
+EUR,Denmark,DK,Yes
+EUR,Estonia,EE,Yes
+EUR,Finland,FI,Yes
+EUR,France,FR,Yes
+EUR,Germany,DE,Yes
+EUR,Greece,GR,Yes
+EUR,Hungary,HU,Yes
+EUR,Iceland,IS,Yes
+EUR,Ireland,IE,Yes
+EUR,Italy,IT,Yes
+EUR,Latvia,LV,Yes
+EUR,Lithuania,LT,Yes
+EUR,Luxembourg,LU,Yes
+EUR,Malta,MT,Yes
+EUR,Moldova,MD,Yes
+EUR,Monaco,MC,Yes
+EUR,Montenegro,ME,Yes
+EUR,Netherlands,NL,Yes
+EUR,North Macedonia,MK,Yes
+EUR,Norway,NO,Yes
+EUR,Poland,PL,Yes
+EUR,Portugal,PT,Yes
+EUR,Romania,RO,Yes
+EUR,San Marino,SM,Yes
+EUR,Serbia,RS,Yes
+EUR,Slovakia,SK,Yes
+EUR,Slovenia,SI,Yes
+EUR,Spain,ES,Yes
+EUR,Sweden,SE,Yes
+EUR,Switzerland,CH,Yes
+EUR,Ukraine,UA,Yes
+EUR,United Kingdom,GB,Yes
+EUR,Kosovo,XK,No
+EUR,Isle of Man,IM,No
+EUR,Jersey,JE,No
+EUR,Guernsey,GG,No
+MID,Bahrain,BH,Yes
+MID,Cyprus,CY,Yes
+MID,Egypt,EG,Yes
+MID,Iran,IR,Yes
+MID,Iraq,IQ,Yes
+MID,Jordan,JO,Yes
+MID,Kuwait,KW,Yes
+MID,Lebanon,LB,Yes
+MID,Oman,OM,Yes
+MID,Qatar,QA,Yes
+MID,Saudi Arabia,SA,Yes
+MID,Syria,SY,Yes
+MID,United Arab Emirates,AE,Yes
+MID,Yemen,YE,Yes
+NAM,Canada,CA,Yes
+NAM,United States,US,Yes
+NAT,Canada,CA,Yes
+NAT,United States,US,Yes
+NAT,Greenland,GL,No
+NAT,Bermuda,BM,No
+PAC,Australia,AU,Yes
+PAC,New Zealand,NZ,Yes
+PAC,Papua New Guinea,PG,Yes
+PAC,Fiji,FJ,Yes
+PAC,Samoa,WS,Yes
+PAC,Tonga,TO,Yes
+PAC,Solomon Islands,SB,Yes
+PAC,Vanuatu,VU,Yes
+PAC,Kiribati,KI,Yes
+PAC,Tuvalu,TV,Yes
+PAC,Marshall Islands,MH,Yes
+PAC,Micronesia,FM,Yes
+PAC,Nauru,NR,Yes
+PAC,Palau,PW,Yes
+PAC,American Samoa,AS,No
+PAC,Northern Mariana Islands,MP,No
+PAC,Guam,GU,No
+PAC,Tokelau,TK,No
+PAC,Wallis and Futuna,WF,No
+PAC,New Caledonia,NC,No
+PAC,French Polynesia,PF,No
+PAC,Pitcairn Islands,PN,No
+PAC,Niue,NU,No
+PAC,Christmas Island,CX,No
+PAC,Hong Kong,HK,No
+PAC,Macao,MO,No
+SAM,Argentina,AR,Yes
+SAM,Bolivia,BO,Yes
+SAM,Brazil,BR,Yes
+SAM,Chile,CL,Yes
+SAM,Colombia,CO,Yes
+SAM,Ecuador,EC,Yes
+SAM,French Guiana,GF,No
+SAM,Guyana,GY,Yes
+SAM,Paraguay,PY,Yes
+SAM,Peru,PE,Yes
+SAM,Suriname,SR,Yes
+SAM,Uruguay,UY,Yes
+SAM,Venezuela,VE,Yes
