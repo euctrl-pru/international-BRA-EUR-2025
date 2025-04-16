@@ -7,10 +7,12 @@ This report and previous editions are available at
 * <https://performance.decea.mil.br/>.
 
 This report revises the assessment of both the Brazilian and European air navigation systems, extending the time frame and incorporating additional analyses. 
+
 :::{callout-note}
-such as point merge system and a short Curitiba and Lisbon ACC comparison
+more clever text ...such as point merge system and a short Curitiba and Lisbon ACC comparison
 :::
-The report focuses on a subset of the eleven Key Performance Areas identified by the ICAO Global Air Navigation Plan. 
+
+The report strongly focuses on a subset of the eleven Key Performance Areas identified by the ICAO Global Air Navigation Plan. 
 The focus of this report is on operational air navigation system performance, in particular Predictability, Capacity and Efficiency.
 
 ```{r}
