@@ -155,10 +155,12 @@ get_spread_of_destinations <- function(.deps){
   return(this_spread)
 }
 
+#------------------- BRA ----------------------------------------------
 bra_dests <- bra_mvts |> 
   filter(ADEP %in% bra_apts) |> 
   get_spread_of_destinations()
 
+#------------------ EUR --------------------------------------------------
 eur_mvts_study <- arrow::read_parquet("./data/EUR-network-connectivity-analytic-2024.parquet")
 ectrl_ms       <- readxl::read_xlsx("./data/ECTRL-ICAOEUR-state-memberships.xlsx") |>   filter(ECTRL == 1) |> select(STATE_ISO = `State-ISO`, STATE = State) |> 
   mutate(REGION = "EUR")
@@ -174,6 +176,11 @@ patch_global <- tibble::tribble(
   "XK", "Kosovo"      # need to think how to add to EUR region
 )
 global_iso2 <- global_iso2 |> bind_rows(patch_global)
+
+# world wide codes - we may need this for generalising BRA data
+# constructed wiht ChatGPT - not validated !!!!
+icao_iso2 <- read_csv("./data/country-icao-iso-territory.csv")
+
 #------------------------------------------------------ END ISO ----------
 
 eur_dests <- eur_mvts_study |> 
@@ -237,3 +244,35 @@ eur_dests |>
   )
 ```
 
+Appendix 1 to the Directives to Regional Air Navigation Meetings and Rules of Procedure for their Conduct (Doc 8144-AN/874), comprises the following regions:
+
+* Africa-Indian Ocean Region (AFI);
+* Asia Region (ASIA);
+* Caribbean Region (CAR);
+* European Region (EUR);
+* Middle East Region (MID);
+* North American Region (NAM);
+* North Atlantic Region (NAT);
+* Pacific Region (PAC);
+* South American Region (SAM).
+
+```{r}
+eur_world_shares <- eur_dests |>
+  filter(is.na(REGION)) |>
+  mutate(ADEP = fct_infreq(ADEP, SHARE_DEP) |> fct_rev()) |> 
+  left_join(icao_iso2 |> rename(DES_CNTRY = `ISO Alpha-2 Code`, ICAO_REG = `ICAO Region`) |> 
+              select(DES_CNTRY, ICAO_REG)) |> 
+  # aggregate by ICAO Region
+  group_by(ICAO_REG) |> 
+  reframe(DEPS = sum(DEPS), DEST = sum(DEST)) |> 
+  mutate(REG_SHARES = DEPS / sum(DEPS))
+
+eur_world_shares
+```
+```{r}
+eur_world_shares |> 
+  ggplot() +
+  geom_col(aes(x = REG_SHARES, y = ICAO_REG, fill = ICAO_REG))
+```
+
+EUR ~  non-ECTRL Europe (probably need to take this out)
