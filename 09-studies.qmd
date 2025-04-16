@@ -1,0 +1,17 @@
+---
+title: "Studies"
+---
+
+this is the placeholder for PM
+
+![](figures/HLC-table.png)
+
+@fig-hlc-table-demo is a great example of how the 2 regions compare.
+
+```{r}
+#| label: fig-hlc-table-demo
+#| fig-cap: This is our hlc table
+#| out-width: 50%
+knitr::include_graphics("figures/HLC-table.png")
+```
+

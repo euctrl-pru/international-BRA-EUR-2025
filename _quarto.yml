@@ -25,8 +25,7 @@ book:
   # - 06-efficiency.qmd
   # - 07-environment.qmd
   - 08-conclusions.qmd
-  - 88-add-ons.qmd
-  - 90-test-for-rafael.qmd
+  - 09-studies.qmd
   - 99-references.qmd
   #appendices:
   #- A1-appendix.qmd

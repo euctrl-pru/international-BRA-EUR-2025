@@ -169,14 +169,14 @@ ul.task-list li input[type="checkbox"] {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./88-add-ons.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">dumping lot</span></span></a>
+  <a href="./08-conclusions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Conclusions</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./90-test-for-rafael.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Next chapter</span></span></a>
+  <a href="./09-studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Studies</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -338,14 +338,30 @@ Figure&nbsp;3.4: Annual traffic at study airports in 2022 and variation 2022/201
 </ul>
 <p>== CLEAN UP CODE!</p>
 </div>
-<pre><code>.years &lt;- c(2023,2024)
-pk_day_plot(.years)</code></pre>
-<pre><code>#| label: fig-peak-day
-#| fig-cap: Airport peak daily traffic (2024)
-#| message: false
-
-peak_day_pct_plot(2024)</code></pre>
-<p><span class="quarto-unresolved-ref">?fig-peak-day</span> shows the peak day traffic in 2022 for the study airports with reference to the number of runways. A varied picture can be seen for Europe. For European with more than 2 runways it needs to be noted that the runway system does not support independent operations of all available runways. Thus, the serviced peak traffic is also impacted by the runway system configuration.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-traffic_characterisation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-peak-day" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-peak-day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="03-traffic_characterisation_files/figure-html/fig-peak-day-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-peak-day-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.5: Airport peak daily traffic (2024)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-peak-day" class="quarto-xref">Figure&nbsp;<span>3.5</span></a> shows the peak day traffic in 2022 for the study airports with reference to the number of runways. A varied picture can be seen for Europe. For European with more than 2 runways it needs to be noted that the runway system does not support independent operations of all available runways. Thus, the serviced peak traffic is also impacted by the runway system configuration.</p>
 <p>The measure signals the use of the available runway system.</p>
 <pre><code>#| label: fig-timeline-peak-day
 #| fig-cap: Evolution of peak-day traffic at study airports
@@ -364,13 +380,13 @@ timeline_peak_day(c(2019:2024))</code></pre>
 <img src="03-traffic_characterisation_files/figure-html/fig-fleet-mix-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fleet-mix-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.5: Fleet mix observed at the study airports in 2024
+Figure&nbsp;3.6: Fleet mix observed at the study airports in 2024
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p><a href="#fig-fleet-mix" class="quarto-xref">Figure&nbsp;<span>3.5</span></a> depicts the observed share of different wake turbulence categories (WTC) across the study airports in 2024. In both regions, “medium” aircraft types are the predominant aircraft type. The fleet mix - and in particular the separation requirements between the different aircraft types - is an important influencing factor for the capacity and observed (and achievable) throughput. In general, a larger proportions of heavy aircraft or aircraft with longer runway occupancy times may result in lower throughput due to the required larger wake turbulence separation or time spent on the runway. The locally defined capacity values may therefore differ based on the predominant fleet mix and operational characteristics, and ultimately result in different observed peak movement numbers or influence surface and terminal operations.</p>
+<p><a href="#fig-fleet-mix" class="quarto-xref">Figure&nbsp;<span>3.6</span></a> depicts the observed share of different wake turbulence categories (WTC) across the study airports in 2024. In both regions, “medium” aircraft types are the predominant aircraft type. The fleet mix - and in particular the separation requirements between the different aircraft types - is an important influencing factor for the capacity and observed (and achievable) throughput. In general, a larger proportions of heavy aircraft or aircraft with longer runway occupancy times may result in lower throughput due to the required larger wake turbulence separation or time spent on the runway. The locally defined capacity values may therefore differ based on the predominant fleet mix and operational characteristics, and ultimately result in different observed peak movement numbers or influence surface and terminal operations.</p>
 <p>In Brazil, a significant number of “light” types operated in 2023. For example Salvador (SBSV) serviced about 20% of “light” types. The major hubs, i.e. São Paulo Guarulhos (SBGR), Rio de Janeiro Galeão (SBGL), and Campinas (SBKP) observed a share of 15-20% of “heavy” aircraft. These airports serve also as destinations for international long-haul flights.</p>
 <p>With the exception of Zurich (LSZH), the share of “light” types is negligible at the European study airport in 2023. London Heathrow (EGLL), Paris Charles de Gaule (LFPG), and Frankfurt (EDDF) observed the highest shares of “heavy” types.</p>
 <p>Within the European region - and its multitude of national hubs - a significant number of international long-haul flights is operated at the chosen study airports. In Brazil, the highlighted airports, Guarulhos (SBGR), Galeão (SBGL), and Campinas (SBKP), play a major role in terms of international connectivity. It follows that medium and light types are used predominantly for inter-reginal connections. Based on the selected study airports, the underlying decentralised structure of the European network becomes more visible. Due to the geo-political composition, airports serving capitals or representing a main national hub are more frequent in Europe. This is in contrast to Brazil, where the international and heavy air traffic appears more centralised at 2-3 pre-dominant hubs.</p>
@@ -382,13 +398,13 @@ Figure&nbsp;3.5: Fleet mix observed at the study airports in 2024
 <img src="03-traffic_characterisation_files/figure-html/fig-fleetmix-timeline-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fleetmix-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;3.6: Fleet mix change over time observed at study airports
+Figure&nbsp;3.7: Fleet mix change over time observed at study airports
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>On average, <a href="#fig-fleetmix-timeline" class="quarto-xref">Figure&nbsp;<span>3.6</span></a> shows that the fleetmix remained fairly stable over the years. It is interesting to observe that the unprecedented decline in air transport during the pandemic phase did not substantially break this pattern. This suggests that the contraction of the traffic volume hit all segments at a similar rate <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
+<p>On average, <a href="#fig-fleetmix-timeline" class="quarto-xref">Figure&nbsp;<span>3.7</span></a> shows that the fleetmix remained fairly stable over the years. It is interesting to observe that the unprecedented decline in air transport during the pandemic phase did not substantially break this pattern. This suggests that the contraction of the traffic volume hit all segments at a similar rate <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.</p>
 </section>
 <section id="summary" class="level2" data-number="3.6">
 <h2 data-number="3.6" class="anchored" data-anchor-id="summary"><span class="header-section-number">3.6</span> Summary</h2>

@@ -126,7 +126,7 @@ eur_deps_routes <- eur_mvts |> bind_rows() |> calc_summary_routes_dep()
 ```{r}
 bind_rows(
    bra_deps_routes |> filter(ADEP %in% bra_apts) |> mutate(REGION = "BRA")
-  ,eur_deps_routes |> filter(ADEP %in% eur_apts) |> mutate(REGION = "EUR")
+  ,eur_deps_routes |> filter(ADEP %in% eur_apts) |> mutate(REGION = "EUR") 
   ) |> 
   mutate(ADEP = fct_infreq(ADEP, NBR_DES) |> fct_rev()) |> 
   ggplot() +
