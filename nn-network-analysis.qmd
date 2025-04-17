@@ -103,6 +103,8 @@ eur_mvts <- eur_mvts |> dplyr::bind_rows() |> prep_eur_network_data()
 ```
 
 
+
+
 ```{r}
 calc_summary_routes_dep <- function(.mvts){
   this_summary <- .mvts |> 
@@ -276,3 +278,45 @@ eur_world_shares |>
 ```
 
 EUR ~  non-ECTRL Europe (probably need to take this out)
+
+
+
+# Workflow Demo - Getting from Code to Functions
+
+```{r}
+calc_adep_counts <- function(.ds){
+  my_count <- .ds |> 
+  group_by(ADEP, DEP_CNTRY) |>  # Group by ADEP and PAIS_ORIGEM
+  summarise(count = n(), .groups = "drop") |>  
+  arrange(desc(count))
+  
+  return(my_count)
+}
+
+
+
+bra_mvts |> calc_adep_counts() 
+
+plot_barchart <- function(.ds){
+  
+  p <- .ds |> 
+  ggplot() +
+  geom_col(aes(x = ADEP, y = count)) +
+    facet_wrap(.~ REGION)
+  
+  return(p)
+}
+
+bra_demo <- bra_mvts |> calc_adep_counts() |> mutate(REGION = "BRA")
+eur_demo <- bra_mvts |> calc_adep_counts() |> mutate(REGION = "EUR")
+
+p1 <- bra_demo |> plot_barchart()
+p2 <- eur_demo |> plot_barchart()
+
+p1 / p2
+
+bind_rows(bra_demo, eur_demo) |> plot_barchart()
+```
+
+The maximum departures seen at Brazilian airport account for `r bra_demo |> pull(count) |> max()`.
+
