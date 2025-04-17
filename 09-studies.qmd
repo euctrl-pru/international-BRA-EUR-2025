@@ -17,6 +17,8 @@ knitr::include_graphics("figures/HLC-table.png")
 
 Point Merge System
 
+
+
 Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimize aircraft arrival sequences, reduce flight times, and enhance operational safety. PMS operates efficiently under high traffic loads without the need for radar vectoring. It relies on a specific Precision-Area Navigation (P-RNAV) route structure, comprising a merge point and equidistant pre-defined legs known as sequencing legs. Sequencing is achieved through a “direct-to” instruction to the merge point at the appropriate time. The sequencing legs are used to delay aircraft only when necessary, a process known as path stretching. The length of these legs reflects the required delay absorption capacity, ensuring a streamlined and predictable arrival flow. This method simplifies controller tasks, reduces communication and workload, enhances pilot situational awareness, and improves the predictability and efficiency of flight trajectories. Figure 1 illustrates the Point Merge system and its components.
 
 ![](figures/Point Merge Structure.png)
