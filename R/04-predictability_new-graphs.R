@@ -308,6 +308,34 @@ punc_mov_month_plot <- function(.years, .apt){
 
 }
 
+#' Function to aggregate punctuality data set
+#' 
+punc_aggregate <- function(.df_daily_punc, .phase = c("ARR","DEP"), .unit = "month"){
+  
+  punc_agg <- .df_daily_punc |> 
+    dplyr::mutate(DATE = lubridate::floor_date(DATE, unit = .unit)) |> 
+    dplyr::filter(PHASE %in% .phase)
+  
+  punc_agg <- punc_agg |> dplyr::group_by(ICAO, DATE, PHASE) |> 
+    dplyr::reframe(dplyr::across(where(is.numeric), .fns = ~ sum(.x, na.rm = TRUE)))
+  
+  punc_agg
+}
+
+punc_append_slots <- function(.punc_table){
+  punc_with_slots <- .punc_table |> 
+    dplyr::mutate(
+       EARLY_M15M05  = `(-15,-10]` + `(-10,-5]`
+      ,EARLY_M05M00  = `(-5,0]`
+      ,LATE_P00P05   = `(0,5)`
+      ,LATE_P05P15   = `[5,10)` + `[10,15)`
+      ,WITHIN_M05P05 = EARLY_M05M00 + LATE_P00P05
+      ,WITHIN_M15P15 = EARLY_M15M05 + WITHIN_M05P05 + LATE_P05P15
+      )
+  return(punc_with_slots)
+}
+
+
 
 ####################################################################################################
 ########### Mov vs Punc per APT

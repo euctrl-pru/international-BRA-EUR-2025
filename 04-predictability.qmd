@@ -52,39 +52,7 @@ DECEA has already established a forum with the air operator regulator to discuss
 
 
 
-```{r}
-#| label: fig-evolution-ARR-punc
-#| fig-cap: Evolution of arrival punctuality window
 
-# punc_evolution_lineplot("ARR", c(0.4, 0.8))
-# punc_evolution_lineplot(punc_bra, "ARR", c(0.4, 0.8))
-punc <- bind_rows(punc_bra, punc_eur)
-# generalisable - only supply arrivals or departures
-# think about whether this is a function of the plot or data prep
-punc_evolution_lineplot(punc, "ARR", c(0.4, 0.8))
-```
-
-:::{.callout-note}
-
-speak about truncated axes
-
-:::
-
-```{r}
-#| label: fig-evolution-ARR-punc_by_month
-#| fig-cap: Evolution of arrival punctuality window by month
-
-.APT = c("SBBR","SBGR","SBGL")
-.YEAR = 2024
-
-# punc_per_month(.APT, .YEAR, "ARR",c(0.4, 0.8))
-punc_monthly <- punc_bra_month
-
-.APT = c(.APT, "EGLL","EHAM")
-punc_monthly <- bind_rows(punc_bra_month, punc_eur_month)
-
-punc_per_month(punc_monthly, .APT, .YEAR, "ARR",c(0.4, 0.8))
-```
 
 
 ```{r}
@@ -100,6 +68,77 @@ punc_mov_month_plot(.years, .apt)
 punc_mov_apt_plot(.years)
 ```
 
+```{r}
+which_years <- 2023:2024
+
+#' Function plotting punctuality side-by-side to traffic
+#' 
+#' Note: patchwork requires for a collection of fill/color legends their 
+#' hard "identical"-ity; thus, we set color=, fill=, and key_glyph and labs!
+#' 
+plot_punc_vs_tfc <- function(.df_punc_share, .share_var = WITHIN_M15P15){
+  
+  p_punc_share <- .df_punc_share |> 
+    ggplot() + 
+    geom_col(aes(x = {{ .share_var }}, y = ICAO, fill = YEAR, color = YEAR)
+              , position = position_dodge2(preserve = "single")
+              , key_glyph = "point"
+             ) + 
+    scale_x_continuous(labels = scales::percent_format()) +
+    labs(x = element_blank(), y = element_blank()
+         ,color = element_blank(), fill = element_blank())
+  
+  p_punc_tfc <- .df_punc_share |> 
+    ggplot(aes(x = N_VALID, y = ICAO) ) +
+    geom_line(aes(group = ICAO)) +
+    geom_point(aes(fill = YEAR, color = YEAR), key_glyph = "point") +
+    scale_x_continuous(
+      labels = scales::label_number(scale = 1e-3, suffix = "k")
+      ) +
+    labs(x = element_blank(), y = element_blank()
+          ,color = element_blank(), fill = element_blank())
+  
+  p_punc_vs_tfc <- p_punc_share + p_punc_tfc + 
+    plot_layout(widths = c(2,1), guides = "collect") &
+    theme(legend.position = "top")
+  
+  return(p_punc_vs_tfc)
+}
+
+#----------- prep BRA ----------------------
+arr_punc_bra <- punc_mov_month |> 
+  mutate(DATE = paste0(YEAR, "-", sprintf("%02d", MONTH),"-01") |> 
+                lubridate::as_datetime()
+         ) |> 
+  filter(PHASE == "ARR", lubridate::year(DATE) %in% which_years)
+
+arr_punc_bra <- arr_punc_bra |> 
+  filter(year(DATE) %in% which_years) |> 
+  select(ICAO = APT, DATE, PHASE, N_VALID = TOT_FLTS_MONTH, WITHIN_M15P15) |>
+  punc_aggregate("ARR","year")
+
+#---------- prep EUR -----------------------
+arr_punc_eur <- punc_eur_data |> 
+  filter(year(DATE) %in% which_years) |> 
+  punc_append_slots() |> select(ICAO, DATE, PHASE, N_VALID, WITHIN_M15P15) |>  
+  punc_aggregate("ARR", "year") 
+```
+
+```{r}
+#| label: fig-punc-vs-tfc
+#| fig-cap: Evolution of arrival punctuality -/+15 min vs traffic
+arr_punc_bra |> filter(ICAO %in% bra_apts) |> 
+  mutate( YEAR          = year(DATE) |> as.character()
+       #  ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
+         ) |> 
+  plot_punc_vs_tfc()
+
+arr_punc_eur |> filter(ICAO %in% eur_apts) |> 
+  mutate( YEAR          = year(DATE) |> as.character()
+         ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
+         ) |> 
+  plot_punc_vs_tfc()
+```
 
 
 European airports saw their share of punctual flights in 2022 decrease broadly compared to 2019, even with a more proportional distribution than the Brazilian system.
