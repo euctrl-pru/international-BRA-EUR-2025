@@ -223,35 +223,29 @@ The measure represents thus an upper bound for comparison purposes.
 
 ## Peak Day
 
-:::{callout-note}
 
-THERE IS A LOT OF CODE AND WE WORK WITH INTERIM AND "FIX" FILES.
-
-It is not transparent how these files / values are generated.
-On a first level, I could not fix it.
-What needs to be done:
-
-* [] produce consistent daily traffic files in PBWG format for BRA and EUR
-* [] rewrite functions to read the PBWG format and aggregate as desired
-* [] if desired bind the BRA and EUR data set to build the graphics
-
-== CLEAN UP CODE!
-
-:::
 
 ```{r}
-# pk_day_bra <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
-our_years  <- 2022:2024
+#| label: fig-peak-day-side-by-side
+#| fig-cap: Evolution of peak-day traffic (99th percentile) across recent years
 
-#pk_day |> rename(PEAK_DAY_PCT = PK_DAY) |> pk_day_plot(c(2022:2024)) + 
+# pk_day_bra <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
+# pk_day |> rename(PEAK_DAY_PCT = PK_DAY) |> pk_day_plot(c(2022:2024)) + 
+
+# TO-DO transfer data loading to here
+
 peak_day_comb |> 
   dplyr::mutate(
     REGION = dplyr::case_when(
-          grepl("^SB", ICAO) ~ "BRA")
-        , .default           = "EUR") |> 
+          grepl("^SB", ICAO) ~ "BRA"
+        , .default           = "EUR")
+    )|> 
   
-  pk_day_plot(our_years) +
-  facet_wrap(. ~ REGION, scales = "free_y")
+  pk_day_plot(2022:2024) +
+  facet_wrap(. ~ REGION, scales = "free_y") +
+  labs(fill = element_blank(), x = element_blank(),  y = element_blank()) +
+  theme(legend.position = "inside", legend.position.inside = c(0.95, 0.95)
+        ,legend.key.size = unit(3, "mm"))
 ```
 
 
@@ -292,16 +286,20 @@ timeline_peak_day(c(2019:2024))
 ```
 
 ::: callout-note
+
+CHECK - TIMELINE - REMOVED
+
 The figure shows historical data from 2019 to 2024, providing a broader view of the recovery path in both regions. In Brazil, Guarulhos (SBGR) remains the busiest airport every year. Other airports—such as Congonhas (SBSP), Brasília (SBBR), Campinas (SBKP), and Confins (SBCF)—also show steady growth, with some already surpassing pre-pandemic levels.
 In Europe, xxxxxxxxx
 These insights show the importance of analyzing peak day traffic as a complementary indicator to average daily movements, especially during periods of recovery or operational adjustments. The comparison between Brazilian and European contexts highlights the need for assessments tailored to the reality of each network, considering the structural, operational, and geographic factors that directly affect airport responsiveness and capacity.
 :::
 
-
+``` 
 The year-to-year change of the peak day traffic between 2019 and 2022 is shown in @fig-timeline-peak-day.
 For the European study airports, Frankfurt (EDDF), Munich (EDDM), Paris (LFPG), and Rome (LIRF) experienced a higher drop of the daily peak traffic in comparison to 2019.
 Despite the not yet fully recovered demand situation at London Gatwick (EGKK) and Zurich (LSZH) showed a moderate reduction of the daily peak traffic in 2022.
 This suggest that airports with limited airport runway capacity managed
+``` 
 
 ## Fleet Mix
 

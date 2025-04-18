@@ -802,7 +802,8 @@ fleet_mix_from_counts <- function(.counts, .reg){
 
 
 tfc_apts_bra <- read_csv("./data/BRA-airport-tfc.csv", show_col_types = FALSE)
-tfc_apts_eur <- read_csv("./data/EUR-airport-tfc.csv", show_col_types = FALSE)
+# loaded above - link same file or do not overwrite
+# tfc_apts_eur <- read_csv("./data/EUR-airport-tfc.csv", show_col_types = FALSE)
 
 fm_apts_bra <- tfc_apts_bra |> 
   dplyr::rename(HEAVY = H, MED = M, LIGHT = L) |> 
