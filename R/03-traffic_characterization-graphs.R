@@ -1,4 +1,4 @@
-source("_chapter-setup.R")
+source(here::here("_chapter-setup.R"))
 
 # set colors - added to chapter-setup
 # bra_col <- getElement(bra_eur_colours, "BRA")
@@ -117,36 +117,46 @@ plot_bra_annual_traffic_function <- function(){
   }
 
 #------------EUR ------------------------
-tfc_eur  <- read_csv("./data/PBWG-EUR-region-traffic.csv", show_col_types = FALSE) |> 
-  filter(between(lubridate::year(DATE), 2019, 2022))
-tfc_eur2 <- read_csv("./data/PBWG-EUR-region-traffic-2023.csv", show_col_types = FALSE) |> 
-  filter(lubridate::year(DATE) == 2023, DATE < max_date)
-#------- check with Quinten - some flights missing
-tfc_eur3 <- read_csv("./data/EUR-network-tfc-2023.csv", show_col_types = FALSE) |> 
-  filter(lubridate::year(DATE) == 2023, DATE < max_date) |> 
-  mutate(DLY_FLTS = FLIGHTS, 
-         MVTS_NORM_ROLLAVG = zoo::rollmean(DLY_FLTS, k = 7, fill = NA)
-         ,VERSION = "2024")
+# tfc_eur  <- read_csv("./data/PBWG-EUR-region-traffic.csv", show_col_types = FALSE) |> 
+#   filter(between(lubridate::year(DATE), 2019, 2022))
+# tfc_eur2 <- read_csv("./data/PBWG-EUR-region-traffic-2023.csv", show_col_types = FALSE) |> 
+#   filter(lubridate::year(DATE) == 2023, DATE < max_date)
+# #------- check with Quinten - some flights missing
+# tfc_eur3 <- read_csv("./data/EUR-network-tfc-2023.csv", show_col_types = FALSE) |> 
+#   filter(lubridate::year(DATE) == 2023, DATE < max_date) |> 
+#   mutate(DLY_FLTS = FLIGHTS, 
+#          MVTS_NORM_ROLLAVG = zoo::rollmean(DLY_FLTS, k = 7, fill = NA)
+#          ,VERSION = "2024")
+# 
+# tfc_eur_2023 <- read_csv("./data/EUR-network-traffic-2023.csv", show_col_types = FALSE)
+# tfc_eur_2024 <- read_csv("./data/EUR-network-traffic-2024.csv", show_col_types = FALSE)
+# tfc_eur_tmp  <- bind_rows(tfc_eur_2023, tfc_eur_2024) |> 
+#   mutate(MVTS_NORM_ROLLAVG = zoo::rollmean(FLTS, k = 7, fill = NA))
+# 
+# tfc_eur <- bind_rows(tfc_eur, tfc_eur2) |> mutate(VERSION = "2023") |> 
+#   #-------- for edition 2024 in 2025 --------
+#   filter(DATE < lubridate::ymd_hms("2023-10-01 00:00:00"))
+# tfc_eur_tmp <- tfc_eur_tmp |> 
+#   filter(DATE >= lubridate::ymd_hms("2023-10-01 00:00:00"))
 
-tfc_eur_2023 <- read_csv("./data/EUR-network-traffic-2023.csv", show_col_types = FALSE)
-tfc_eur_2024 <- read_csv("./data/EUR-network-traffic-2024.csv", show_col_types = FALSE)
-tfc_eur_tmp  <- bind_rows(tfc_eur_2023, tfc_eur_2024) |> 
-  mutate(MVTS_NORM_ROLLAVG = zoo::rollmean(FLTS, k = 7, fill = NA))
+# network traffic data taken from ansperformance.eu ---------------------
+# todo - align data set with PBWG conventions 
 
-tfc_eur <- bind_rows(tfc_eur, tfc_eur2) |> mutate(VERSION = "2023") |> 
-  #-------- for edition 2024 in 2025 --------
-  filter(DATE < lubridate::ymd_hms("2023-10-01 00:00:00"))
-tfc_eur_tmp <- tfc_eur_tmp |> 
-  filter(DATE >= lubridate::ymd_hms("2023-10-01 00:00:00"))
-
+tfc_eur <- read_csv("./data/EUR-region-traffic-2019-2024-portal.csv")
 tfc_eur <- tfc_eur |> 
-  mutate( DLY_FLTS = ARRS - ARRS_DOM + DEPS + OVR_FLTS
-          ,MVTS_NORM_ROLLAVG = zoo::rollmean(DLY_FLTS, k = 7, fill = NA)) |> 
+  mutate( 
+    # DLY_FLTS = ARRS - ARRS_DOM + DEPS + OVR_FLTS
+     DLY_FLTS         = FLTS
+    ,MVTS_NORM_ROLLAVG = zoo::rollmean(DLY_FLTS, k = 7, fill = NA)
+    ,REG = "EUR"
+    ) |> 
+  mutate(DATE = as_datetime(DATE))
+# |> 
   #--- add on for 2023
   #bind_rows(tfc_eur3)
   #-------- for edition 2024 in 2025 --------
  # mutate(DATE = date(DATE)) |> 
-  bind_rows(tfc_eur_tmp)
+ # bind_rows(tfc_eur_tmp)
 
 plot_eur_annual_traffic_function <- function(.tfc_eur = tfc_eur, .eur_col = eur_col){
 plot_eur_annual_traffic <- .tfc_eur  |> 
@@ -198,16 +208,21 @@ plot_timeline_per_year <- function(.df,
 }
 
 
-fig_annual_network <- function(.years){
-  p_bra <- tfc_bra |>
-    plot_timeline_per_year(.years) +
-     labs(subtitle = "Brazil", colour = "Brazil")  # Define legenda do Brasil
-  
-  p_eur <- tfc_eur |> plot_timeline_per_year(.years) + labs(subtitle = "Europe")
+# fig_annual_network <- function(.years){
+#   p_bra <- tfc_bra |>
+#     plot_timeline_per_year(.years) +
+#      labs(subtitle = "Brazil", colour = "Brazil")  # Define legenda do Brasil
+#   
+#   p_eur <- tfc_eur |> plot_timeline_per_year(.years) + labs(subtitle = "Europe")
+# 
+#   return(p_bra / p_eur + plot_layout(guides = "collect") & theme(legend.position = "top"))
+# }
 
-  return(p_bra / p_eur + plot_layout(guides = "collect") & theme(legend.position = "top"))
-}
+# show last 3 years
+this_years <- c(2022:2024)
 
+p_bra <- tfc_bra |> plot_timeline_per_year(this_years)
+p_eur <- tfc_eur |> plot_timeline_per_year(this_years)
 
 ##############################################################################################
 ## Airport Level Air Traffic
@@ -290,31 +305,30 @@ fig_bra_apt_tfc <- function(.years){
   
 ################################### EUR #####################################################
 
-tfc_apts_eur <- arrow::read_parquet(
-  "./data/traffic_counts_airport_daily.parquet") |> 
-  dplyr::filter(REG == "EUR", DATE < lubridate::ymd("2023-01-01"))
+# tfc_apts_eur <- arrow::read_parquet(
+#   "./data/traffic_counts_airport_daily.parquet") |> 
+#   dplyr::filter(REG == "EUR", DATE < lubridate::ymd("2023-01-01"))
+# 
+# tfc_apts_eur_2023 <- arrow::read_parquet(
+#   "./data/traffic_counts_airport_daily_partial2023.parquet") |> 
+#   dplyr::select(REG, ICAO, DATE, ARRS, DEPS
+#          , HEAVY = H, MED = M, LIGHT = L
+#          , ARRS_DOM = ARRS_REG, DEPS_DOM = DEPS_REG) |> 
+#   dplyr::filter(dplyr::between(DATE, lubridate::ymd("2023-01-01"), max_date))
+# tfc_apts_eur <- bind_rows(tfc_apts_eur, tfc_apts_eur_2023)
 
-tfc_apts_eur_2023 <- arrow::read_parquet(
-  "./data/traffic_counts_airport_daily_partial2023.parquet") |> 
-  dplyr::select(REG, ICAO, DATE, ARRS, DEPS
-         , HEAVY = H, MED = M, LIGHT = L
-         , ARRS_DOM = ARRS_REG, DEPS_DOM = DEPS_REG) |> 
-  dplyr::filter(dplyr::between(DATE, lubridate::ymd("2023-01-01"), max_date))
-
-tfc_apts_eur <- bind_rows(tfc_apts_eur, tfc_apts_eur_2023) |> 
-  dplyr::filter(ICAO %in% eur_apts)
+tfc_apts_eur <- readr::read_csv("./data/EUR-airport-tfc-2022-2024.csv", show_col_types = FALSE) |> 
+  dplyr::filter(ICAO %in% eur_apts) |> 
+  dplyr::mutate(REG = "EUR")
 
 # annual network level traffic
 annual_tfc_eur <- tfc_eur |> 
   mutate(YEAR = lubridate::year(DATE)) |>  
-  filter( (VERSION == "2024") | (VERSION == "2023" & YEAR %in% 2019:2022) ) |> 
+ # filter( (VERSION == "2024") | (VERSION == "2023" & YEAR %in% 2019:2022) ) |>
   summarise(N = n(), FLIGHTS = sum(DLY_FLTS), .by = c(REG, YEAR))
 
 # annual traffic at each airport -------------
 annual_tfc_apt <- tfc_apts_eur |> 
-  #------- filter to 2022 and eur_apts
-  filter(ICAO %in% eur_apts, DATE < lubridate::ymd("2023-01-01")) |> 
-  #-----------------------------------
   mutate(TOT_FLTS = ARRS + DEPS) |> 
   group_by(REG, ICAO, YEAR = lubridate::year(DATE)) |> 
   summarise(N = n(), TOT_FLTS_YEAR = sum(TOT_FLTS), .groups = "drop") # |> 
@@ -322,23 +336,23 @@ annual_tfc_apt <- tfc_apts_eur |>
   #mutate(YEAR = as.character(YEAR))
 
 # add annual count for EUR
-tfc_apts_eur_monthly_new <- readr::read_csv(
-  here::here("data","EUR-study-apt-lvl-month.csv")
-  , show_col_types = FALSE) 
-tfc_apts_eur_annual_new <- tfc_apts_eur_monthly_new |> 
-  dplyr::group_by(ICAO, YEAR) |> 
-  dplyr::reframe(TOT_FLTS_YEAR = sum(TOT_FLTS), N = sum(N)) |> 
-  dplyr::mutate(REG = "EUR")
+# tfc_apts_eur_monthly_new <- readr::read_csv(
+#   here::here("data","EUR-study-apt-lvl-month.csv")
+#   , show_col_types = FALSE) 
+# tfc_apts_eur_annual_new <- tfc_apts_eur_monthly_new |> 
+#   dplyr::group_by(ICAO, YEAR) |> 
+#   dplyr::reframe(TOT_FLTS_YEAR = sum(TOT_FLTS), N = sum(N)) |> 
+#   dplyr::mutate(REG = "EUR")
 
 # add new data to older stats
-annual_tfc_apt <- annual_tfc_apt |> 
-  dplyr::bind_rows(tfc_apts_eur_annual_new) 
+# annual_tfc_apt <- annual_tfc_apt |> 
+#   dplyr::bind_rows(tfc_apts_eur_annual_new) 
 
 # # annualised traffic of all study airports
 annual_all_apts <- annual_tfc_apt |>
   reframe(APTS_TOT = sum(TOT_FLTS_YEAR), .by = c(REG, YEAR))
 
-tmp <- annual_tfc_eur |> # mutate(YEAR = as.factor(YEAR)) |>
+annual_share_apts_network_eur <- annual_tfc_eur |> # mutate(YEAR = as.factor(YEAR)) |>
   left_join(annual_all_apts, join_by(REG, YEAR)) |>
   mutate(SHARE = APTS_TOT / FLIGHTS)
 
@@ -374,6 +388,8 @@ fig_eur_apt_tfc <- function(.payload, .years){
     scale_x_discrete(guide = guide_axis(n.dodge = 2))
   #p1 <- patchwork::plot_spacer()
   p2 <- get_p1_eur(.years) 
+ 
+  # combine plots
   this_p <- p1 + p2 + plot_layout(widths = c(1, 4))
   
   return(this_p)

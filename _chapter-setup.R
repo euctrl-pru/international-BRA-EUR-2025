@@ -40,7 +40,7 @@ ft_border = flextable::fp_border_default(width = 0.5)
 
 # study airports and names ====================================================
 bra_apts <- c("SBGR","SBGL","SBRJ","SBCF","SBBR","SBSV","SBKP","SBSP","SBCT","SBPA")
-eur_apts <- c("EGLL","EGKK","EHAM","EDDF","EDDM","LSZH","LIRF","LFPG","LEMD","LEBL","LPPT")
+eur_apts <- c("EGLL","EGKK","EHAM","EDDF","EDDM","LSZH","LFPG","LEMD","LEBL","LPPT") # ,"LIRF"
 
 bra_apts_names <- tibble::tribble(
   ~ICAO  , ~NAME

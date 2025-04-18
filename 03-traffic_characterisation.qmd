@@ -11,7 +11,7 @@ editor:
 #| echo: false
 #| message: false
 
-source("03-traffic_characterization-graphs.R")
+source(here::here("R","03-traffic_characterization-graphs.R"))
 ```
 
 To facilitate operational comparisons, it is crucial to have a good understanding of the level and composition of air traffic.
@@ -28,6 +28,14 @@ The European recovery is characterised by two waves, while a single setback is o
 The European pattern demonstrates the difficulty in the coordination of a joint policy of curbing the pandemic and managing travel related constraints.
 With different states in Europe introducing public health and travel constraints at differnt times, intra-European traffic was affected by the piece-meal approach.
 Brazil - and its policy on air transport - benefitted from single stance on policy implementation.
+
+:::{callout-note}
+TO BE CLEANED LATER
+
+* reduce number of labels for BRA
+* add associated labels to EUR
+
+:::
 
 ```{r}
 #| label: fig-annual-traffic-timeline
@@ -63,15 +71,26 @@ These measures included freeing slots at major hubs and the reduction of domesti
 Accordingly, the European network is characterised by a change in the level of connectivity and frequency of services between the different airports.
 
 
-
-
 ```{r}
 #| label: fig-annual-network
 #| fig-cap: Evolution of annual network traffic
 #| warning: false
 
-.years = c(2022,2023,2024)
-fig_annual_network(.years)
+this_years = c(2022,2023,2024)
+
+# data loaded in supporting file - lift to here
+# i.e. tfc_bra, tfc_eur
+
+tfc_bra |> mutate(REG = "BRA") |> 
+  bind_rows(tfc_eur) |> 
+  
+  # plot combined timelines
+  plot_timeline_per_year(this_years) + 
+  
+  # beautify combined plot
+  scale_y_continuous(limits = c(0,NA)) + 
+  theme(legend.position = "inside", legend.position.inside = c(0.9, 0.6)) +
+  facet_wrap(.~ REG, ncol = 1, scales = "free_y") 
 ```
 
 ::: callout-note
@@ -111,21 +130,21 @@ fig_bra_apt_tfc(c(2022,2023,2024))
 #| fig-cap: Europeaan airport level traffic
 #| warning: false
 
-eur_annual_network_fix <- tfc_eur |> 
-  mutate(MVTS = DEPS) |> select(REG, DATE, MVTS) |> 
-  mutate(YEAR = lubridate::year(DATE)) |> 
-  group_by(REG, YEAR) |> 
-  reframe(MVTS = sum(MVTS)) |> 
-  mutate(MVTS = case_when(
-      YEAR == 2023 ~ first(MVTS) * 0.95
-    , YEAR == 2024 ~ first(MVTS) * 0.97
-    , .default = MVTS)
-    )
+# TODO - move data loading to here
 
 #annual_tfc_apt |> 
 #  fig_eur_apt_tfc(.years = c(2022,2023,2024))
 
-annual_tfc_apt |> mutate(YEAR = as.character(YEAR)) |> get_p1_eur(c(2022,2023,2024))
+p_share <- annual_share_apts_network_eur |> 
+  filter(YEAR %in% 2022:2024) |> 
+  mutate(YEAR = as.character(YEAR)) |>
+  p_share_of_network() + 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
+
+p_col_annual <- annual_tfc_apt |> mutate(YEAR = as.character(YEAR)) |> get_p1_eur(c(2022,2023,2024))
+
+# patch both plots
+p_share + p_col_annual + plot_layout(widths = c(1, 4))
 ```
 
 ```{r}
@@ -155,7 +174,7 @@ This last share is an essential component of the Brazilian air movement but is a
 #| fig-pos: H
 
 # Parâmetros: (ANO_REFERENCIA, ANO_COMPARACAO)
-annual_change_bra(2024,2023) / annual_change_eur(2022,2019)
+annual_change_bra(2024,2023) / annual_change_eur(2024,2023)
 ```
 
 ::: callout-note

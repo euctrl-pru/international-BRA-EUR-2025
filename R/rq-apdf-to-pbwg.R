@@ -4,7 +4,7 @@
 dir_up_one <- here::here() |> dirname()
 pth_apdf <- here::here(dir_up_one, "__DATA","APDF")
 
-read_apdf_parquet <- function(){}
+
 
 
 # -------------- helper functions ------------------------------------------
@@ -129,21 +129,35 @@ write_out_daily_apt_tfc <- function(
   readr::write_csv(.dly_tfc, out_name)
 }
 
+
+
 # test for one:
-# eddf_2023 <- read_zip(pth_apdf, "apdf-2023.zip", "EDDF_APDF_2023.gz.parquet") |> tibble::tibble()
+# eddf_2022 <- read_zip(pth_apdf, "apdf-2022.zip", "EDDF_APDF_2022.gz.parquet") |> tibble::tibble()
 
-# run for many
-#get_names_zip_content <- check_zip_content(pth_apdf, "apdf-2024.zip") |> dplyr::pull(Name)
-#ping_apts <- tibble::tibble(NAME = get_names_zip_content, APT = stringr::str_sub(NAME, 1,4), YEAR = 2024 )
+# run for many - apdf-2024.zip
+what_zip <- "LPPT-apdf.zip"
 
-read_and_write_apt_tfc <- function(.apt_apdf, .apt, .yr){
+# get_names_zip_content <- check_zip_content(pth_apdf, "apdf-2022.zip") |> dplyr::pull(Name)
+get_names_zip_content <- check_zip_content(pth_apdf, what_zip) |> 
+  dplyr::pull(Name)
+
+ping_apts <- tibble::tibble(
+    NAME = get_names_zip_content
+  , APT  = stringr::str_sub(NAME, 1,4)
+  , YEAR = stringr::str_extract(NAME, "\\d{4}")
+  ) 
+
+prep_and_write_apt_tfc <- function(.apt_apdf, .apt, .yr){
   .apt_apdf |> prep_apdf() |> 
     extract_daily_stats(.apt,.yr) |> 
     write_out_daily_apt_tfc(.apt,.yr)
 }
 
 # run for many/all ping_apts
-# ping_apts[-(1:2),] |> purrr::pwalk(.f = ~ read_zip(pth_apdf, "apdf-2024.zip", .files = ..1) |> read_and_write_apt_tfc(.apt = ..2, .yr = ..3))
+# 
+ping_apts |> purrr::pwalk(
+  .f = ~ read_zip(pth_apdf, what_zip, .files = ..1) |> 
+         prep_and_write_apt_tfc(.apt = ..2, .yr = ..3))
 
 
 
