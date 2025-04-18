@@ -182,10 +182,11 @@ This last share is an essential component of the Brazilian air movement but is a
 
 ```{r}
 #| label: fig-apt-annual-change
-#| fig-cap: Annual traffic at study airports in 2022 and variation 2022/2019
+#| fig-cap: Annual traffic at study airports in 2024 and variation 2023/2024
 #| fig-pos: H
 
 # Parâmetros: (ANO_REFERENCIA, ANO_COMPARACAO)
+# TODO -- clean code - generalise and simplify
 annual_change_bra(2024,2023) / annual_change_eur(2024,2023)
 ```
 
@@ -239,10 +240,18 @@ What needs to be done:
 :::
 
 ```{r}
-pk_day_bra <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
-our_years  <- c(2023,2024)
+# pk_day_bra <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_types = FALSE)
+our_years  <- 2022:2024
 
-pk_day_bra |> rename(PEAK_DAY_PCT = PK_DAY) |> pk_day_plot(c(2022:2024)) + labs(subtitle = "magic at hand - check")
+#pk_day |> rename(PEAK_DAY_PCT = PK_DAY) |> pk_day_plot(c(2022:2024)) + 
+peak_day_comb |> 
+  dplyr::mutate(
+    REGION = dplyr::case_when(
+          grepl("^SB", ICAO) ~ "BRA")
+        , .default           = "EUR") |> 
+  
+  pk_day_plot(our_years) +
+  facet_wrap(. ~ REGION, scales = "free_y")
 ```
 
 
@@ -254,11 +263,12 @@ pk_day_bra |> rename(PEAK_DAY_PCT = PK_DAY) |> pk_day_plot(c(2022:2024)) + labs(
 # where is the data
 #peak_day_pct_plot(2024)
 peak_day_comb |> 
-  rename(PEAK_DAY_PCT = PK_DAY) |> 
-  left_join(bra_apts_names) |> 
-  filter(YEAR == 2023) |> 
+  #------- add nice airport names
+  left_join( bra_apts_names |> bind_rows(eur_apts_names)
+           , by = join_by(ICAO) ) |> 
   
-plot_peak_day_tfc(2023)
+  plot_peak_day_tfc(2024) +
+  labs(x = "BRA-EUR - peak-day (99th percentile)")
 ```
 
 ::: callout-note

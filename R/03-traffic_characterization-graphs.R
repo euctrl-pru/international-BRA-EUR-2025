@@ -632,7 +632,7 @@ peak_day_bra  <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_typ
 
 peak_day_bra <- peak_day_bra |> 
   add_nbr_rwy() |> 
-  mutate(REGION = "BRA") 
+  mutate(REGION = "BRA", PEAK_DAY_PCT = PK_DAY) 
 
 peak_day_eur <- tfc_apts_eur |> 
   peak_day_from_counts() |> 
@@ -641,11 +641,11 @@ peak_day_eur <- tfc_apts_eur |>
 
 
 peak_day_comb <- bind_rows(peak_day_bra
-                           #, peak_day_eur
+                           , peak_day_eur
                            )
 
 plot_peak_day_tfc <- function(.df, .year, ...){
-  viz <- ggplot( data = .df %>% filter(YEAR == .year)
+  viz <- ggplot( data = .df  |>  filter(YEAR == .year)
                  ,aes( x = PEAK_DAY_PCT
                        #, y = reorder(ICAO, PEAK_DAY_PCT)
                        ,y = reorder(NAME, PEAK_DAY_PCT)
