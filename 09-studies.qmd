@@ -43,7 +43,8 @@ Monitoring Additional Time in TMA is valuable for assessing the impact of the Po
 
 ![](figures/asma_SBGR_2024.png)
 
-![](figures/asma_SBGR_2019_2024.png)
+![](figures/asma_SBGR_2019_2024.png) 
+
 
 The results indicated an increase in additional time for both airports following the implementation of the PMS. This suggests that, operationally, the PMS enabled a higher occupancy rate within the TMA. By design, the PMS enhances the terminal's capacity to manage and organize inbound traffic more efficiently. However, the runway throughput remained unchanged, as increasing runway capacity would require physical infrastructure modifications. Consequently, although the terminal airspace can now accommodate a greater number of approaches simultaneously, the airport’s ground infrastructure cannot absorb this increased demand at the same pace. This mismatch leads to longer dwell times within the terminal area as aircraft await clearance to land.
 
@@ -73,7 +74,7 @@ Currently, ACC-CW is divided into 18 sectors and two regions: North and South.
 
 Comparison with EUROCONTROL
 
-![](images/clipboard-4061690514.png)
+![](figures/acc ctb overview.jpeg)
 
 **Flight-hours controlled:\
 ** The total number of controlled flight hours was calculated for the year 2023.
