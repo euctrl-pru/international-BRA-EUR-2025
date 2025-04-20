@@ -37,7 +37,7 @@ cols <- c(
 )
 
 bra_mvts <- read_csv("./data_proc/flights_ANAC_2024.csv"
-                     , col_select = dplyr::any_of(cols)
+                   #  , col_select = dplyr::any_of(cols)
                      , show_col_types = FALSE
                      ) |> 
   rename(
@@ -319,4 +319,62 @@ bind_rows(bra_demo, eur_demo) |> plot_barchart()
 ```
 
 The maximum departures seen at Brazilian airport account for `r bra_demo |> pull(count) |> max()`.
+
+
+
+
+
+# Prepare analytic data for study
+
+[1] "ADEP"      "ADES"      "FLTID"     "OPR"       "REG"       "TYPE"      "FLT_DUR"  
+ [8] "DATE"      "SAM_ID"    "DEP_CNTRY" "DES_CNTRY"
+
+```{r}
+bra_mvts <- read_csv("./data_proc/flights_ANAC_2024.csv"
+                   #  , col_select = dplyr::any_of(cols)
+                     , show_col_types = FALSE
+                     ) 
+trim_ANAC <- function(.anac){
+  trimmed_anac <- .anac |> 
+    dplyr::select(
+       ADEP    = sg_icao_origem
+      ,ADES    = sg_icao_destino
+      ,FLT_NBR = nr_voo
+      ,OPR  = sg_empresa_icao           # aircraft operator (ICAO)
+      ,REG  = ds_matriculo
+      ,TYPE = sg_equipamento_icao       # aircraft type (ICAO)
+      ,AOBT    = hr_partida_real
+      ,AIBT    = hr_chegada_real
+      ,FLT_DUR = nr_horas_voadas        # flight duration
+      ,DATE    = dt_referencia
+      ,id_basica                        # ANAC ID
+      ,DEP_CNTRY_NAME = nm_pais_origem  # departing country
+      ,DES_CNTRY_NAME = nm_pais_destino # destination country
+    )
+  return(trimmed_anac)
+}
+
+prep_bra_connectivity <- function(.trimmed_anac){
+  bra_analytic <- .trimmed_anac |> 
+    dplyr::mutate(
+       FLTID = paste0(OPR, FLT_NBR)
+    )
+ return(bra_analytic)
+}
+```
+
+
+
+another cool and long airport lookup
+
+```{r}
+ip2_url <- "https://github.com/ip2location/ip2location-iata-icao/blob/master/iata-icao.csv"
+
+# github differentiates between "display" and "raw" version
+# we download raw versions!
+ip2_url <- "https://raw.githubusercontent.com/ip2location/ip2location-iata-icao/refs/heads/master/iata-icao.csv"
+
+
+icao_ip2 <- readr::read_csv(ip2_url)
+```
 
