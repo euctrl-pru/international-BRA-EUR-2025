@@ -409,8 +409,8 @@ month_tfc_bra <- month_tfc_bra |>
 
 airport_per_year <- function(.month_tfc, .apt, .years){
   p_tfc_month <- .month_tfc  |>
-    filter(YEAR %in% .years, ICAO == .apt) |>
-    mutate(MONTH = factor(MONTH, levels = 1:12, labels = month_names)) |>
+    dplyr::filter(YEAR %in% .years, ICAO == .apt) |>
+    dplyr::mutate(MONTH = factor(MONTH, levels = 1:12, labels = month_names)) |>
     ggplot() +
     geom_col(aes(x = MONTH, y = TOT_FLTS_MONTH, fill=YEAR), 
              position = position_dodge()) +
