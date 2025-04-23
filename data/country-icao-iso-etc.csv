@@ -1,0 +1,292 @@
+iso2c,country.name.en,continent,eurocontrol_statfor,eurocontrol_pru,icao.region
+AF,Afghanistan,Asia,Asia/Pacific,Asia,ASIAPAC
+AL,Albania,Europe,ECAC South-East,Eurocontrol,EUR
+DZ,Algeria,Africa,North-Africa,Africa,EUR
+AS,American Samoa,Oceania,Asia/Pacific,Asia,NA
+AD,Andorra,Europe,NA,NA,NA
+AO,Angola,Africa,Southern-Africa,Africa,AFI
+AI,Anguilla,Americas,Mid-Atlantic,Southern America,NA
+AQ,Antarctica,Antarctica,Asia/Pacific,Asia,NA
+AG,Antigua & Barbuda,Americas,Mid-Atlantic,Southern America,CARSAM
+AR,Argentina,Americas,South-Atlantic,Southern America,CARSAM
+AM,Armenia,Asia,ECAC South-East,Eurocontrol,EUR
+AW,Aruba,Americas,Mid-Atlantic,Southern America,NA
+AU,Australia,Oceania,Asia/Pacific,Asia,ASIAPAC
+AT,Austria,Europe,ECAC North-West,Eurocontrol,EUR
+NA,Austria-Hungary,NA,NA,NA,NA
+AZ,Azerbaijan,Asia,ECAC South-East,Asia,EUR
+NA,Baden,NA,NA,NA,NA
+BS,Bahamas,Americas,Mid-Atlantic,Southern America,CARSAM
+BH,Bahrain,Asia,Middle-East,Middle East,MID
+BD,Bangladesh,Asia,Asia/Pacific,Asia,ASIAPAC
+BB,Barbados,Americas,Mid-Atlantic,Southern America,CARSAM
+NA,Bavaria,NA,NA,NA,NA
+BY,Belarus,Europe,Other Europe,Asia,EUR
+BE,Belgium,Europe,ECAC North-West,Eurocontrol,EUR
+BZ,Belize,Americas,Mid-Atlantic,Southern America,CARSAM
+BJ,Benin,Africa,Southern Africa,Africa,AFI
+BM,Bermuda,Americas,Mid-Atlantic,Southern America,NA
+BT,Bhutan,Asia,Asia/Pacific,Asia,ASIAPAC
+BO,Bolivia,Americas,South-Atlantic,Southern America,CARSAM
+BA,Bosnia & Herzegovina,Europe,ECAC South-East,Eurocontrol,EUR
+BW,Botswana,Africa,Southern Africa,Africa,AFI
+BV,Bouvet Island,NA,NA,NA,NA
+BR,Brazil,Americas,South-Atlantic,Southern America,CARSAM
+IO,British Indian Ocean Territory,NA,NA,NA,NA
+VG,British Virgin Islands,Americas,Mid-Atlantic,Southern America,NA
+BN,Brunei,Asia,Asia/Pacific,Asia,ASIAPAC
+NA,Brunswick,NA,NA,NA,NA
+BG,Bulgaria,Europe,ECAC South-East,Eurocontrol,EUR
+BF,Burkina Faso,Africa,Southern Africa,Africa,AFI
+BI,Burundi,Africa,Southern Africa,Africa,AFI
+KH,Cambodia,Asia,Asia/Pacific,Asia,ASIAPAC
+CM,Cameroon,Africa,Southern Africa,Africa,AFI
+CA,Canada,Americas,North Atlantic,Northern America,NAM
+CV,Cape Verde,Africa,Southern Africa,Africa,AFI
+BQ,Caribbean Netherlands,Americas,Mid-Atlantic,Southern America,NA
+KY,Cayman Islands,Americas,Mid-Atlantic,Southern America,NA
+CF,Central African Republic,Africa,Southern Africa,Africa,AFI
+TD,Chad,Africa,Southern Africa,Africa,AFI
+NA,Channel Islands,NA,NA,NA,NA
+CL,Chile,Americas,South-Atlantic,Southern America,CARSAM
+CN,China,Asia,Asia/Pacific,China,ASIAPAC
+CX,Christmas Island,Oceania,Asia/Pacific,Asia,NA
+CC,Cocos (Keeling) Islands,NA,Asia/Pacific,Asia,NA
+CO,Colombia,Americas,South-Atlantic,Southern America,CARSAM
+KM,Comoros,Africa,Southern Africa,Africa,AFI
+CG,Congo - Brazzaville,Africa,Southern Africa,Africa,AFI
+CD,Congo - Kinshasa,Africa,Southern Africa,Africa,AFI
+CK,Cook Islands,Oceania,Asia/Pacific,Asia,ASIAPAC
+CR,Costa Rica,Americas,Mid-Atlantic,Southern America,CARSAM
+HR,Croatia,Europe,ECAC South-East,Eurocontrol,EUR
+CU,Cuba,Americas,Mid-Atlantic,Southern America,CARSAM
+CW,Curaçao,Americas,Mid-Atlantic,Southern America,NA
+CY,Cyprus,Asia,ECAC South-East,Eurocontrol,EUR
+CZ,Czechia,Europe,ECAC North-East,Eurocontrol,EUR
+NA,Czechoslovakia,NA,NA,NA,NA
+CI,Côte d’Ivoire,Africa,Southern Africa,Africa,AFI
+DK,Denmark,Europe,ECAC North-West,Eurocontrol,EUR
+DJ,Djibouti,Africa,Southern Africa,Africa,AFI
+DM,Dominica,Americas,Mid-Atlantic,Southern America,CARSAM
+DO,Dominican Republic,Americas,Mid-Atlantic,Southern America,CARSAM
+EC,Ecuador,Americas,South-Atlantic,Southern America,CARSAM
+EG,Egypt,Africa,North-Africa,Middle East,MID
+SV,El Salvador,Americas,Mid-Atlantic,Southern America,CARSAM
+GQ,Equatorial Guinea,Africa,Southern Africa,Africa,AFI
+ER,Eritrea,Africa,Southern Africa,Africa,AFI
+EE,Estonia,Europe,ECAC North-East,Eurocontrol,EUR
+SZ,Eswatini,Africa,Southern Africa,Africa,AFI
+ET,Ethiopia,Africa,Southern Africa,Africa,AFI
+FK,Falkland Islands,Americas,South-Atlantic,Southern America,NA
+FO,Faroe Islands,Europe,ECAC-Oceanic,Eurocontrol,NA
+FJ,Fiji,Oceania,Asia/Pacific,Asia,ASIAPAC
+FI,Finland,Europe,ECAC North-East,Eurocontrol,EUR
+FR,France,Europe,ECAC North-West,Eurocontrol,EUR
+GF,French Guiana,Americas,South-Atlantic,Southern America,NA
+PF,French Polynesia,Oceania,Asia/Pacific,Asia,NA
+TF,French Southern Territories,NA,NA,NA,NA
+GA,Gabon,Africa,Southern Africa,Africa,AFI
+GM,Gambia,Africa,Southern Africa,Africa,AFI
+GE,Georgia,Asia,ECAC South-East,Eurocontrol,EUR
+NA,German Democratic Republic,NA,ECAC North-West,Eurocontrol,NA
+DE,Germany,Europe,ECAC North-West,Eurocontrol,EUR
+GH,Ghana,Africa,Southern Africa,Africa,AFI
+GI,Gibraltar,Europe,ECAC South-West,Eurocontrol,NA
+GR,Greece,Europe,ECAC South-East,Eurocontrol,EUR
+GL,Greenland,Americas,Other Europe,Northern America,NA
+GD,Grenada,Americas,Mid-Atlantic,Southern America,CARSAM
+GP,Guadeloupe,Americas,Mid-Atlantic,Southern America,NA
+GU,Guam,Oceania,Asia/Pacific,Asia,NA
+GT,Guatemala,Americas,Mid-Atlantic,Southern America,CARSAM
+GG,Guernsey,Europe,ECAC North-West,Eurocontrol,NA
+GN,Guinea,Africa,Southern Africa,Africa,AFI
+GW,Guinea-Bissau,Africa,Southern Africa,Africa,AFI
+GY,Guyana,Americas,South-Atlantic,Southern America,CARSAM
+HT,Haiti,Americas,Mid-Atlantic,Southern America,CARSAM
+NA,Hamburg,NA,NA,NA,NA
+NA,Hanover,NA,NA,NA,NA
+HM,Heard & McDonald Islands,NA,NA,NA,NA
+NA,Hesse Electoral,NA,NA,NA,NA
+NA,Hesse Grand Ducal,NA,NA,NA,NA
+NA,Hesse-Darmstadt,NA,NA,NA,NA
+NA,Hesse-Kassel,NA,NA,NA,NA
+HN,Honduras,Americas,Mid-Atlantic,Southern America,CARSAM
+HK,Hong Kong SAR China,Asia,Asia/Pacific,China,ASIAPAC
+HU,Hungary,Europe,ECAC South-East,Eurocontrol,EUR
+IS,Iceland,Europe,ECAC-Oceanic,Northern America,NAT
+IN,India,Asia,Asia/Pacific,Asia,ASIAPAC
+ID,Indonesia,Asia,Asia/Pacific,Asia,ASIAPAC
+IR,Iran,Asia,Middle-East,Middle East,MID
+IQ,Iraq,Asia,Middle-East,Middle East,MID
+IE,Ireland,Europe,ECAC North-West,Eurocontrol,EUR
+IM,Isle of Man,Europe,ECAC North-West,Eurocontrol,NA
+IL,Israel,Asia,Middle-East,Middle East,EUR
+IT,Italy,Europe,ECAC South-East,Eurocontrol,EUR
+JM,Jamaica,Americas,Mid-Atlantic,Southern America,CARSAM
+JP,Japan,Asia,Asia/Pacific,Asia,ASIAPAC
+JE,Jersey,Europe,ECAC North-West,Eurocontrol,NA
+JO,Jordan,Asia,Middle-East,Middle East,MID
+KZ,Kazakhstan,Asia,Asia/Pacific,Asia,EUR
+KE,Kenya,Africa,Asia/Pacific,Africa,AFI
+KI,Kiribati,Oceania,Asia/Pacific,Asia,ASIAPAC
+NA,Kosovo,NA,NA,NA,NAT
+KW,Kuwait,Asia,Middle-East,Middle East,MID
+KG,Kyrgyzstan,Asia,Asia/Pacific,Asia,EUR
+LA,Laos,Asia,Asia/Pacific,Asia,ASIAPAC
+LV,Latvia,Europe,ECAC North-East,Eurocontrol,EUR
+LB,Lebanon,Asia,Middle-East,Middle East,MID
+LS,Lesotho,Africa,Southern Africa,Africa,AFI
+LR,Liberia,Africa,Southern Africa,Africa,AFI
+LY,Libya,Africa,North-Africa,Africa,MID
+LI,Liechtenstein,Europe,ECAC North-West,Eurocontrol,NA
+LT,Lithuania,Europe,ECAC North-East,Eurocontrol,EUR
+LU,Luxembourg,Europe,ECAC North-West,Eurocontrol,EUR
+MO,Macao SAR China,Asia,Asia/Pacific,China,ASIAPAC
+MG,Madagascar,Africa,Southern Africa,Africa,AFI
+MW,Malawi,Africa,Southern Africa,Africa,AFI
+MY,Malaysia,Asia,Asia/Pacific,Asia,ASIAPAC
+MV,Maldives,Asia,Asia/Pacific,Asia,ASIAPAC
+ML,Mali,Africa,Southern Africa,Africa,AFI
+MT,Malta,Europe,ECAC South-East,Eurocontrol,EUR
+MH,Marshall Islands,Oceania,Asia/Pacific,Asia,ASIAPAC
+MQ,Martinique,Americas,Mid-Atlantic,Southern America,NA
+MR,Mauritania,Africa,Southern Africa,Africa,AFI
+MU,Mauritius,Africa,Southern Africa,Africa,AFI
+YT,Mayotte,Africa,Southern Africa,Africa,NA
+NA,Mecklenburg Schwerin,NA,NA,NA,NA
+MX,Mexico,Americas,Mid-Atlantic,Southern America,CARSAM
+FM,Micronesia (Federated States of),Oceania,Asia/Pacific,Asia,ASIAPAC
+NA,Modena,NA,NA,NA,NA
+MD,Moldova,Europe,ECAC South-East,Eurocontrol,EUR
+MC,Monaco,Europe,ECAC North-West,Eurocontrol,EUR
+MN,Mongolia,Asia,Asia/Pacific,Asia,ASIAPAC
+ME,Montenegro,Europe,ECAC South-East,Eurocontrol,EUR
+MS,Montserrat,Americas,Mid-Atlantic,Southern America,NA
+MA,Morocco,Africa,North-Africa,Africa,EUR
+MZ,Mozambique,Africa,Southern Africa,Africa,AFI
+MM,Myanmar (Burma),Asia,Asia/Pacific,Asia,ASIAPAC
+NA,Namibia,Africa,Southern Africa,Africa,AFI
+NA,Nassau,NA,NA,NA,NA
+NR,Nauru,Oceania,Asia/Pacific,Asia,ASIAPAC
+NP,Nepal,Asia,Asia/Pacific,Asia,ASIAPAC
+NL,Netherlands,Europe,ECAC North-West,Eurocontrol,EUR
+NA,Netherlands Antilles,Americas,Mid-Atlantic,Southern America,NA
+NC,New Caledonia,Oceania,Asia/Pacific,Asia,NA
+NZ,New Zealand,Oceania,Asia/Pacific,Asia,ASIAPAC
+NI,Nicaragua,Americas,Mid-Atlantic,Southern America,CARSAM
+NE,Niger,Africa,Southern Africa,Africa,AFI
+NG,Nigeria,Africa,Southern Africa,Africa,AFI
+NU,Niue,Oceania,Asia/Pacific,Asia,NA
+NF,Norfolk Island,Oceania,Asia/Pacific,Asia,NA
+KP,North Korea,Asia,Asia/Pacific,Asia,ASIAPAC
+MK,North Macedonia,Europe,ECAC South-East,Eurocontrol,EUR
+MP,Northern Mariana Islands,Oceania,Asia/Pacific,Asia,NA
+NO,Norway,Europe,ECAC North-East,Eurocontrol,EUR
+NA,Oldenburg,NA,NA,NA,NA
+OM,Oman,Asia,Middle-East,Middle East,MID
+NA,Orange Free State,NA,NA,NA,NA
+PK,Pakistan,Asia,Asia/Pacific,Asia,ASIAPAC
+PW,Palau,Oceania,Asia/Pacific,Asia,ASIAPAC
+PS,Palestinian Territories,Asia,Middle-East,Middle East,EUR
+PA,Panama,Americas,Mid-Atlantic,Southern America,CARSAM
+PG,Papua New Guinea,Oceania,Asia/Pacific,Asia,ASIAPAC
+PY,Paraguay,Americas,South-Atlantic,Southern America,CARSAM
+NA,Parma,NA,NA,NA,NA
+PE,Peru,Americas,South-Atlantic,Southern America,CARSAM
+PH,Philippines,Asia,Asia/Pacific,Asia,ASIAPAC
+NA,Piedmont-Sardinia,NA,NA,NA,NA
+PN,Pitcairn Islands,Oceania,NA,NA,NA
+PL,Poland,Europe,ECAC North-East,Eurocontrol,EUR
+PT,Portugal,Europe,ECAC South-West,Eurocontrol,EUR
+NA,Prussia,NA,NA,NA,NA
+PR,Puerto Rico,Americas,Mid-Atlantic,Southern America,NA
+QA,Qatar,Asia,Middle-East,Middle East,MID
+NA,Republic of Vietnam,Asia,Asia/Pacific,Asia,NA
+RO,Romania,Europe,ECAC South-East,Eurocontrol,EUR
+RU,Russia,Europe,Other Europe,Russia,EUR
+RW,Rwanda,Africa,Southern Africa,Africa,AFI
+RE,Réunion,Africa,Southern Africa,Africa,NA
+MF,Saint Martin (French part),Americas,Mid-Atlantic,Southern America,NA
+WS,Samoa,Oceania,Asia/Pacific,Asia,ASIAPAC
+SM,San Marino,Europe,NA,NA,NA
+NA,Sardinia,NA,NA,NA,NA
+SA,Saudi Arabia,Asia,Middle-East,Middle East,MID
+NA,Saxe-Weimar-Eisenach,NA,NA,NA,NA
+NA,Saxony,NA,NA,NA,NA
+SN,Senegal,Africa,NA,NA,AFI
+RS,Serbia,Europe,ECAC South-East,Eurocontrol,EUR
+NA,Serbia and Montenegro,NA,NA,NA,NA
+SC,Seychelles,Africa,Southern Africa,Africa,AFI
+SL,Sierra Leone,Africa,Southern Africa,Africa,AFI
+SG,Singapore,Asia,Asia/Pacific,Asia,ASIAPAC
+SX,Sint Maarten,Americas,Mid-Atlantic,Southern America,NA
+SK,Slovakia,Europe,ECAC North-East,Eurocontrol,EUR
+SI,Slovenia,Europe,ECAC South-East,Eurocontrol,EUR
+SB,Solomon Islands,Oceania,Asia/Pacific,Asia,ASIAPAC
+SO,Somalia,Africa,Southern Africa,Africa,AFI
+NA,Somaliland,Africa,Southern Africa,Africa,NA
+ZA,South Africa,Africa,Southern Africa,Africa,AFI
+GS,South Georgia & South Sandwich Islands,NA,NA,NA,NA
+KR,South Korea,Asia,Asia/Pacific,Asia,ASIAPAC
+SS,South Sudan,Africa,Southern Africa,Africa,MID
+ES,Spain,Europe,ECAC South-West,Eurocontrol,EUR
+LK,Sri Lanka,Asia,Asia/Pacific,Asia,ASIAPAC
+BL,St. Barthélemy,Americas,Mid-Atlantic,Southern America,NA
+SH,St. Helena,Africa,Southern Africa,Africa,NA
+KN,St. Kitts & Nevis,Americas,Mid-Atlantic,Southern America,CARSAM
+LC,St. Lucia,Americas,Mid-Atlantic,Southern America,CARSAM
+PM,St. Pierre & Miquelon,Americas,North Atlantic,Northern America,NA
+VC,St. Vincent & Grenadines,Americas,Mid-Atlantic,Southern America,CARSAM
+NA,Stateless,NA,NA,NA,NA
+SD,Sudan,Africa,Southern Africa,Africa,MID
+SR,Suriname,Americas,South-Atlantic,Southern America,CARSAM
+SJ,Svalbard & Jan Mayen,Europe,ECAC-Oceanic,Eurocontrol,NA
+SE,Sweden,Europe,ECAC North-East,Eurocontrol,EUR
+CH,Switzerland,Europe,ECAC North-West,Eurocontrol,EUR
+SY,Syria,Asia,Middle-East,Middle East,MID
+ST,São Tomé & Príncipe,Africa,Southern Africa,Africa,AFI
+TW,Taiwan,Asia,Asia/Pacific,Asia,NA
+TJ,Tajikistan,Asia,Asia/Pacific,Asia,EUR
+TZ,Tanzania,Africa,Southern Africa,Africa,AFI
+TH,Thailand,Asia,Asia/Pacific,Asia,ASIAPAC
+NA,Tibet,NA,NA,NA,NA
+TL,Timor-Leste,Asia,Asia/Pacific,Asia,ASIAPAC
+TG,Togo,Africa,Southern Africa,Africa,AFI
+TK,Tokelau,Oceania,NA,NA,NA
+TO,Tonga,Oceania,Asia/Pacific,Asia,ASIAPAC
+TT,Trinidad & Tobago,Americas,Mid-Atlantic,Southern America,CARSAM
+TN,Tunisia,Africa,North-Africa,Africa,EUR
+TR,Turkey,Asia,ECAC South-East,Eurocontrol,EUR
+TM,Turkmenistan,Asia,Asia/Pacific,Asia,EUR
+TC,Turks & Caicos Islands,Americas,Mid-Atlantic,Southern America,NA
+NA,Tuscany,NA,NA,NA,NA
+TV,Tuvalu,Oceania,Asia/Pacific,Asia,ASIAPAC
+NA,Two Sicilies,NA,NA,NA,NA
+VI,U.S. Virgin Islands,Americas,Mid-Atlantic,Southern America,NA
+UG,Uganda,Africa,Southern Africa,Africa,AFI
+UA,Ukraine,Europe,ECAC North-East,Eurocontrol,EUR
+AE,United Arab Emirates,Asia,Middle-East,Middle East,MID
+NA,United Arab Republic,Asia,Middle-East,Middle East,NA
+GB,United Kingdom,Europe,ECAC North-West,Eurocontrol,EUR
+NA,United Province CA,NA,NA,NA,NA
+US,United States,Americas,North Atlantic,Northern America,NAM|ASIAPAC
+UM,United States Minor Outlying Islands (the),NA,Asia/Pacific,Asia,NA
+NA,Unknown,NA,NA,NA,NA
+UY,Uruguay,Americas,South-Atlantic,Southern America,CARSAM
+UZ,Uzbekistan,Asia,Asia/Pacific,Asia,EUR
+VU,Vanuatu,Oceania,Asia/Pacific,Asia,ASIAPAC
+VA,Vatican City,Europe,NA,NA,NA
+VE,Venezuela,Americas,South-Atlantic,Southern America,CARSAM
+VN,Vietnam,Asia,Asia/Pacific,Asia,ASIAPAC
+WF,Wallis & Futuna,Oceania,Asia/Pacific,Asia,NA
+EH,Western Sahara,Africa,Southern Africa,Africa,AFI
+NA,Wuerttemburg,NA,NA,NA,NA
+NA,Würtemberg,NA,NA,NA,NA
+YE,Yemen,Asia,Middle-East,Middle East,MID
+NA,Yemen Arab Republic,NA,NA,NA,NA
+NA,Yemen People's Republic,NA,NA,NA,NA
+NA,Yugoslavia,NA,NA,NA,NA
+ZM,Zambia,Africa,Southern Africa,Africa,AFI
+NA,Zanzibar,NA,NA,NA,NA
+ZW,Zimbabwe,Africa,Southern Africa,Africa,AFI
+AX,Åland Islands,Europe,ECAC North-East,Eurocontrol,NA

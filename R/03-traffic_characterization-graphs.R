@@ -434,8 +434,9 @@ monthly_lppt <- tfc_apts_eur |>
 
 ############################################################################################
 # fig-apt-annual-change
+this_max_limit = 500000
 
-get_p_study3_bra <- function(.year){
+get_p_study3_bra <- function(.year, .max_limit = this_max_limit){
   p_study3_bra <- study_apt_lvl |>
     filter(YEAR == as.character(.year)) |>
     ggplot(aes(y = reorder(NAME, TOT_FLTS_YEAR), x = TOT_FLTS_YEAR)) + 
@@ -443,7 +444,7 @@ get_p_study3_bra <- function(.year){
     geom_col(aes(fill = I(getElement(bra_eur_colours, "BRA")))
              , width = 0.9) +
     geom_text(aes(x = 500, label = ICAO), hjust = 0, size = 3, color = "white") +
-    scale_x_continuous(labels = scales::comma, limits = c(NA, 450000)) +
+    scale_x_continuous(labels = scales::comma, limits = c(NA, .max_limit)) +
     labs(y = NULL,  x = as.character(.year)) +
     theme(legend.position = "none")
   return(p_study3_bra)
@@ -489,7 +490,7 @@ get_p_study4_bra <- function(.year_ref, .year_comp){
 
 
 
-get_p_study3 <- function(.year){
+get_p_study3 <- function(.year, .max_limit = this_max_limit){
   p_study3 <- annual_tfc_apt |>
     filter(YEAR == as.character(.year)) |>
     ggplot(aes(y = reorder(NAME, TOT_FLTS_YEAR), x = TOT_FLTS_YEAR)) + 
@@ -497,7 +498,7 @@ get_p_study3 <- function(.year){
              , width = 0.9) +
     #scale_y_discrete(labels = scales::label_wrap(8)) +
     geom_text(aes(x = 500, label = ICAO), hjust = 0, size = 3, color = "white") +
-    scale_x_continuous(labels = scales::comma, limits = c(NA, 450000)) +
+    scale_x_continuous(labels = scales::comma, limits = c(NA, .max_limit)) +
     labs(x = NULL,  x = as.character(.year)) +
     theme(legend.position = "none")
   
@@ -631,7 +632,7 @@ peak_day_bra  <- read_csv("./data/BRA-airport-tfc-peakday-fix.csv", show_col_typ
 
 peak_day_bra <- peak_day_bra |> 
   add_nbr_rwy() |> 
-  mutate(REGION = "BRA") 
+  mutate(REGION = "BRA", PEAK_DAY_PCT = PK_DAY) 
 
 peak_day_eur <- tfc_apts_eur |> 
   peak_day_from_counts() |> 
@@ -640,11 +641,11 @@ peak_day_eur <- tfc_apts_eur |>
 
 
 peak_day_comb <- bind_rows(peak_day_bra
-                           #, peak_day_eur
+                           , peak_day_eur
                            )
 
 plot_peak_day_tfc <- function(.df, .year, ...){
-  viz <- ggplot( data = .df %>% filter(YEAR == .year)
+  viz <- ggplot( data = .df  |>  filter(YEAR == .year)
                  ,aes( x = PEAK_DAY_PCT
                        #, y = reorder(ICAO, PEAK_DAY_PCT)
                        ,y = reorder(NAME, PEAK_DAY_PCT)
@@ -801,7 +802,8 @@ fleet_mix_from_counts <- function(.counts, .reg){
 
 
 tfc_apts_bra <- read_csv("./data/BRA-airport-tfc.csv", show_col_types = FALSE)
-tfc_apts_eur <- read_csv("./data/EUR-airport-tfc.csv", show_col_types = FALSE)
+# loaded above - link same file or do not overwrite
+# tfc_apts_eur <- read_csv("./data/EUR-airport-tfc.csv", show_col_types = FALSE)
 
 fm_apts_bra <- tfc_apts_bra |> 
   dplyr::rename(HEAVY = H, MED = M, LIGHT = L) |> 

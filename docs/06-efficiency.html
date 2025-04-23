@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.549">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Operational Comparison of ANS Performance - 7&nbsp; Efficiency</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./08-conclusions.html" rel="next">
+<link href="./05-capacity_and_throughput.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./06-efficiency.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Efficiency</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Operational Comparison of ANS Performance</a> 
+        <div class="sidebar-tools-main">
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Operational-Comparison-of-ANS-Performance.pdf">
+              <i class="bi bi-bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="./Operational-Comparison-of-ANS-Performance.docx">
+              <i class="bi bi-bi-file-word pe-1"></i>
+            Download Docx
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-foreword.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foreword</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./00-executive-summary.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Executive Summary</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-system-overview.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Air Navigation System Characterisation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-test.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Test</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-traffic_characterisation.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Traffic Characterisation</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-predictability.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Predictability</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05-capacity_and_throughput.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Capacity and Throughput</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06-efficiency.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Efficiency</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08-conclusions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09-studies.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Studies</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99-references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#additional-taxi-in-time" id="toc-additional-taxi-in-time" class="nav-link active" data-scroll-target="#additional-taxi-in-time"><span class="header-section-number">7.1</span> Additional Taxi-In Time</a>
+  <ul class="collapse">
+  <li><a href="#annual-evolution-of-additional-taxi-in-times" id="toc-annual-evolution-of-additional-taxi-in-times" class="nav-link" data-scroll-target="#annual-evolution-of-additional-taxi-in-times"><span class="header-section-number">7.1.1</span> Annual Evolution of Additional Taxi-in Times</a></li>
+  <li><a href="#monthly-variation-of-additional-taxi-in-times" id="toc-monthly-variation-of-additional-taxi-in-times" class="nav-link" data-scroll-target="#monthly-variation-of-additional-taxi-in-times"><span class="header-section-number">7.1.2</span> Monthly Variation of Additional Taxi-in Times</a></li>
+  </ul></li>
+  <li><a href="#taxi-out-times" id="toc-taxi-out-times" class="nav-link" data-scroll-target="#taxi-out-times"><span class="header-section-number">7.2</span> Taxi-Out Times</a>
+  <ul class="collapse">
+  <li><a href="#annual-evolution-of-additional-taxi-out-times" id="toc-annual-evolution-of-additional-taxi-out-times" class="nav-link" data-scroll-target="#annual-evolution-of-additional-taxi-out-times"><span class="header-section-number">7.2.1</span> Annual Evolution of Additional Taxi-out Times</a></li>
+  <li><a href="#monthly-variation-of-additional-taxi-out-times" id="toc-monthly-variation-of-additional-taxi-out-times" class="nav-link" data-scroll-target="#monthly-variation-of-additional-taxi-out-times"><span class="header-section-number">7.2.2</span> Monthly Variation of Additional Taxi-out Times</a></li>
+  </ul></li>
+  <li><a href="#mapping-additional-taxi-in-and-taxi-out-times" id="toc-mapping-additional-taxi-in-and-taxi-out-times" class="nav-link" data-scroll-target="#mapping-additional-taxi-in-and-taxi-out-times"><span class="header-section-number">7.3</span> Mapping Additional Taxi-in and Taxi-out Times</a></li>
+  <li><a href="#additional-time-in-terminal-airspace" id="toc-additional-time-in-terminal-airspace" class="nav-link" data-scroll-target="#additional-time-in-terminal-airspace"><span class="header-section-number">7.4</span> Additional Time in Terminal Airspace</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary"><span class="header-section-number">7.5</span> Summary</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Efficiency</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<!-- this is a comment ... verbatim copy from previous report -->
+<p>Operational efficiency is a critical component in assessing the management and execution of operations. It provides insights in the management of arrival and departure flows and the associated separation and synchronisation activities. Inefficiencies can have an impact on user operations in terms of delays or excessive fuel burn. In light of the previous chapters it is therefore interesting to study how the available capacity was utilised to service demand during the different flight phases.</p>
+<p>The measures reported in this comparison report are based on the observed travel time for surface operations (i.e.&nbsp;taxi-in and taxi-out) and during the arrival phase. These travel times are compared with an associated reference time for a group of flights showing similar operational characteristics. The determined difference (i.e.&nbsp;additional time) measures the level of inefficiency. It must be noted that high performance operations will still yield a certain share of measured additional times. Operational efficiency is therefore aiming at minimising rather than eliminating these additional times as they cannot be zero.</p>
+<section id="additional-taxi-in-time" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="additional-taxi-in-time"><span class="header-section-number">7.1</span> Additional Taxi-In Time</h2>
+<p>The additional taxi-in time measures the travel time of an arriving aircraft from its touchdown, i.e.&nbsp;the actual landing time, to its stand/gate position, i.e.&nbsp;actual in-block time). This elapsed taxi-in time is compared to an anticipated reference time for aircraft arriving at the same runway and taxiing to the same (group of) stand/gate position(s). Research showed that the taxi-times are not dependent on the type of aircraft. The additional taxi-in time indicator provides a measure of the management of inbound surface traffic.</p>
+<p>This report utilises another source for the movement times at Brazilian airports. Next to the actual taxi-times, the new data source provides also gate/stand information. Accordingly, additional taxi-times can be now determined on a per-gate basis. Previous studies did not support this higher level of granularity. The reader needs therefore to bear in mind that the reported results and trends differ from previous reports which were based on an airport-wide aggregation. The latter may be influenced by the predominant runway system configuration and frequently used stand/parking positions.</p>
+<section id="annual-evolution-of-additional-taxi-in-times" class="level3" data-number="7.1.1">
+<h3 data-number="7.1.1" class="anchored" data-anchor-id="annual-evolution-of-additional-taxi-in-times"><span class="header-section-number">7.1.1</span> Annual Evolution of Additional Taxi-in Times</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-txit-annual" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-txit-annual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-txit-annual-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-txit-annual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.1: Additional taxi-in time [min/arr] (2023-2024)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The annual development of the average additional taxi-in times at the study airports is depicted by <a href="#fig-txit-annual" class="quarto-xref">Figure&nbsp;<span>7.1</span></a>. The indicator varies across the different airports. A threshold of 2 minutes per arrival emerges as an upper bound for the taxi-in performance.</p>
+<p>On average, taxi-in performance in Brazil ranged in 2022 well below this 2-minute-threshold for the majority of the airports. In general, taxi-in performance at Brazilian airports improved over the period 2019 to 2022<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>. However, taxi-in performance decreased in 2023 at all studied airports. The pandemic-related drop in surface movements and pressure on the ground infrastructure is visible for the major hubs, i.e.&nbsp;Sao Paulo’s (SBGR), Rio de Janeiro’s Galeão (SBGL), Campinas (SBKP). Taxi-in performance at Campinas remained fairly constant ranging around 2.5 min/arr across the years with a discernible reduction in 2021. The picture at SBGL and SBGR is more varied. Taxi-in performance improved by about 1.5 min/arr comparing the pre-pandemic year 2019 with the performance observed in 2022. While the observed taxi-in inefficiencies in 2023 remained stable in SBGL, an increasing trend is observed in SBGR (which is the busiest airport in Brazil).</p>
+<!-- footnote on changed values for txit @ BRA ------------------- 
+---- keep this close to the para for editing purposes -------- -->
+<p>In Europe, the average additional taxi-in times ranged generally below the 2-minute-threshold for most of the study airports <a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>. Amongst the European study airports, Rome Fiumicino (LIRF) and London Heathrow (EGLL) showed regularly higher levels of inefficiency during the taxi-in phase. Taxi-in performance deteriorated in London Heathrow (EGLL) in 2022 ranging just under 5 minutes per arrival and exceeding the pro-COVID performance by about 2 minutes per incoming flight. In 2023, the average additional taxi-in improved by about 1 minute per arrival. Rome Fiumicino observed a stable taxi-in performance ranging above 2.5 minutes per arrival. This suggests that the complexity of the aerodrome layout requires a higher effort to deconflict arrivals from other arrivals or taxiing departures. Taxi-in performance in 2023 dropped further at LIRF to just under 3 minutes per arrival. Several airports in Europe showed higher or less improved additional taxi-in times during the pandemic years. This is related to the fact that airports closed down portions of the infrastructure (e.g.&nbsp;terminals) to account for the lower demand in air traffic. In some cases, this resulted in less favourable runway and gate/stand combinations. In Europe, the year 2022 is also characterised by a surge in delays due to the returning demand for air travel. Associated ripple effects were still observed in 2023. The lower punctuality also posed challenges for arriving traffic as incoming flights had to be serviced to other gates/stands to deconflict from delayed departures. The latter phenomenon shows more clearly for the major hubs amongst the study airports.</p>
+<!-- footnote EUR taxi-times ---------------------------------------------- -->
+</section>
+<section id="monthly-variation-of-additional-taxi-in-times" class="level3" data-number="7.1.2">
+<h3 data-number="7.1.2" class="anchored" data-anchor-id="monthly-variation-of-additional-taxi-in-times"><span class="header-section-number">7.1.2</span> Monthly Variation of Additional Taxi-in Times</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-bra-txit-timeline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bra-txit-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-bra-txit-timeline-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bra-txit-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.2: Evolution of average additional taxi-in time at Brazilian airports
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-eur-txit-timeline" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-eur-txit-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-eur-txit-timeline-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-eur-txit-timeline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.3: Evolution of average additional taxi-in time at European airports
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The evolution of the taxi-in times at the study airports in Brazil and Europe is shown in <a href="#fig-bra-txit-timeline" class="quarto-xref">Figure&nbsp;<span>7.2</span></a> and <a href="#fig-eur-txit-timeline" class="quarto-xref">Figure&nbsp;<span>7.3</span></a>. In <a href="#fig-bra-txit-timeline" class="quarto-xref">Figure&nbsp;<span>7.2</span></a>, we can see that the variation of additional taxi-in time smoothened over time on the Brazilian side. This effect appears to be associated broadly with the beginning of the pandemic. Despite the significant return of demand in 2022 and continual growth in 2023, there are no significant monthly variations in the average additional time-in across the Brazilian airports. Operations at the larger airports, e.g.&nbsp;Guarulhos (SBGR), Rio de Janeiro (SBRJ), Brasilia (SBBR) observed a more systematic increase of the monthly average additional taxi-in times. These trends should be monitored for the coming period.</p>
+<p>The observed average additional taxi-in time varies across European airports on a monthly basis. In general, seasonality is a strong driver for month-on-month changes, as weather or seasonal traffic demand pose additional strains on the servicing of ground movements. To a certain degree, the pandemic period is discernible in the charts, except for Barcelona and Zurich, which showed a slight higher leve of taxi-in inefficiency. Such less efficient average additional taxi-in times point to changes in the taxi-in procedures during the pandemic. Also noteworthy is Heathrow’s behaviour, which showed an increase in its monthly average additional taxi-in times. This may be linked to difficulties accommodating the returning traffic. It will be interesting to study which factors impacted the significant increase in the taxi-in inefficiency.</p>
+</section>
+</section>
+<section id="taxi-out-times" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="taxi-out-times"><span class="header-section-number">7.2</span> Taxi-Out Times</h2>
+<section id="annual-evolution-of-additional-taxi-out-times" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="annual-evolution-of-additional-taxi-out-times"><span class="header-section-number">7.2.1</span> Annual Evolution of Additional Taxi-out Times</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-txot-annual" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-txot-annual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-txot-annual-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-txot-annual-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.4: Average additional taxi-out time [min/dep] (2023-2024)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>On average, higher additional times for taxi-out are observed across all airports (c.f. <a href="#fig-txot-annual" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>). During the pandemic, lower traffic demand resulted in 2020 and 2021 to a significant drop of the average additional taxi-out times. In comparison to the addtional taxi-in time, the taxi-out phase requires a higher level of management of the surface movements. Departure procedures and flow control can impact the departure queue. Comparing the observed taxi-out performance across all study airports ( <a href="#fig-txot-annual" class="quarto-xref">Figure&nbsp;<span>7.4</span></a>), the interval of two to four minutes of average additional taxi-out time can serve as a benchmark. There is a varied picture with several airports observing additinal taxi-out times of more than 4 minutes per departure, e.g.&nbsp;SBSP, SBRJ, SBGR in Brazil and LIRF, EGLL, and EGKK in Europe. In many instances the higher taxi-out times in 2022 and 2023 evidence the general increase in air traffic and the reopening of closed parts of the aerodrome infrastructure.</p>
+</section>
+<section id="monthly-variation-of-additional-taxi-out-times" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="monthly-variation-of-additional-taxi-out-times"><span class="header-section-number">7.2.2</span> Monthly Variation of Additional Taxi-out Times</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-txot-monthly" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-txot-monthly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-txot-monthly-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-txot-monthly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.5: Brazil - Monthly Evolution of taxi-out times
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Moving from the annual overview to the monthly level a more finegrained pattern emerges. Within the Brazilian context taxi-out performance increased during the beginning of COVID (c.f. <a href="#fig-txot-monthly" class="quarto-xref">Figure&nbsp;<span>7.5</span></a>). The actual order of magnitude varies across the airports, however a clear reaction can be observed for the initial phase (i.e.&nbsp;following the WHO pandemic declaration in March).</p>
+<p>The reaction to the unprecedented decline in air traffic is more prominent for European airports (c.f <a href="#fig-txot-eur-monthly" class="quarto-xref">Figure&nbsp;<span>7.6</span></a>). London Heathrow (EGLL) and London Gatwick (EGKK) evidenced a strong decline of traffic and associated additional taxi-out times following the start of the pandemic. Strong weather influences drove the taxi-out performance at Amsterdam Schiphol (EHAM), Munich (EDDM) and Zurich (LSZH) in early 2021.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-txot-eur-monthly" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-txot-eur-monthly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-txot-eur-monthly-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-txot-eur-monthly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.6: Europe - Monthly Evolution of taxi-out times
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="mapping-additional-taxi-in-and-taxi-out-times" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="mapping-additional-taxi-in-and-taxi-out-times"><span class="header-section-number">7.3</span> Mapping Additional Taxi-in and Taxi-out Times</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-txot-txit-mapping" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-txot-txit-mapping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-txot-txit-mapping-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-txot-txit-mapping-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.7: Mapping of additional taxi-in and taxi-out times
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>This analysis builds on the previous sections. <a href="#fig-txot-txit-mapping" class="quarto-xref">Figure&nbsp;<span>7.7</span></a> compares the relationship between the taxi-in and taxi-out performance observed pre-pandemic (i.e.&nbsp;2019) with the observed performance in 2023. It also shows that on average taxi-out operations accrued more additional time than taxi-in operations (data points range below the dotted unit line, and as shown in the previous sections). For most of the airports, the overall performance shows a reduction in additional taxi-out times (i.e.&nbsp;characterised by a leftshift along the x-axis) when comparing the pre-pandemic year 2019 to 2023. A significant improvement in taxi-in performance can be obsered in Brazil across all study airports (i.e.&nbsp;decreasing trend along y-axis). This is contrasted by the behaviour in Europe. The majority of European airports observed no significant change in their taxi-in performance (i.e.&nbsp;no vertical trend). The noteworthy exemption is London Heathrow (EGLL). EGLL faced a significant increase in average additional taxi-in time in 2023 in comparison to the pre-pandemic performance level observed in 2019. The lower performance in terms of taxi-in is observed in <a href="#fig-eur-txit-timeline" class="quarto-xref">Figure&nbsp;<span>7.3</span></a> which shows a strong increase in the second half of 2023. <a href="#fig-txot-txit-mapping" class="quarto-xref">Figure&nbsp;<span>7.7</span></a> also shows that the overall taxi-performance in Europe tends to show lower levels of variation between pre-pandemic and post-pandemic. Exemptions are London Heathrow (EGLL) and Rome Fiumincino (LIRF) that saw a discernible rise in taxi-in inefficiencies and exceeding the levels observed at Brazilian study airports.</p>
+</section>
+<section id="additional-time-in-terminal-airspace" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="additional-time-in-terminal-airspace"><span class="header-section-number">7.4</span> Additional Time in Terminal Airspace</h2>
+<p>The additional time in terminal airspace is calculated as the difference of the actual flying time from entering the sequencing area (i.e.&nbsp;100NM radius around the airport) to the actual landing time. Previous research and guidance suggests that reference time can be build for flights sharing similar operational characteristics (entry sector, aircraft class, and landing runway).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-asma" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-asma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-asma-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-asma-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.8: Additional time in terminal airspace
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-asma" class="quarto-xref">Figure&nbsp;<span>7.8</span></a> compares the annual average of additional times in terminal airspace across the study airports. On average, the arrival flows at European airports are less constraint than in Brazil.</p>
+<p>At London Heathrow (EGLL) a change in the operational concept helped to reduce the excessive additional ASMA times observed pre-COVID. It must be noted that the minimal results for both London airports (Heathrow and Gatwick) in 2021 are a data artefact. The reference times for this study are build on the basis of the performance observed in 2019. The lower traffic levels resulted in more efficient and shorter terminal sequencing operations. Compared to the 2019 reference times yields therefore minimal additional times. Although there are improvements across the operations at European airports in comparison to 2019, it appears that with higher demand, procedural aspects applied before the pandmic are being reintroduced.</p>
+<p>During the pandemic, Brazilian aviation authorities relieved regulations for general aviation in the São Paulo Congonhas (SBSP) airport. As this relief was still in force during the recovery in 2021 and 2022, balancing demand was difficult and caused higher additional time as the traffic increased back. For example, in May 2022, the lack of slots, associated with the gradual increase in demand, impacted the operations of Congonhas airport (SBSP). From June 2022, the need for slot for General aviation returned in force, but in October operations were again impacted by the amount of storms above expected for the season.</p>
+<p>For future reports, the data for for the assessment of the additional time in terminal airspace will be complemented for Brazil. This will allow to better investigate the changes observed across the years. <a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-asma-vs-traffic-volume" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-asma-vs-traffic-volume-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="06-efficiency_files/figure-html/fig-asma-vs-traffic-volume-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-asma-vs-traffic-volume-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7.9: Comparison of additional time in terminal airspace
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-asma-vs-traffic-volume" class="quarto-xref">Figure&nbsp;<span>7.9</span></a> depicts the change in terms of the average additional time in terminal airspace comparing 2019 and 2022. It must be noted that with respect to traffic, the Brazilian data set does not comprise all arriving traffic (c.f. traffic figures reported in earlier chapters).</p>
+<p>The comparison shows the effect of the decline of air traffic on the performance in the European region. The contraction of demand resulted in lower observed additional times accrued by the arriving traffic. For some airports in the Brazil region it can be observed how procedural aspects influence the additional time in terminal airspace. For example, despite the variation of the traffic levels considered, the additional time remained fairly stable at SBGR comparing pre- and post-pandemic years.</p>
+</section>
+<section id="summary" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="summary"><span class="header-section-number">7.5</span> Summary</h2>
+<p>Operational efficiency provides an insight in terms of available benefit pools that can be exploited. In light of the ongoing climate change discussion, improvements in operational efficiency are directly linked with the aircraft flying time and can help to reduce unnecessary emissions.</p>
+<p>Comparing the surface movement performance in Brazil and Europe shows similar trends. On average, taxi-in operations are less constraint than taxi-out movements. The latter observed higher additional times. This may be subject to deconfliction of the traffic during the taxi-out phase, the establishment of the departure sequence, and holding at/close to the runway to maximise the runway utilisation.</p>
+<p>The analysis of the additional time in terminal airspace on the basis of the new data set for Brazil confirmed previous trends. On average, arrival sequencing in combination with the lower capacity result in higher additional times within the terminal airspace. It must be noted that Brazil undertook a major airspace redesign project in 2021 that influences the interface between the terminal airspace and the enroute network. In the European region, the reduced level of air traffic resulted in lower pressure on the sequencing of arrivals. However, the step increase between 2021 and 2022 for several airports suggests that constraints and more sequencing may come back with the increasing demand.</p>
+<p>It will be interesting to study in future iterations of this comparison report to what extent arrival managment concepts deployed in the different regions contribute to the observed additional times.</p>
+
+
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>While general trends are consistent with previous reports, the changed and improved data source provides now runway and stand/gate information for taxi-in operations. This allows for a more fine-grained analysis of the additional surface movement times. Accordingly, observed (and reported) taxi-in performance values differ from the earlier reports (which are based on airport-wide reference times). <!--------------------------------------------------------------- --><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>To account for the low traffic demand during the pandemic years, the European data builds on modulated reference times for the period 2019 through 2022. This accounts for the high number of changed surface movement patterns (e.g.&nbsp;different runway/gate combinations infrequently or not used before the pandemic). While the overall trend is consistent, previous reports may show differnt values for the observed surface movement performance.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The assessment of the additional time in terminal airspace for Brazil is based on a data set starting in 2021. This may also result in reasonable small reference times and increase the measured values for Brazil. With a complemented dataset and a change of the base year for future reports, these data phenomena will be addressed.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./05-capacity_and_throughput.html" class="pagination-link  aria-label=" &lt;span="" and="" throughput&lt;="" span&gt;"="">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Capacity and Throughput</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./08-conclusions.html" class="pagination-link" aria-label="<span class='chapter-number'>8</span>&nbsp; <span class='chapter-title'>Conclusions</span>">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Conclusions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
