@@ -407,8 +407,8 @@ month_names <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", 
 month_tfc_bra <- month_tfc_bra |>
   mutate(YEAR=as.character(YEAR))
 
-airport_per_year <- function(.apt, .years){
-  p_tfc_month <- month_tfc_bra  |>
+airport_per_year <- function(.month_tfc, .apt, .years){
+  p_tfc_month <- .month_tfc  |>
     filter(YEAR %in% .years, ICAO == .apt) |>
     mutate(MONTH = factor(MONTH, levels = 1:12, labels = month_names)) |>
     ggplot() +
@@ -422,6 +422,13 @@ airport_per_year <- function(.apt, .years){
   return(p_tfc_month)
 }
 
+monthly_lppt <- tfc_apts_eur |> 
+  filter(ICAO == "LPPT", year(DATE) %in% 2023:2024) |> 
+  mutate(TOT_FLTS_MONTH = ARRS + DEPS
+         , YM = floor_date(DATE, unit = "month")
+         ) |> 
+  reframe(TOT_FLTS_MONTH = sum(TOT_FLTS_MONTH), .by = c(ICAO, YM)) |>
+  mutate(YEAR = year(YM) |> as.character(), MONTH = month(YM)) 
 
 
 
