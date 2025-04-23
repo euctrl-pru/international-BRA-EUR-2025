@@ -183,6 +183,75 @@ global_iso2 <- global_iso2 |> bind_rows(patch_global)
 # constructed wiht ChatGPT - not validated !!!!
 icao_iso2 <- read_csv("./data/country-icao-iso-territory.csv")
 
+oa_url <- "https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv"
+oa <- readr::read_csv(oa_url, show_col_types = F) 
+oa <- oa |> 
+  dplyr::filter(!is.na(icao_code)) |> 
+  dplyr::select(ICAO = icao_code, NAME = name, CNTRY_ISO = iso_country)
+
+# patch oa
+patch_oa <- tibble::tribble(
+  ~ ICAO, ~ NAME, ~ CNTRY_ISO
+  ,"SBCO", "tbd" ,"BR"
+  ,"SBJD", "tbd", "BR"    
+  ,"SBJI", "tbd", "BR"
+  ,"SBMI", "tbd", "BR"
+ ,"SBMT" , "tbd", "BR"
+ ,"SBPO", "tbd", "BR"
+ ,"SBRD" , "tbd", "BR"
+ ,"SBSG" , "tbd", "BR"
+ ,"SBSI", "tbd", "BR"
+ ,"SBSO", "tbd", "BR"
+,"SBUY", "tbd", "BR"
+,"SBVC" , "tbd", "BR"
+,'GQNN', NA , "MR"    # Maritania
+,'SDAG', NA ,'BR'
+,'SDIY', NA ,'BR'
+,'SDJV', NA ,'BR'
+,'SDLO', NA ,'BR'
+,'SDVZ', NA ,'BR'
+,'SIFC', NA ,'BR'
+,'SIRI', NA ,'BR'
+,'SIUA', NA ,'BR'
+,'SIXE', NA ,'BR'
+,'SJZA', NA ,'BR'
+,'SN6L', NA ,'BR'
+,'SNAB', NA ,'BR'
+,'SNBA', NA ,'BR'
+,'SNCL', NA ,'BR'
+,"SNEB", NA, "BR"
+,"SNIG" , NA, "BR"
+,"SNJM"  , NA, "BR"
+,"SNLN" , NA, "BR"
+,"SNRJ"  , NA, "BR"
+,"SNSM"  , NA, "BR"
+,"SNSS"  , NA, "BR"
+,"SNTS"  , NA, "BR"
+,"SNWS"  , NA, "BR"
+,"SNZR"  , NA, "BR"
+,"SSBN"  , NA, "BR"
+,"SSGG"  , NA, "BR"
+,"SSQO"  , NA, "BR"
+,"SSRS"  , NA, "BR"
+,"SSVL"  , NA, "BR"
+,"SWBE"  , NA, "BR"
+,"SWKQ"  , NA, "BR"
+,"SWYN"  , NA, "BR"
+,"SYEC"  , NA, "GN"
+)
+oa <- oa |> dplyr::bind_rows(patch_oa)
+
+# icao_iso_other <- countrycode::codelist |> 
+#   select(iso2c, country.name.en, continent, eurocontrol_statfor, eurocontrol_pru, icao.region)
+# icao_iso_other |> readr::write_csv("./data/country-icao-iso-etc.csv")
+icao_iso_other <- readr::read_csv("./data/country-icao-iso-etc.csv", show_col_types = F)
+
+# to-do patch
+#   iso2c country.name.en continent eurocontrol_statfor eurocontrol_pru icao.region
+#   <chr> <chr>           <chr>     <chr>               <chr>           <chr>      
+# 1 SN    Senegal         Africa    NA                  NA              AFI   
+
+
 #------------------------------------------------------ END ISO ----------
 
 eur_dests <- eur_mvts_study |> 
@@ -341,7 +410,7 @@ trim_ANAC <- function(.anac){
       ,ADES    = sg_icao_destino
       ,FLT_NBR = nr_voo
       ,OPR  = sg_empresa_icao           # aircraft operator (ICAO)
-      ,REG  = ds_matriculo
+      ,REG  = ds_matricula 
       ,TYPE = sg_equipamento_icao       # aircraft type (ICAO)
       ,AOBT    = hr_partida_real
       ,AIBT    = hr_chegada_real
@@ -361,8 +430,76 @@ prep_bra_connectivity <- function(.trimmed_anac){
     )
  return(bra_analytic)
 }
+
+append_iso_adep_ades <- function(
+      .flt_adep_ades
+    , .iso_look_up = oa |> select(ICAO, CNTRY_ISO)
+    ){
+  this_flt <- .flt_adep_ades |> 
+    dplyr::left_join(
+       .iso_look_up |> dplyr::rename(ADEP = ICAO, DEP_CNTRY = CNTRY_ISO)
+      , by = dplyr::join_by(ADEP)
+      ) |> 
+    dplyr::left_join(
+      .iso_look_up |> dplyr::rename(ADES = ICAO, DES_CNTRY = CNTRY_ISO)
+      , by = dplyr::join_by(ADES))
+  
+  return(this_flt)
+}
+
+append_ades_regions <- function(
+     .flt_ades_iso2
+    ,.region_lookup = icao_iso_other |> 
+      filter(!is.na(iso2c)) |> 
+      select(  DES_CNTRY = iso2c
+             , DES_ICAO  = icao.region   
+             , DES_STATF = eurocontrol_statfor
+             , DES_PRU = eurocontrol_pru)
+){
+  this_flt <- .flt_ades_iso2 |> 
+    dplyr::left_join(.region_lookup, by = dplyr::join_by(DES_CNTRY))
+  
+  return(this_flt)
+}
+
+bra_mvts <- bra_mvts |> trim_ANAC() |> append_iso_adep_ades() |> append_ades_regions()
 ```
 
+
+```{r}
+bra_reg_tfc <- bra_mvts |> 
+  mutate(DOMESTIC = DES_CNTRY == "BR") |> 
+  group_by(DES_ICAO, DOMESTIC) |> 
+  reframe(DEPS = n())
+
+bra_reg_tfc |> mutate(LABEL = ifelse(!DOMESTIC, DES_ICAO, "local"), SHARE = DEPS / sum(DEPS)) |> mutate(LABEL = forcats::fct_reorder(LABEL, SHARE)) |> drop_na() |> ggplot() + geom_col(aes(x = SHARE, y = LABEL, fill = LABEL)) + scale_x_continuous(labels = scales::percent_format()) + labs(x = element_blank(), y = element_blank())
+```
+
+
+```{r}
+library(ComplexUpset)
+
+dests_bra_eur <- bra_mvts |> 
+  filter(DES_PRU == "Eurocontrol", DEP_CNTRY == "BR") |> 
+  group_by(ADEP, ADES) |> 
+  reframe(DEPS = n()) |> 
+  arrange(desc(DEPS)) |> 
+  mutate(SHARE = DEPS / sum(DEPS), DUMMY = 1
+         ,CUM_SHARE = cumsum(SHARE)) 
+
+tmp <- bra_mvts |> 
+  filter(DEP_CNTRY == "BR", DES_PRU == "Eurocontrol") |> 
+  group_by(ADEP, ADES, DES_PRU, DEP_CNTRY) |> 
+  reframe(DEPS = n()) |> 
+  arrange(desc(DEPS)) |> 
+  mutate(SHARE = DEPS / sum(DEPS), CUM_SHARE = cumsum(SHARE)) |> 
+  mutate(IS_STUDY = ADES %in% eur_apts) |> 
+  pivot_wider(names_from = ADES, values_from = IS_STUDY)
+
+tmp <- tmp |> filter(CUM_SHARE <= 0.8)
+tiks <- names(tmp)[-c(1:4)]
+tmp |> upset(tiks)
+```
 
 
 another cool and long airport lookup

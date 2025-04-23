@@ -22,6 +22,9 @@ library(devtools)
 library(arrow)
 
 # ============== DEFAULTS and DEFINITIONS =====================================
+# study year
+this_year <- 2024
+
 # max_date
 max_date <- lubridate::ymd("2024-12-31")
 
