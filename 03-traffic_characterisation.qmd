@@ -180,7 +180,7 @@ Altogether, the data illustrates how both the Brazilian and European air network
 
 
 
-```{r}
+```{}
 
  #| label: fig-bra-gru-apt
  #| fig.cap: Guarulhos monthly traffic
