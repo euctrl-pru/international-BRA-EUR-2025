@@ -59,7 +59,30 @@ knitr::include_graphics("./figures/afterPMS_rwy20.png")
 
 Monitoring Additional Time in TMA is valuable for assessing the impact of the Point Merge System (PMS) implementation on airspace operational performance. This indicator reflects the extra time an aircraft spends in the TMA compared to an ideal flight profile. A comparison of KPI08 values was conducted for periods before and after the implementation of PMS. For SBGR, the analysis covered the years 2019 (pre-PMS) and 2024 (post-PMS). These periods were chosen to avoid analytical bias, since PMS implementation at Guarulhos took place during the COVID-19 pandemic. The analysis period for LPPT spanned from March 2023 to July 2024. The following graph presents the results obtained. Reference times and additional times were calculated on a monthly basis.
 
+:::{.callout-note}
+
+[] convert figures to study data set --> ASMA
+[] include runway throughput ~ peak arrival rate ~ consistency during peak hours
+
+:::
+
 ![](figures/asma_LPPT.png)
+
+```{r}
+lppt_asma <- readr::read_csv("./data/EUR-ASMA-LPPT.csv")
+
+summer_asma_100 <- lppt_asma |> 
+  mutate(YEAR = year(DATE), MONTH = month(DATE)) |> 
+  filter(MONTH %in% c(3:7)) |> 
+  group_by(ICAO, PHASE, YEAR, MONTH) |> 
+  reframe(across(.cols = ARRS100:TOT_A100, .fns = ~ sum(.x))) |> 
+  mutate(AVG_ADD_TIME = ADD100 / ARRS100, AVG_A100 = TOT_A100 / ARRS100) |> 
+  pivot_longer(cols = contains("AVG"), names_to = "TYPE", values_to = "AVG_TIME") 
+
+summer_asma_100 |> mutate(TIK = paste0(MONTH,"-",YEAR) ) |> 
+  ggplot() + geom_col(aes(x = TIK, y = AVG_TIME, fill = TYPE))
+```
+
 
 ![](figures/asma_SBGR_2019.png)
 

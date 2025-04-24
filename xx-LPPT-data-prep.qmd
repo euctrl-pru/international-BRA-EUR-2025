@@ -15,7 +15,8 @@ library(tidyverse)
 source(here::here("R","rqutils-zip.R"))
 source(here::here("R","rq-apdf-to-punc.R"))
 source(here::here("R","rq-apdf-to-pbwg.R"))     # todo- clean - need to load punc first.
-source(here::here("03-traffic_characterization-graphs.R"))
+source(here::here("R","rq-apdf-asma-dsma.R"))
+source(here::here("R","03-traffic_characterization-graphs.R"))
 ```
 
 ```{r}
@@ -250,3 +251,145 @@ lppt_txxt_add_times |>
   theme(legend.position = "none")
 ```
 
+## Additional Time in Terminal Airspace
+
+BRA-EUR focusses on ASMA (KPI08) - additional time in the arrival airspace.
+
+```{r}
+# load the data sets
+if(!exists("lppt_adpf")){
+  lppt_adpf <- read_zip(pth_apdf, lppt_zip)
+}
+
+asma_dsma <- lppt_adpf |> bind_rows() |> extract_asma_dsma() |> prepare_eur_asma_dsma() |> mutate(DATE = lubridate::date(MVT_TIME))
+```
+
+ASMA sectors provided by Thierry:
+
+```{r}
+lppt_sects <- tibble::tribble(
+~AIRPORT,	~ASMA_RADIUS,	~VERSION,	~VALID_FROM, ~VALID_TO,	~ASMA_SECTOR, ~FROM_BEARING,	~TO_BEARING
+,"LPPT",	40,	0,	"01-Jan-11",	"01-Apr-24",	1,	40	,100
+,"LPPT",	40,	0,	"01-Jan-11",	"01-Apr-24",	2,	100	,160
+,"LPPT",	40,	0,	"01-Jan-11",	"01-Apr-24",	3,	160	,235
+,"LPPT",	40,	0,	"01-Jan-11",	"01-Apr-24",	4,	235	,295
+,"LPPT",	40,	0,	"01-Jan-11",	"01-Apr-24",	5,	295	,350
+,"LPPT",	40,	0,	"01-Jan-11",	"01-Apr-24",	6,	350	,40
+,"LPPT",	40,	1,	"01-Apr-24",	"01-Dec-99",	1,	40	,100
+,"LPPT",	40,	1,	"01-Apr-24",	"01-Dec-99",	2,	100	,150
+,"LPPT",	40,	1,	"01-Apr-24",	"01-Dec-99",	3,	150	,240
+,"LPPT",	40,	1,	"01-Apr-24",	"01-Dec-99", 	4,	240	,300
+,"LPPT",	40,	1,	"01-Apr-24",  "01-Dec-99",	5,	300	,350
+,"LPPT",	40,	1,	"01-Apr-24",  "01-Dec-99",	6,	350	,40
+,"LPPT",	100,	0,	"01-Jan-11",	"01-Apr-24",1,	40	,100
+,"LPPT",	100,	0,	"01-Jan-11",	"01-Apr-24",2,	100	,160
+,"LPPT",	100,	0,	"01-Jan-11",	"01-Apr-24",3,	160	,235
+,"LPPT",	100,	0,	"01-Jan-11",	"01-Apr-24",4,	235	,295
+,"LPPT",	100,	0,	"01-Jan-11",	"01-Apr-24",5,	295	,350
+,"LPPT",	100,	0,	"01-Jan-11",	"01-Apr-24",6,	350	,40
+,"LPPT",	100,	1,	"01-Apr-24",	"01-Dec-99",1,	40	,100
+,"LPPT",	100,	1,	"01-Apr-24",	"01-Dec-99",2,	100	,150
+,"LPPT",	100,	1,	"01-Apr-24",	"01-Dec-99",3,	150	,240
+,"LPPT",	100,	1,	"01-Apr-24",	"01-Dec-99",4,	240	,300
+,"LPPT",	100,	1,	"01-Apr-24",	"01-Dec-99",5,	300	,350
+,"LPPT",	100,	1,	"01-Apr-24",	"01-Dec-99",6,	350	,40
+)
+
+patch_sectors_overrun_north <- function(.sects_to_fm_bearings){
+  this_sects <- .sects_to_fm_bearings
+  sects_ok   <- this_sects |> filter(FROM_BEARING <= TO_BEARING)
+  sects_nok  <- this_sects |> filter(FROM_BEARING > TO_BEARING)
+  if(nrow(sects_nok)){
+    sects_nok <- sects_nok|> slice(rep(1:n(), each = 2)) |> 
+       mutate( TO_BEARING   = ifelse(row_number() == 1, 360, TO_BEARING)
+              ,FROM_BEARING = ifelse(row_number() == 2, 0  , FROM_BEARING)
+             )
+  }
+  return(bind_rows(sects_ok, sects_nok))  # will not bind anything if no overrun
+}
+
+lppt_asma40_sects <- lppt_sects |> 
+  filter(VERSION == max(VERSION), ASMA_RADIUS == 40) |> 
+  patch_sectors_overrun_north()
+lppt_asma100_sects <- lppt_sects |> 
+  filter(VERSION == max(VERSION), ASMA_RADIUS == 100) |> 
+  patch_sectors_overrun_north()
+
+# append sectors to asmas
+asmas <- asma_dsma |> filter(PHASE == "ARR")
+
+by40 <- join_by(C40_BEARING >= FROM_BEARING, C40_BEARING < TO_BEARING)
+asmas <- asmas |> 
+  left_join(lppt_asma40_sects |> 
+              select(SECT_40 = ASMA_SECTOR, FROM_BEARING, TO_BEARING)
+            , by = by40
+            ) |> 
+  select(-c(FROM_BEARING, TO_BEARING))
+
+append_asma_100_sectors <- function(.asmas, .sects = lppt_asma100_sects){
+  by100 <- join_by(C100_BEARING >= FROM_BEARING, C100_BEARING < TO_BEARING)
+  this_asmas <- .asmas |> 
+    left_join(.sects |> 
+              select(SECT_100 = ASMA_SECTOR, FROM_BEARING, TO_BEARING)
+            , by = by100
+            ) |> 
+  select(-c(FROM_BEARING, TO_BEARING))
+  return(this_asmas)
+}
+```
+
+```{r}
+refs_40 <- asmas |> 
+  filter(year(MVT_TIME) == 2024) |> 
+  group_by(PHASE, CLASS, RWY, SECT_40) |> 
+  reframe(N_VALID = sum(!is.na(C40_TRAVEL))
+          , REF_20_40 = quantile(C40_TRAVEL, p = 0.2, na.rm = TRUE)
+          )
+
+refs_100 <- asmas |> 
+  filter(year(MVT_TIME) == 2024) |> 
+  group_by(PHASE, CLASS, RWY, SECT_100) |> 
+  reframe(N_VALID = sum(!is.na(C100_TRAVEL))
+          , REF_20_100 = quantile(C100_TRAVEL, p = 0.2, na.rm = TRUE)
+          )
+# correct for runway change
+refs_100_2 <- refs_100 |> 
+  mutate(
+    RWY = case_when(
+      RWY == "02" ~ "03"
+    , RWY == "20" ~ "21"
+    , .default = NA
+    )
+  )
+refs_100 <- refs_100 |> bind_rows(refs_100_2)
+```
+
+```{r}
+asmas <- asmas |> append_asma_100_sectors() 
+asmas <- asmas |> left_join(refs_100 |> select(-N_VALID), by = join_by(PHASE, CLASS, RWY, SECT_100))
+asmas <- asmas |> mutate(ADD_TIME_100 = C100_TRAVEL - REF_20_100)
+```
+
+```{r}
+asma_lppt <- asmas |> 
+  group_by(ICAO = ADES, DATE, PHASE, CLASS, RWY, SECT_100) |> 
+  reframe(ARRS = n()
+          , ARRS100 = sum(!is.na(ADD_TIME_100))
+          , TOT_REF100 = sum(REF_20_100[!is.na(ADD_TIME_100)])
+          , TOT_A100 = sum(C100_TRAVEL[!is.na(ADD_TIME_100)])
+          , ADD100 = sum(ADD_TIME_100[!is.na(ADD_TIME_100)]) 
+          )
+```
+
+```{r}
+asma_daily <- asma_lppt |> 
+  group_by(ICAO, DATE, PHASE) |> 
+  reframe( ARRS100 = sum(ARRS100)
+          , ADD100 = sum(ADD100)
+          , TOT_A100   = sum(TOT_A100)) |> 
+  mutate(AVG_ADD_TIME = ADD100 / ARRS100)
+```
+
+asma_daily |> write_csv("./data/EUR-ASMA-LPPT.csv")
+
+ICAO,DOF,ARRS,ARRS40,ARRS100,TOT_A40,TOT_REF40,ADD40,TOT_A100,TOT_REF100,ADD100,AVG_ADD40,AVG_ADD100
