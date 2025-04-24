@@ -19,6 +19,9 @@ This chapter focuses on arrival and departure punctuality as crucial predictabil
 
 ## Arrival Punctuality
 
+The arrival punctuality shows the predictability of landing operations at airports, based on the scheduled in-block time (SIBT). It considers a 15-minute window for early or late arrivals and expresses the percentage of flights arriving at the gate within that margin.
+
+
 ```{r}
 #| label: fig-arrival-punc
 #| fig-cap: Evolution of arrival punctuality at study airports (2023 vs 2024)
@@ -39,16 +42,13 @@ p_2023 / p_2024 + plot_layout(guides = "collect") &
   theme(legend.position = 'top')
 ```
 
-@fig-arrival-punc shows the evolution of arrival punctuality for the select airports in Brazil and Europe.
-When comparing both regions in 2019 and 2022, Brazil's share of early arrivals (earlier than 15 minutes before the scheduled arrival) is significantly higher than the same European portion.
-The share of early arrivals accounts for 20-25% across all Brazilian airports.
-In Europe, flights tend not to arrive significantly earlier than their scheduled time. 
-On average, early arrival range between 8-15% in Europe in 2019.
-Recent studies conducted by the CGNA/DECEA show that air operators in Brazil declare flight times significantly longer than observed.
-Similar behaviour is also observed in Europe.
-Built in buffer times help to achieve a high "on-time-performance" record and appeal to passengers favouring a timely arrival performance.
-Furthermore, both regions have regulations for passenger compensation in place which are triggered in the case of arrival delays.
-DECEA has already established a forum with the air operator regulator to discuss and propose solutions.
+::: callout note
+Why @fig-arrival-punc label is (a) Arrival puctuality 2023??
+::: 
+
+@fig-arrival-punc shows the 2024 data and reaffirms key structural differences in punctuality behavior between Brazilian and European airports. Brazilian airports continue to report a high share of early arrivals—more than 15 minutes ahead of schedule—accounting for 20% to 30% of flights. In contrast, most European airports show early arrival shares below 15%. This pattern, observed consistently over recent years, reflects the use of built-in buffer times in Brazil’s scheduling practices. While these buffers help airlines improve on-time performance records, they can reduce predictability and complicate planning for air traffic management and airport operations.
+
+Across both regions, the share of flights arriving within the -/+ 15 minute window remains the key measure of operational predictability. European patterns remained relatively stable in 2024, while in Brazil, punctuality varied significantly among airports.
 
 ```{r}
 #| label: fig-arr-punc-comparison-apts
@@ -73,7 +73,10 @@ punc_mov_month_plot(monthly_punc_comparison, what_years, comp_apts) +
   labs(subtitle = "per discussion develop barchart vs traffic change per year side by side")
 ```
 
-This report highlights the performance at Guarulhos (SBGR) and Lisbon (LPPT). @fig-arr-punc-comparison-apts shows the level of air traffic variation between 2023 and 2024 compared to the observed arrival punctuality.
+
+To contextualize regional contrasts, @fig-arr-punc-comparison-apts presents a side-by-side comparison between Guarulhos (SBGR) and Lisbon (LPPT) between 2023 and 2024. Despite LPPT handling less than half the volume of flights compared to SBGR, it maintained punctuality levels close to 45% in October 2024. Overall, LPPT showed gradual improvement throughout the year. In contrast, SBGR remained below its 2023 performance until September, after which punctuality slightly improved. This late-year improvement indicates a potential shift but also highlights ongoing challenges.
+
+This comparison underscores how operational structure, traffic complexity, and scheduling strategies directly influence punctuality outcomes. In Brazil, concentrated demand at a few major hubs—especially SBGR, the country's busiest airport—makes it harder to sustain performance within the target window.
 
 ```{r}
 #' Function plotting punctuality side-by-side to traffic
@@ -146,6 +149,13 @@ arr_punc_eur |> filter(ICAO %in% eur_apts) |>
          ) |> 
   plot_punc_vs_tfc()
 ```
+
+::: callout note
+renamed figure 5.3 and 5.4
+Figure 5.3: Evolution of BRA - arrival punctuality -/+15 min vs traffic
+Figure 5.4: Evolution of EUR - arrival punctuality -/+15 min vs traffic
+cHECK BRA PUNCTUALITY ON FIGURE 5.3
+::: 
 
 
 European airports saw their share of punctual flights in 2022 decrease broadly compared to 2019, even with a more proportional distribution than the Brazilian system.
