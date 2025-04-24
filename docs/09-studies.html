@@ -209,7 +209,14 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#point-merge-operations" id="toc-point-merge-operations" class="nav-link active" data-scroll-target="#point-merge-operations"><span class="header-section-number">9.1</span> Point-Merge Operations</a></li>
+  <li><a href="#air-traffic-services-at-curitiba-and-lisbon-continental" id="toc-air-traffic-services-at-curitiba-and-lisbon-continental" class="nav-link" data-scroll-target="#air-traffic-services-at-curitiba-and-lisbon-continental"><span class="header-section-number">9.2</span> Air Traffic Services at Curitiba and Lisbon Continental</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -233,34 +240,118 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>this is the placeholder for PM</p>
-<p><img src="figures/HLC-table.png" class="img-fluid"></p>
-<p><a href="#fig-hlc-table-demo" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> is a great example of how the 2 regions compare.</p>
+<p>Throughout 2024, joint work between DECEA and EUROCONTROL involved the preparatory action for assessing the operational performance benefits of point-merge operations and comparing service provision within two units. This chapter provides a first summary of the work to help refine the future work.</p>
+<section id="point-merge-operations" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="point-merge-operations"><span class="header-section-number">9.1</span> Point-Merge Operations</h2>
+<p>Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimise aircraft arrival sequences, reduce flight times (???), and enhance operational safety. PMS operates efficiently under high traffic loads without the need for radar vectoring. It relies on a specific Precision-Area Navigation (P-RNAV) route structure, comprising a merge point and equidistant pre-defined sequencing legs. Traffic sequencing is achieved through a “direct-to” instruction to the merge point at the appropriate time. The sequencing legs are used to extend the flight path of an aircraft along the leg only when necessary. The length of these legs reflects the required delay absorption capacity, ensuring a streamlined and predictable arrival flow. <!-- is this in line with the first topic sentence? --> This method simplifies controller tasks, reduces communication and workload, enhances pilot situational awareness, and improves the predictability and efficiency of flight trajectories. <a href="#fig-point-merge" class="quarto-xref">Figure&nbsp;<span>9.1</span></a> illustrates the Point Merge system and its components.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-hlc-table-demo" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-point-merge" class="quarto-figure quarto-figure-center quarto-float anchored">
 <figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-hlc-table-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="figures/HLC-table.png" class="img-fluid figure-img" style="width:50.0%">
+<div aria-describedby="fig-point-merge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figures/Point Merge Structure.png" class="img-fluid figure-img" width="133">
 </div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-hlc-table-demo-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;9.1: This is our hlc table
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-point-merge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.1: Point-merge overview
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Point Merge System</p>
-<p>Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimize aircraft arrival sequences, reduce flight times, and enhance operational safety. PMS operates efficiently under high traffic loads without the need for radar vectoring. It relies on a specific Precision-Area Navigation (P-RNAV) route structure, comprising a merge point and equidistant pre-defined legs known as sequencing legs. Sequencing is achieved through a “direct-to” instruction to the merge point at the appropriate time. The sequencing legs are used to delay aircraft only when necessary, a process known as path stretching. The length of these legs reflects the required delay absorption capacity, ensuring a streamlined and predictable arrival flow. This method simplifies controller tasks, reduces communication and workload, enhances pilot situational awareness, and improves the predictability and efficiency of flight trajectories. Figure 1 illustrates the Point Merge system and its components.</p>
-<p><img src="figures/Point Merge Structure.png" class="img-fluid"></p>
-<p>The Point Merge System has been successfully implemented at various airports worldwide, demonstrating its effectiveness in enhancing airspace efficiency and reducing the environmental impact of fuel consumption. In Brazil, Guarulhos International Airport (SBGR) — one of the busiest hubs in Latin America — faces daily challenges related to high traffic density. To address these issues, a PMS was implemented for arrival procedures at SBGR in May 2021. More recently, in 2024, the PMS was also adopted at Lisbon Airport (LPPT), further expanding its presence in European airspace.The following is an illustration of flight trajectories at SBGR and LPPT during periods before and after the implementation of the Point Merge System (PMS).</p>
-<p><img src="figures/trajectory 2019_2024_SBGR.png" class="img-fluid"></p>
-<p><img src="figures/afterPMS_rwy02.png" class="img-fluid"></p>
-<p><img src="figures/afterPMS_rwy20.png" class="img-fluid"></p>
-<p><img src="figures/beforePMS_rwy20.png" class="img-fluid"></p>
-<p><img src="figures/beforePMS_rwy02.png" class="img-fluid"></p>
+<p>The Point Merge System has been successfully implemented at various airports worldwide, demonstrating its effectiveness in enhancing airspace efficiency and reducing the environmental impact of fuel consumption. In Brazil, Guarulhos International Airport (SBGR) — one of the busiest hubs in Latin America — faces daily challenges related to high traffic density. To address these issues, PMS was implemented for arrival procedures at SBGR in May 2021. With a recent deployment in 2024, PMS was introduced at Lisbon Airport (LPPT). The following is an illustration of flight trajectories at SBGR and LPPT during periods before and after the implementation of the Point Merge System (PMS).</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-pms-sbgr-2019-2024" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pms-sbgr-2019-2024-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="./figures/trajectory 2019_2024_SBGR.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pms-sbgr-2019-2024-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.2: Point-merge operations at Guarulhos (SBGR) (2019 vs 2024)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div>
+
+</div>
+<div class="cell quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/beforePMS_rwy02.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>LPPT runway 02 - before point-merge</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/afterPMS_rwy02.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>- post point-merge deployment</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/beforePMS_rwy20.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>LPPT runway 20 - before point-merge</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="./figures/afterPMS_rwy20.png" class="img-fluid figure-img" style="width:100.0%"></p>
+<figcaption>- post point-merge deployment</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
 <p>Monitoring Additional Time in TMA is valuable for assessing the impact of the Point Merge System (PMS) implementation on airspace operational performance. This indicator reflects the extra time an aircraft spends in the TMA compared to an ideal flight profile. A comparison of KPI08 values was conducted for periods before and after the implementation of PMS. For SBGR, the analysis covered the years 2019 (pre-PMS) and 2024 (post-PMS). These periods were chosen to avoid analytical bias, since PMS implementation at Guarulhos took place during the COVID-19 pandemic. The analysis period for LPPT spanned from March 2023 to July 2024. The following graph presents the results obtained. Reference times and additional times were calculated on a monthly basis.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>[] convert figures to study data set –&gt; ASMA [] include runway throughput ~ peak arrival rate ~ consistency during peak hours</p>
+</div>
+</div>
 <p><img src="figures/asma_LPPT.png" class="img-fluid"></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="09-studies_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-sbgr-asma-monthly" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sbgr-asma-monthly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="09-studies_files/figure-html/fig-sbgr-asma-monthly-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sbgr-asma-monthly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.3: Monthly evolution of the additional time in terminal airspace in SBGR
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p><img src="figures/asma_SBGR_2019.png" class="img-fluid"></p>
 <p><img src="figures/asma_SBGR_2024.png" class="img-fluid"></p>
 <p><img src="figures/asma_SBGR_2019_2024.png" class="img-fluid"></p>
@@ -269,7 +360,9 @@ Figure&nbsp;9.1: This is our hlc table
 <p>Eurocontrol. (2014). Point Merge: Integration of Arrival Flows Enabling Extensive RNAV Application and Continuous Descent. Eurocontrol Experimental Centre.</p>
 <p>FRANZINI, Bruno Monteiro et al.&nbsp;(2024). Analysis of Guarulhos Point Merge Adherence Based On Additional Time In Tma And Trajectory Clustering.. In: Anais do XXI Simpósio de Transporte Aéreo - SITRAER 2024.</p>
 <p>ICAO. (2016). Continuous Descent Operations (CDO) Manual. International Civil Aviation Organization.</p>
-<p>Curitiba Area Control Center (ACC-CW)</p>
+</section>
+<section id="air-traffic-services-at-curitiba-and-lisbon-continental" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="air-traffic-services-at-curitiba-and-lisbon-continental"><span class="header-section-number">9.2</span> Air Traffic Services at Curitiba and Lisbon Continental</h2>
 <p>The Curitiba Area Control Center (ACC-CW) is one of four Area Control Centers strategically distributed across Brazil. Located in the city of Curitiba, in the state of Paraná, ACC-CW plays a crucial role in controlling the airspace of the southern region of the country, ensuring safe and efficient operations for both civil and military aircraft.</p>
 <p>ACC-CW’s jurisdiction covers the entire portion of the Curitiba Flight Information Region (FIR-CW), excluding the airspace delegated to the Southeast Regional Airspace Control Center (CRCEA-SE). This jurisdiction totals approximately 1.7 million km², representing 7.7% of the airspace delegated to Brazil. Within this airspace, the Air Traffic Control Service, Flight Information Service, and Alert Service are provided.</p>
 <p>The Air Traffic Control Service is provided to all aircraft flying above FL 150. Additionally, this service is exclusively provided to aircraft flying above FL 120 in CTA 2 (departures and arrivals for Viracopos Airport in Campinas-SP) and CTA 4 (departures and arrivals for Vitória Airport in Espírito Santo).</p>
@@ -289,6 +382,7 @@ Figure&nbsp;9.1: This is our hlc table
 </strong> The number of ATCOs in operation was calculated based on the monthly average of qualified operators at ACC-CW, as recorded in SGPO. Currently, ACC-CW has 2,013 operators and 10 trainees.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

@@ -249,12 +249,22 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="4.1" class="anchored" data-anchor-id="network-level-air-traffic"><span class="header-section-number">4.1</span> Network Level Air Traffic</h2>
 <p><a href="#fig-annual-traffic-timeline" class="quarto-xref">Figure&nbsp;<span>4.1</span></a> shows the regional traffic development in Brazil and Europe.</p>
 <p>For Brazil, it is important to remember that Figure shows the aggregated movements per airport at the whole network level. The shown total does not necessarily reflect the total number of flights. Another important observation related to the data is that Brazil’s number of airports served with the TATIC tool (Tower ATC System) has increased. Despite raising the processed total daily flight number, this difference is mostly transparent for this study as these additional airports handle only a small number of movements on a day-to-day basis.</p>
-<div class="{callout-note}">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>TO BE CLEANED LATER</p>
 <ul>
 <li>reduce number of labels for BRA</li>
 <li>add associated labels to EUR</li>
 </ul>
+</div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -333,20 +343,12 @@ Figure&nbsp;4.4: Monthly traffic evolution at SBGR and LPPT
 </div>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Note
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>xxxxxx The suggestion is to insert the fifth europe airport eith 2023 and 2024 levels.named this airport on the text.</p>
-<p>The figure shows the monthly evolution of traffic at Guarulhos International Airport (SBGR) during 2023 and 2024, which remains the top airport in Brazil. A steady increase in operations can be seen throughout 2024 compared to 2023, with July standing out as the month with the highest volume during the period analyzed. This trend reflects the continued strengthening of commercial aviation at Brazil’s main hub, both for domestic and international flights. Guarulhos’ performance becomes even more relevant when compared to the busiest airports in Europe. The fifth busiest airport in Europe in 2024 had traffic levels similar to those of Guarulhos, highlighting the different realities of each region. This comparison helps illustrate the structural complexity and differences between the two systems. While Brazil concentrates much of its traffic in a few key airports like SBGR, Europe spreads its operations across a larger network of major airports, often with more robust infrastructure (such as more runways). Therefore, direct comparisons between the “top 1” airports in each region may not accurately reflect their unique operational contexts.</p>
-</div>
-</div>
+<pre><code>
+xxxxxx The suggestion is to insert the fifth europe airport eith 2023 and 2024 levels.named this airport on the text.
+
+The figure shows the monthly evolution of traffic at Guarulhos International Airport (SBGR) during 2023 and 2024, which remains the top airport in Brazil. A steady increase in operations can be seen throughout 2024 compared to 2023, with July standing out as the month with the highest volume during the period analyzed. This trend reflects the continued strengthening of commercial aviation at Brazil’s main hub, both for domestic and international flights.
+Guarulhos’ performance becomes even more relevant when compared to the busiest airports in Europe. The fifth busiest airport in Europe in 2024 had traffic levels similar to those of Guarulhos, highlighting the different realities of each region. This comparison helps illustrate the structural complexity and differences between the two systems. While Brazil concentrates much of its traffic in a few key airports like SBGR, Europe spreads its operations across a larger network of major airports, often with more robust infrastructure (such as more runways). Therefore, direct comparisons between the “top 1” airports in each region may not accurately reflect their unique operational contexts.
+</code></pre>
 <p>Analyzing the movement of the leading Brazilian airports, it is evident that they were not responsible for the return to 2019 levels, considering that only Campinas - SBKP and Santos Dumont - SBRJ slightly exceeded 2019 levels. This phenomenon can be explained by the greater difficulty of airlines in resuming activity in contrast to general/business aviation. This last share is an essential component of the Brazilian air movement but is a rare user of main airports.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -368,13 +370,15 @@ Figure&nbsp;4.5: Annual traffic at study airports in 2024 and variation 2024/202
 <p>In addition, the share of total traffic handled by the top airports in Brazil has shown a slight downward trend from 2022 to 2024, suggesting a modest redistribution of traffic across a broader set of airports. This may result from regional recovery, airline strategy shifts, or temporary infrastructure limitations—such as the closure of SBPA and the restrictions at SBRJ.</p>
 <p>In contrast, in Europe, the share of traffic managed by the busiest airports has shown a slight increase over the same period. This upward movement reflects a temporary concentration of demand as the region works toward pre-pandemic recovery levels, particularly through well-established hubs. Importantly, none of the airports included in this report experienced a decline in traffic, with Madrid and Barcelona recording substantial growth close to 20%, and Gatwick rising by more than 10%, reinforcing their position within the European network.</p>
 <p>Altogether, the data illustrates how both the Brazilian and European air networks have adapted to their respective challenges. In Brazil, the system has shown resilience in the face of environmental events and regulatory changes, while in Europe, traffic growth is becoming more concentrated at major hubs as the region continues to recover toward pre-pandemic levels. These dynamics highlight the importance of continuous monitoring and flexible planning to ensure operational efficiency and network stability in both regions.</p>
-<pre><code>
- #| label: fig-bra-gru-apt
- #| fig.cap: Guarulhos monthly traffic
-
-.apt = "SBGR"
-.years = c("2023","2024")
-airport_per_year(.apt, .years)</code></pre>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-traffic_characterisation_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
