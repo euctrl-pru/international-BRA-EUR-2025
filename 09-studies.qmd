@@ -29,17 +29,33 @@ This method simplifies controller tasks, reduces communication and workload, enh
 knitr::include_graphics("./figures/Point Merge Structure.png")
 ```
 
-The Point Merge System has been successfully implemented at various airports worldwide, demonstrating its effectiveness in enhancing airspace efficiency and reducing the environmental impact of fuel consumption. In Brazil, Guarulhos International Airport (SBGR) — one of the busiest hubs in Latin America — faces daily challenges related to high traffic density. To address these issues, a PMS was implemented for arrival procedures at SBGR in May 2021. More recently, in 2024, the PMS was also adopted at Lisbon Airport (LPPT), further expanding its presence in European airspace.The following is an illustration of flight trajectories at SBGR and LPPT during periods before and after the implementation of the Point Merge System (PMS).
+The Point Merge System has been successfully implemented at various airports worldwide, demonstrating its effectiveness in enhancing airspace efficiency and reducing the environmental impact of fuel consumption. 
+In Brazil, Guarulhos International Airport (SBGR) — one of the busiest hubs in Latin America — faces daily challenges related to high traffic density. 
+To address these issues, PMS was implemented for arrival procedures at SBGR in May 2021. 
+With a recent deployment in 2024, PMS was introduced at Lisbon Airport (LPPT).
+The following is an illustration of flight trajectories at SBGR and LPPT during periods before and after the implementation of the Point Merge System (PMS).
 
-![](figures/trajectory 2019_2024_SBGR.png)
+```{r}
+#| label: fig-pms-sbgr-2019-2024
+#| fig-cap: Point-merge operations at Guarulhos (SBGR) (2019 vs 2024)
+#| out-width: 70%
+knitr::include_graphics("./figures/trajectory 2019_2024_SBGR.png")
+```
 
-![](figures/afterPMS_rwy02.png)
+```{r}
+#| layout-ncol: 2
+#| fig-cap: 
+#|   - "LPPT runway 02 - before point-merge"
+#|   - "- post point-merge deployment"
+#|   - "LPPT runway 20 - before point-merge"
+#|   - "- post point-merge deployment"
+#| out-width: 100%   
 
-![](figures/afterPMS_rwy20.png)
-
-![](figures/beforePMS_rwy20.png)
-
-![](figures/beforePMS_rwy02.png)
+knitr::include_graphics("./figures/beforePMS_rwy02.png")
+knitr::include_graphics("./figures/afterPMS_rwy02.png")
+knitr::include_graphics("./figures/beforePMS_rwy20.png")
+knitr::include_graphics("./figures/afterPMS_rwy20.png")
+```
 
 Monitoring Additional Time in TMA is valuable for assessing the impact of the Point Merge System (PMS) implementation on airspace operational performance. This indicator reflects the extra time an aircraft spends in the TMA compared to an ideal flight profile. A comparison of KPI08 values was conducted for periods before and after the implementation of PMS. For SBGR, the analysis covered the years 2019 (pre-PMS) and 2024 (post-PMS). These periods were chosen to avoid analytical bias, since PMS implementation at Guarulhos took place during the COVID-19 pandemic. The analysis period for LPPT spanned from March 2023 to July 2024. The following graph presents the results obtained. Reference times and additional times were calculated on a monthly basis.
 
@@ -62,9 +78,11 @@ FRANZINI, Bruno Monteiro et al. (2024). Analysis of Guarulhos Point Merge Adhere
 
 ICAO. (2016). Continuous Descent Operations (CDO) Manual. International Civil Aviation Organization.
 
-Curitiba Area Control Center (ACC-CW)
 
-The Curitiba Area Control Center (ACC-CW) is one of four Area Control Centers strategically distributed across Brazil. Located in the city of Curitiba, in the state of Paraná, ACC-CW plays a crucial role in controlling the airspace of the southern region of the country, ensuring safe and efficient operations for both civil and military aircraft.
+## Air Traffic Services at Curitiba and Lisbon Continental
+
+The Curitiba Area Control Center (ACC-CW) is one of four Area Control Centers strategically distributed across Brazil. 
+Located in the city of Curitiba, in the state of Paraná, ACC-CW plays a crucial role in controlling the airspace of the southern region of the country, ensuring safe and efficient operations for both civil and military aircraft.
 
 ACC-CW's jurisdiction covers the entire portion of the Curitiba Flight Information Region (FIR-CW), excluding the airspace delegated to the Southeast Regional Airspace Control Center (CRCEA-SE). This jurisdiction totals approximately 1.7 million km², representing 7.7% of the airspace delegated to Brazil. Within this airspace, the Air Traffic Control Service, Flight Information Service, and Alert Service are provided.
 
