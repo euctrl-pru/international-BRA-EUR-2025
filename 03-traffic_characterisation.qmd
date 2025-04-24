@@ -178,14 +178,7 @@ In contrast, in Europe, the share of traffic managed by the busiest airports has
 Altogether, the data illustrates how both the Brazilian and European air networks have adapted to their respective challenges. In Brazil, the system has shown resilience in the face of environmental events and regulatory changes, while in Europe, traffic growth is becoming more concentrated at major hubs as the region continues to recover toward pre-pandemic levels. These dynamics highlight the importance of continuous monitoring and flexible planning to ensure operational efficiency and network stability in both regions.
 
 
-<<<<<<< HEAD
-
-
-```{}
-
-=======
 ```{r}
->>>>>>> 9188882dd18915b914771c12bb68c394deefa69b
  #| label: fig-bra-gru-apt
  #| fig.cap: Guarulhos monthly traffic
 

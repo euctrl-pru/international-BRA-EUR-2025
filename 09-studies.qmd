@@ -2,26 +2,32 @@
 title: "Studies"
 ---
 
-this is the placeholder for PM
-
-![](figures/HLC-table.png)
-
-@fig-hlc-table-demo is a great example of how the 2 regions compare.
-
 ```{r}
-#| label: fig-hlc-table-demo
-#| fig-cap: This is our hlc table
-#| out-width: 50%
-knitr::include_graphics("figures/HLC-table.png")
+#| label: setup
+source(here::here("_chapter-setup.R"))
 ```
 
-Point Merge System
+Throughout 2024, joint work between DECEA and EUROCONTROL involved the preparatory action for assessing the operational performance benefits of point-merge operations and comparing service provision within two units.
+This chapter provides a first summary of the work to help refine the future work.
 
+## Point-Merge Operations
 
+Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimise aircraft arrival sequences, reduce flight times (???), and enhance operational safety. 
+PMS operates efficiently under high traffic loads without the need for radar vectoring. 
+It relies on a specific Precision-Area Navigation (P-RNAV) route structure, comprising a merge point and equidistant pre-defined sequencing legs. 
+Traffic sequencing is achieved through a “direct-to” instruction to the merge point at the appropriate time. 
+The sequencing legs are used to extend the flight path of an aircraft along the leg only when necessary. 
+The length of these legs reflects the required delay absorption capacity, ensuring a streamlined and predictable arrival flow. 
+<!-- is this in line with the first topic sentence? -->
+This method simplifies controller tasks, reduces communication and workload, enhances pilot situational awareness, and improves the predictability and efficiency of flight trajectories. 
+@fig-point-merge illustrates the Point Merge system and its components.
 
-Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimize aircraft arrival sequences, reduce flight times, and enhance operational safety. PMS operates efficiently under high traffic loads without the need for radar vectoring. It relies on a specific Precision-Area Navigation (P-RNAV) route structure, comprising a merge point and equidistant pre-defined legs known as sequencing legs. Sequencing is achieved through a “direct-to” instruction to the merge point at the appropriate time. The sequencing legs are used to delay aircraft only when necessary, a process known as path stretching. The length of these legs reflects the required delay absorption capacity, ensuring a streamlined and predictable arrival flow. This method simplifies controller tasks, reduces communication and workload, enhances pilot situational awareness, and improves the predictability and efficiency of flight trajectories. Figure 1 illustrates the Point Merge system and its components.
-
-![](figures/Point Merge Structure.png)
+```{r}
+#| label: fig-point-merge
+#| fig.cap: Point-merge overview
+#| 
+knitr::include_graphics("./figures/Point Merge Structure.png")
+```
 
 The Point Merge System has been successfully implemented at various airports worldwide, demonstrating its effectiveness in enhancing airspace efficiency and reducing the environmental impact of fuel consumption. In Brazil, Guarulhos International Airport (SBGR) — one of the busiest hubs in Latin America — faces daily challenges related to high traffic density. To address these issues, a PMS was implemented for arrival procedures at SBGR in May 2021. More recently, in 2024, the PMS was also adopted at Lisbon Airport (LPPT), further expanding its presence in European airspace.The following is an illustration of flight trajectories at SBGR and LPPT during periods before and after the implementation of the Point Merge System (PMS).
 
