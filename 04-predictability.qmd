@@ -154,17 +154,17 @@ arr_punc_eur |> filter(ICAO %in% eur_apts) |>
 renamed figure 5.3 and 5.4
 Figure 5.3: Evolution of BRA - arrival punctuality -/+15 min vs traffic
 Figure 5.4: Evolution of EUR - arrival punctuality -/+15 min vs traffic
-cHECK BRA PUNCTUALITY ON FIGURE 5.3
+cHECK BRA PUNCTUALITY ON FIGURE 5.3 AND INSERT TEXT
 ::: 
 
 
-European airports saw their share of punctual flights in 2022 decrease broadly compared to 2019, even with a more proportional distribution than the Brazilian system.
-For European operators, there were two primary factors contributing the the lower performance in 2022. 
-The most significant is the cumulative effect, showing that the network of flights has little ability to absorb the delay of one specific delayed flight.
-The knock-on effect was amplified by the local resource constraints in terms of passenger and turn-around facilitation. 
-The incrasing traffic demand posed challenges at many airports in Europe. Delayed arrivals accumulated further reactionary delay and ultimately passed the delay systematically on to next flights.
-Further constraints were linked to air space and flow restrictions resulting from the geo-political conflict surrounding the Russian invasion in Ukraine.
-On average, arrival delays of 15 minutes or more compared to the schedule ranged between 25-35% across the Europen study airports in 2022.
+@fig-punc-vs-tfc presents a side-by-side view of airport-level arrival punctuality and movement evolution between 2023 and 2024.
+
+Overall, European airports demonstrated improvements in arrival punctuality. Among them, Madrid (LEMD) and Barcelona (LEBL) recorded the largest increase in traffic volumes, though this was accompanied by a slight decline in punctuality performance. In contrast, both Amsterdam (EHAM) and London Gatwick (EGKK) not only saw significant traffic growth but also achieved the most notable improvements in arrival punctuality among all airports in the study.
+
+Munich (EDDM), however, registered the sharpest drop in punctuality, despite an increase in flight movements. This reinforces two critical operational dynamics:
+First, the cumulative nature of delays, which highlights the limited resilience of the flight network—when a single flight is delayed, subsequent flights tend to be impacted due to tight scheduling and lack of flexibility.
+Second, increasing demand often exacerbates existing local resource constraints, especially in areas like passenger processing and turnaround operations. As a result, reactionary delays accumulate and propagate throughout the system, further reducing predictability and punctuality.
 
 
 The previous section highlighted the overall arrival punctuality observed at the study airports. 
@@ -192,21 +192,12 @@ p2024<-create_earlylate_plot(comb_punc, "ARR",2024, .limits = c(-0.3, 0.45)) +
   theme(legend.position = 'top')
 ```
 
-@fig-early-vs-late-arrivals compares the share of early and late arrivals at each study airport in 2019 and 2022.
+@fig-early-vs-late-arrivals compares the share of early and late arrivals at each AIRPORT, CONSIDERING ARRIVALS BEFORE OR AFTER 15MIN (-15min or + 15min)  in 2023 and 2024.
 From a high-level perspective, air traffic tends to arrive well ahead of schedule in Brazil, while Europe observes a higher share of delayed arrivals.
-Guarulhos (SBGR) remained the Brazilian airport with the highest share of early flights in 2022 (i.e. 33%), followed by Campinas (SBKP) with 30%.
+Guarulhos (SBGR) remained the Brazilian airport with the highest share of early flights in 2022, followed by Campinas (SBKP) both with more than 30%.
 Both airports are essential hubs in the country, and anticipation can be a consequence sought by air operators for better accommodation of the flight network.
 However, for flow control, this lack of precision is equally problematic, affecting the optimal allocation of resources for the provision of air traffic control and flow service.
-In turn, Madrid (LEMD) was the European element with the most significant share of early arrivals (i.e. 22%) in 2022. 
-Pre-pandemic such a share was observed at London Heathrow in 2019.
-These shares still range about 11% lower than the highest shares in Brazil.
-The distorted nature of the European network in 2022 becomes apparent when observing the share of delayed flights.
-For example services at London Gatwick (EGKK) faced a share of 39% of delayed flights.
-Airport operators were identified as the major contributors to primary delays (ground handling, staff shortage), followed by ATFM delays.
-However, the aforementioned reactionary effect was the main driver of knock-on delays [@CODA-2023] [^04-predictability-1].
-
-
-[^04-predictability-1]: See CODA report at https://www.eurocontrol.int/publication/all-causes-delays-air-transport-europe-annual-2022.
+In turn, Madrid (LEMD) was the European element with the most significant share of early arrivals, with almost 20% in 2024. 
 
 ## Departure Punctuality
 
