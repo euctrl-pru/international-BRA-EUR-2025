@@ -55,7 +55,7 @@ DECEA has already established a forum with the air operator regulator to discuss
 #| fig.cap: Arrival Punctuality at two comparison study airports 
 #| 
 comp_apts = c("SBGR","LPPT")
-what_years = c("2022","2023")
+what_years = c("2023","2024")
 
 punc_mov_month_bra <- month_tfc_bra |>
   left_join(tmp_month) |> mutate(PHASE = "ARR", REGION = "BRA")

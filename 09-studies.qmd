@@ -83,6 +83,26 @@ summer_asma_100 |> mutate(TIK = paste0(MONTH,"-",YEAR) ) |>
   ggplot() + geom_col(aes(x = TIK, y = AVG_TIME, fill = TYPE))
 ```
 
+```{r}
+#| label: fig-sbgr-asma-monthly
+#| fig-cap: Monthly evolution of the additional time in terminal airspace in SBGR
+bra_asmas <- readr::read_csv("./data/BRA-ASMA.csv") |>
+  mutate(YEAR = substr(DATE, 1,4)) |>  
+  filter(AIRPORT == "SBGR", YEAR %in% c("2019","2024"))
+
+bra_asmas |> 
+  mutate(YEAR = substr(DATE, 1,4)) |>  
+  filter(AIRPORT == "SBGR", YEAR %in% c("2019","2024")) |> 
+  
+  ggplot() + 
+  geom_col(aes(x = DATE, y = AVG_ADD, group = AIRPORT))
+```
+
+
+```{r}
+
+```
+
 
 ![](figures/asma_SBGR_2019.png)
 
