@@ -81,6 +81,7 @@ punc_eur_data <- list.files(path = "data", pattern = "PBWG-EUR-PUNC", full.names
 
 punc_eur <- punc_eur_data |> rename(APT = ICAO) |>  
   mutate(REGION = "EUR") |> 
+  filter(APT %in% eur_apts) |> 
   group_by(APT, PHASE, YEAR = lubridate::year(DATE), REGION) |>  #, N_VALID) |> 
   summarise(across(.cols = N_VALID:`[60,INF)`, .fns = sum), .groups = "drop") |> 
   add_dly_early_late_groupings2()
@@ -277,10 +278,10 @@ tmp_month <-  punc_bra_month |>
 punc_mov_month <- month_tfc_bra |>
   left_join(tmp_month)
 
-punc_mov_month_plot <- function(.years, .apt){
-  p_tfc_month <- punc_mov_month |>
-    filter(YEAR %in% .years, APT == .apt) |>
-    mutate(MONTH = factor(MONTH, levels = 1:12, labels = month_names)) |>
+punc_mov_month_plot <- function(.punc_monthly,.years, .apt){
+  p_tfc_month <- .punc_monthly |>
+    dplyr::filter(YEAR %in% .years, APT %in% .apt) |>
+    dplyr::mutate(MONTH = factor(MONTH, levels = 1:12, labels = month_names)) |>
     ggplot() +
     geom_col(aes(x = MONTH, y = TOT_FLTS_MONTH, fill = YEAR), 
              position = position_dodge()) +
@@ -293,7 +294,8 @@ punc_mov_month_plot <- function(.years, .apt){
     ) +
     scale_fill_brewer(palette = "Blues") +     # Paleta automática para as colunas
     scale_color_brewer(palette = "Set1") +     # Paleta automática diferente para as linhas
-    labs(x = NULL, y = NULL, fill = NULL, color = NULL, title = .apt) +
+    labs(x = NULL, y = NULL, fill = NULL, color = NULL # , title = .apt
+         ) +
     guides(
       fill = guide_legend(order = 1),           # Ordem da legenda para as colunas
       color = guide_legend(order = 2)           # Ordem da legenda para as linhas
@@ -425,11 +427,11 @@ plot_early_vs_late <- function(.early_vs_late, .phase, .year
 }
 
 # Função para criar o plot de 'EARLY' e 'LATE'
-create_earlylate_plot <- function(event, year) {
-  punc_bra |>
+create_earlylate_plot <- function(punc_per_airport, event, year, .limits = c(-.5, 0.5)) {
+  early_vs_late_plot <- punc_per_airport |>
     prepare_punc_plot_data(event, year) |>
     filter(SLOT %in% c("EARLY", "LATE")) |>
-    plot_early_vs_late(event, year)
+    plot_early_vs_late(event, year, .limits = .limits)
 }
 
 ####################################################################################################

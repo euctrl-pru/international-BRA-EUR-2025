@@ -5,7 +5,7 @@ bibliography: references.bib
 ```{r}
 #| echo: false
 #| message: false
-
+source(here::here("_chapter-setup.R"))
 source(here::here("R","04-predictability_new-graphs.R"))
 ```
 
@@ -50,27 +50,32 @@ Built in buffer times help to achieve a high "on-time-performance" record and ap
 Furthermore, both regions have regulations for passenger compensation in place which are triggered in the case of arrival delays.
 DECEA has already established a forum with the air operator regulator to discuss and propose solutions.
 
-
-
-
-
-
 ```{r}
-.apt = "SBGR"
-.years = c("2022","2023")
+#| label: fig-arr-punc-comparison-apts
+#| fig.cap: Arrival Punctuality at two comparison study airports 
+#| 
+comp_apts = c("SBGR","LPPT")
+what_years = c("2022","2023")
 
-punc_mov_month_plot(.years, .apt)
+punc_mov_month_bra <- month_tfc_bra |>
+  left_join(tmp_month) |> mutate(PHASE = "ARR", REGION = "BRA")
+
+punc_mov_month_eur <- punc_eur_month |> filter(PHASE == "ARR") |> 
+  select(APT, YEAR, MONTH, REGION, PHASE, TOT_FLTS_MONTH = N_VALID, WITHIN_M15P15 ) |> 
+  mutate(YEAR = as.character(YEAR))
+
+monthly_punc_comparison <- bind_rows(
+  punc_mov_month_bra, punc_mov_month_eur
+)
+
+punc_mov_month_plot(monthly_punc_comparison, what_years, comp_apts) +
+  facet_wrap(.~ APT) +
+  labs(subtitle = "per discussion develop barchart vs traffic change per year side by side")
 ```
 
-```{r}
-.years <- c("2023","2024")
-
-punc_mov_apt_plot(.years)
-```
+This report highlights the performance at Guarulhos (SBGR) and Lisbon (LPPT). @fig-arr-punc-comparison-apts shows the level of air traffic variation between 2023 and 2024 compared to the observed arrival punctuality.
 
 ```{r}
-which_years <- 2023:2024
-
 #' Function plotting punctuality side-by-side to traffic
 #' 
 #' Note: patchwork requires for a collection of fill/color legends their 
@@ -104,6 +109,8 @@ plot_punc_vs_tfc <- function(.df_punc_share, .share_var = WITHIN_M15P15){
   
   return(p_punc_vs_tfc)
 }
+
+which_years <- 2023:2024
 
 #----------- prep BRA ----------------------
 arr_punc_bra <- punc_mov_month |> 
@@ -149,30 +156,26 @@ The incrasing traffic demand posed challenges at many airports in Europe. Delaye
 Further constraints were linked to air space and flow restrictions resulting from the geo-political conflict surrounding the Russian invasion in Ukraine.
 On average, arrival delays of 15 minutes or more compared to the schedule ranged between 25-35% across the Europen study airports in 2022.
 
-```{r}
-create_earlylate_plot("ARR",2024)
-```
 
-
-
-
-
-```{r}
-.year = 2024
-.month = 4
-
-create_earlylate_month_plot("ARR", .year, .month)
-```
-
-
+The previous section highlighted the overall arrival punctuality observed at the study airports. 
+Lower levels of punctuality can negatively impact predictability of operations and thus put a stronger strain on resources managing the arrival flow. 
+Next to the arrival airspace capacity, stronger variations of the scheduled arrival times pose challenges for the surface management, as taxi operations, including stand allocation and availability, might result in changes of the taxi patterns, queuing within the taxiway and apron/stand system.
+@fig-early-vs-late-arrivals shows the share of flights arriving more than 15 minutes before and after their scheduled arrival time.
 
 ```{r}
 #| label: fig-early-vs-late-arrivals
-#| fig-cap: Change of share of early and late arrivals (2019 vs 2022)
+#| fig-cap: Change of share of early and late arrivals (2023 vs 2024)
 
+# note: limits allows to set left and right max ranges
+# keep same limits for BRA and EUR to allow for comparison
+# .limits defaults to c(-0.5, 0.5) ~ 50%
 
-p2023<-create_earlylate_plot("ARR",2023)
-p2024<-create_earlylate_plot("ARR",2024)
+comb_punc <- bind_rows(punc_bra, punc_eur)
+
+p2023<-create_earlylate_plot(comb_punc, "ARR",2023, .limits = c(-0.3, 0.45)) + 
+  facet_wrap(. ~ REGION, scales = "free_y")
+p2024<-create_earlylate_plot(comb_punc, "ARR",2024, .limits = c(-0.3, 0.45)) + 
+  facet_wrap(. ~ REGION, scales = "free_y")
 
 
 (p2023 / p2024) + plot_layout(guides = "collect") & 
@@ -262,22 +265,20 @@ Further research may help to clarify the factors driving this phenomenon.
 #| label: fig-early-vs-late-departures
 #| fig-cap: Change of share of early and late departures (2023 vs 2024)
 
-p2023<-create_earlylate_plot("DEP",2023)
-p2024<-create_earlylate_plot("DEP",2024)
+# note: limits allows to set left and right max ranges
+# keep same limits for BRA and EUR to allow for comparison
+# .limits defaults to c(-0.5, 0.5) ~ 50%
 
+comb_punc <- bind_rows(punc_bra, punc_eur)
+
+p2023<-create_earlylate_plot(comb_punc, "DEP",2023, .limits = c(-0.1, 0.6)) + 
+  facet_wrap(. ~ REGION, scales = "free_y")
+p2024<-create_earlylate_plot(comb_punc, "DEP",2024, .limits = c(-0.1, 0.6)) + 
+  facet_wrap(. ~ REGION, scales = "free_y")
 
 (p2023 / p2024) + plot_layout(guides = "collect") & 
   theme(legend.position = 'top')
 ```
-
-
-```{r}
-.year = 2024
-.month = 4
-
-create_earlylate_month_plot("DEP", .year, .month)
-```
-
 
 The change of the share of early and late departures in 2019 and 2022 is shown in @fig-early-vs-late-departures.
 This presentation highlights the earlier observations.
