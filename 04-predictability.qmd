@@ -192,12 +192,18 @@ p2024<-create_earlylate_plot(comb_punc, "ARR",2024, .limits = c(-0.3, 0.45)) +
   theme(legend.position = 'top')
 ```
 
-@fig-early-vs-late-arrivals compares the share of early and late arrivals at each AIRPORT, CONSIDERING ARRIVALS BEFORE OR AFTER 15MIN (-15min or + 15min)  in 2023 and 2024.
-From a high-level perspective, air traffic tends to arrive well ahead of schedule in Brazil, while Europe observes a higher share of delayed arrivals.
-Guarulhos (SBGR) remained the Brazilian airport with the highest share of early flights in 2022, followed by Campinas (SBKP) both with more than 30%.
-Both airports are essential hubs in the country, and anticipation can be a consequence sought by air operators for better accommodation of the flight network.
-However, for flow control, this lack of precision is equally problematic, affecting the optimal allocation of resources for the provision of air traffic control and flow service.
-In turn, Madrid (LEMD) was the European element with the most significant share of early arrivals, with almost 20% in 2024. 
+@fig-early-vs-late-arrivals compares the share of early and late arrivals at each study airport, considering arrivals more than 15 minutes ahead of or behind schedule (-15 min or +15 min) in 2023 and 2024.
+From a broader perspective, air traffic in Brazil continues to show a tendency toward early arrivals, while in Europe, delayed arrivals are more prevalent.
+
+Guarulhos (SBGR) remained the Brazilian airport with the highest share of early arrivals in 2024, followed by Campinas (SBKP), both with more than 30% of flights landing ahead of schedule. As key hubs in Brazil’s network, this anticipation may reflect a deliberate strategy by airlines to better manage connections and mitigate delays within their own schedules.
+However, from a flow management perspective, this lack of precision poses operational challenges, as it complicates the allocation of resources and the sequencing of arrivals within controlled airspace and on the ground.
+
+In Europe, Madrid (LEMD) recorded the highest share of early arrivals in 2024, reaching nearly 20%. Still, this figure remains below the levels seen in Brazil, reinforcing the structural and strategic differences in scheduling practices and performance expectations between the two regions.
+Airport operators were identified as the major contributors to primary delays (ground handling, staff shortage), followed by ATFM delays.
+However, the aforementioned reactionary effect was the main driver of knock-on delays [@CODA-2023] [^04-predictability-1].
+
+
+[^04-predictability-1]: See CODA report at https://www.eurocontrol.int/publication/all-causes-delays-air-transport-europe-annual-2022.
 
 ## Departure Punctuality
 
