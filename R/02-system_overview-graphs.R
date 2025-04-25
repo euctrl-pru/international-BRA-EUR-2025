@@ -138,7 +138,7 @@ plot_cumulative_percentage_by_apt_rank <- function(){
       axis.title = element_text(size = 12)  # Increase the size of the axis titles
     )
   
-  p_cumsum_bra # Graph visualization
+  return(p_cumsum_bra)    # Graph visualization
 }
 
 
@@ -197,6 +197,6 @@ p_cumsum <- ggplot(.counts_df, aes(x = RANK, y = CUM_SHARE)) +
     axis.title = element_text(size = 12)  # Increase the size of the axis titles
   )
 
-p_cumsum_bra # Graph visualization
-}
+#p_cumsum_bra # Graph visualization
+
 
