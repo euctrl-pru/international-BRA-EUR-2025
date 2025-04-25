@@ -207,6 +207,8 @@ However, the aforementioned reactionary effect was the main driver of knock-on d
 
 ## Departure Punctuality
 
+The departure punctuality reflects the predictability of take-off operations at monitored airports. It is based on the comparison between the scheduled off-block time (SOBT) and the actual off-block time (AOBT), using a 15-minute tolerance window for early or late departures. The indicator expresses the percentage of flights that leave the gate within this time margin.
+
 ```{r}
 #| label: fig-departure-punc
 #| fig-cap: Evolution of departure punctuality at study airports (2023 vs 2024)
@@ -226,6 +228,25 @@ p_2023 / p_2024 + plot_layout(guides = "collect") &
   theme(legend.position = 'top')
 ```
 
+::: callout note
+Why @fig-departure-punc label is (a) Departure puctuality 2023??
+::: 
+
+@fig-departure-punc presents the departure punctuality results for the study airports. 
+The 2024 data shows that, overall, airports perform better in managing outbound traffic, although challenges remain.
+Different from arrival punctuality, where Brazilian airports showed a high share of early arrivals and wide variability across the network—departure punctuality metrics appear comparatively stronger, especially in terms of flights departing within the punctuality (-/+ 15 min) time window.
+
+One example is Santos Dumont Airport (SBRJ), where near to 50% of departures occurred 5 to 15 minutes ahead of schedule, reinforcing a consistent tendency toward early operations. On the other hand, Galeão Airport (SBGL) was one of the highest shares of delayed departures of flights leaving more than 15 minutes behind schedule.These two airports operate in close proximity and have undergone significant operational changes in recent years, which likely contribute to the contrasting performance. 
+
+Moreover, seasonal weather conditions—such as summer thunderstorms, wind gusts, and windshear, especially in Brazil’s Southeast region, can disrupt operations, increase runway occupancy time, or require frequent runway changes, further affecting predictability.
+
+In summary, while departure punctuality shows a slightly more favorable scenario compared to arrival operations, maintaining high performance levels still demands continuous improvements—especially at high-density airports. Operational planning, weather adaptation, and runway configuration remain key factors for enhancing outbound flight reliability.
+
+
+::: callout note
+Suggest to put the same graph as on arr, with SBGR and LPTT, and exclude fig-evolution-DEP-punc and fig-evolution-DEP-punc_by_month
+::: 
+
 ```{r}
 #| label: fig-evolution-DEP-punc
 #| fig-cap: Evolution of departure punctuality window
@@ -233,6 +254,7 @@ p_2023 / p_2024 + plot_layout(guides = "collect") &
 # punc_evolution_lineplot("DEP",c(0.4, 1))
 punc_evolution_lineplot(punc_bra ,"DEP",c(0.4, 1))
 ```
+
 
 
 
