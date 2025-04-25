@@ -10,6 +10,7 @@
 
 # remove annoying temp files from rendering
 *_files/
+figures/~$*
 
 # remove _book from tracking
 _book/

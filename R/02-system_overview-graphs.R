@@ -140,3 +140,63 @@ plot_cumulative_percentage_by_apt_rank <- function(){
   
   p_cumsum_bra # Graph visualization
 }
+
+
+p_cumsum <- ggplot(.counts_df, aes(x = RANK, y = CUM_SHARE)) +
+  # cum line
+  geom_path(color = "blue") +
+  # cont and fixed lines - x and y
+  geom_hline(yintercept = 0, color = "black", size = 0.5) +  # Linha no eixo X (y = 0)
+  geom_vline(xintercept = 0, color = "black", size = 0.5) +  # Linha no eixo Y (x = 0)
+  # Dotted lines limited to the points (x,y)
+  # geom_segment(aes(x = point_x10$rank, xend = point_x10$rank, y = 0, yend = point_x10$cumulative_percent), 
+  #              linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = 1, xend = point_y80$rank, y = 80, yend = 80), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = point_y80$rank, xend = point_y80$rank, y = 0, yend = 80), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = 1, xend = point_y90$rank, y = 90, yend = 90), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = point_y90$rank, xend = point_y90$rank, y = 0, yend = 90), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = 1, xend = point_y95$rank, y = 95, yend = 95), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = point_y95$rank, xend = point_y95$rank, y = 0, yend = 95), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = 1, xend = point_y99$rank, y = 99, yend = 99), linetype = "dotted", color = "gray40", size = 0.8) +
+  # geom_segment(aes(x = point_y99$rank, xend = point_y99$rank, y = 0, yend = 99), linetype = "dotted", color = "gray40", size = 0.8) +
+  # # Highlighting points
+  # geom_point(data = point_x10, aes(x = rank, y = cumulative_percent), color = "orange", size = 3) +
+  # geom_point(data = point_y80, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  # geom_point(data = point_y90, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  # geom_point(data = point_y95, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  # geom_point(data = point_y99, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  # # Labels
+  # geom_label(aes(x = point_x10$rank, y = point_x10$cumulative_percent, label = "TOP 10"), 
+  #            fill = "orange", color = "white", fontface = "bold", size = 4) +
+  # geom_label(aes(x = point_y80$rank, y = point_y80$cumulative_percent, label = "80%"), 
+  #            fill = "blue", color = "white", fontface = "bold", size = 4) +
+  # geom_label(aes(x = point_y90$rank, y = point_y90$cumulative_percent, label = "90%"), 
+  #            fill = "blue", color = "white", fontface = "bold", size = 4) +
+  # geom_label(aes(x = point_y95$rank, y = point_y95$cumulative_percent, label = "95%"), 
+  #            fill = "blue", color = "white", fontface = "bold", size = 4) +
+  # geom_label(aes(x = point_y99$rank, y = point_y99$cumulative_percent, label = "99%"), 
+  #            fill = "blue", color = "white", fontface = "bold", size = 4) +
+  # Axis customization
+  scale_x_continuous(
+    limits = c(0, max_rank),
+    breaks = c(10, 150, point_y80$rank, point_y90$rank, point_y95$rank, point_y99$rank, max_rank),
+    labels = c(10, 150, point_y80$rank, point_y90$rank, point_y95$rank, point_y99$rank, max_rank)
+  ) +
+  scale_y_continuous(
+    breaks = c(0, 20, 50, 80, 90, 95, 100, point_x10$cumulative_percent),
+    labels = c(0, 20, 50, 80, 90, 95, 100, round(point_x10$cumulative_percent, 2))
+  ) +
+  labs(
+    x = "Number of airports - Rank",
+    y = "Cumulative Percentage (%)",
+    title = "Cumulative Percentage by Airport Rank"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_text(size = 12),  # Increase the size of the numbers on axis
+    axis.title = element_text(size = 12)  # Increase the size of the axis titles
+  )
+
+p_cumsum_bra # Graph visualization
+}
+

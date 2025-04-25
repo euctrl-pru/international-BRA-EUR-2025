@@ -117,12 +117,56 @@ calc_summary_routes_dep <- function(.mvts){
   return(this_summary)
 }
 
-bra_deps_routes <- bra_mvts |> calc_summary_routes_dep()
-eur_deps_routes <- eur_mvts |> bind_rows() |> calc_summary_routes_dep()
+bra_deps_routes <- bra_mvts |> calc_summary_routes_dep() |> mutate(REGION = "BRA")
+eur_deps_routes <- eur_mvts |> bind_rows() |> 
+  calc_summary_routes_dep() |> 
+  left_join(oa |> select(ADEP = ICAO, CNTRY_ISO), by = join_by(ADEP)) |> 
+  #------- patch unknown airports ------------------
+  mutate(CNTRY_ISO = case_when(
+     grepl(pattern = "^EB", x = ADEP) ~ "BE"
+    ,grepl(pattern = "^E[DT]", x = ADEP) ~ "DE"
+    ,grepl(pattern = "^EG", x = ADEP) ~ "GB"
+    ,grepl(pattern = "^EH", x = ADEP) ~ "NL"
+    ,grepl(pattern = "^EI", x = ADEP) ~ "IE"
+    ,grepl(pattern = "^EN", x = ADEP) ~ "NO"
+    ,grepl(pattern = "^EP", x = ADEP) ~ "PL"
+    ,grepl(pattern = "^LE", x = ADEP) ~ "ES"
+    ,grepl(pattern = "^LF", x = ADEP) ~ "FR"
+    ,grepl(pattern = "^LG", x = ADEP) ~ "GR"
+    ,grepl(pattern = "^LH", x = ADEP) ~ "HU"
+    ,grepl(pattern = "^LI", x = ADEP) ~ "IT"
+    ,grepl(pattern = "^LK", x = ADEP) ~ "CZ"
+    ,grepl(pattern = "^LL", x = ADEP) ~ "IL"    # Israel
+    ,grepl(pattern = "^LO", x = ADEP) ~ "AT"
+    ,grepl(pattern = "^LR", x = ADEP) ~ "RO"
+    #---------- other ADEPs ----------------------
+    ,grepl(pattern = "^GM", x = ADEP) ~ "MA"    # Morocco
+    ,.default = CNTRY_ISO
+  )) |> 
+  filter(CNTRY_ISO %in% (icao_iso_other |> filter(eurocontrol_pru %in% "Eurocontrol") |> pull(iso2c)) ) |> 
+  mutate(REGION = "EUR")
 
 # TODO - save as interim data and work from there
+comb_deps_routes <- bind_rows(bra_deps_routes, eur_deps_routes) |> 
+  group_by(REGION) |> 
+  arrange(desc(DEPS), .by_group = TRUE) |> 
+  mutate(RANK = 1:n(), SHARE = DEPS / sum(DEPS), CUM_SHARE = cumsum(SHARE)
+         ,IN_STUDY = ADEP %in% c(bra_apts, eur_apts)) |> 
+  ungroup()
+
+#comb_deps_routes |> arrow::write_parquet("./data/BRA-EUR-dep-counts-2024.parquet")  
 ```
 
+```{r}
+if(exists("comb_deps_routes")){
+  comb_deps_routes <- arrow::read_parquet("./data/BRA-EUR-dep-counts-2024.parquet")
+}
+
+#comb_deps_routes |> group_by(REGION) |> mutate(RANK = RANK / max(RANK)) |> 
+comb_deps_routes |> filter(RANK <= 150) |> 
+  ggplot() + 
+  geom_step(aes(x = RANK, y = CUM_SHARE, group = REGION), direction = "hv")
+```
 
 
 ```{r}

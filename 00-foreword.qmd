@@ -10,11 +10,18 @@ $$\\[1in]$$
 
 :::
 
+:::{callout-note}
+
+prepare forewords in ppt --> layout , column spacing and paste figure here
+
+:::
+
 :::{layout-nrow=3}
 
-![](figures/foreword-medeiros.jpeg)
-
+![](figures/foreword-medeiros.png)
+::: {.content-hidden unless-format="pdf"}
 $$\\[0.5in]$$
+:::
 
 ![](figures/foreword-peter.png)
 
