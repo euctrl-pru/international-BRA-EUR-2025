@@ -92,7 +92,7 @@ Thus, the visualisation and section may change, and with a smaller data set.
 
 # funciton - deactivated as it requires 900MB data file ==> side-study == to be completed plot_cumulative_percentage_by_apt_rank()
 
-  comb_deps_routes <- arrow::read_parquet("./data/BRA-EUR-dep-counts-2024.parquet")
+comb_deps_routes <- arrow::read_parquet("./data/BRA-EUR-dep-counts-2024.parquet")
 
 #comb_deps_routes |> group_by(REGION) |> mutate(RANK = RANK / max(RANK)) |> 
 comb_deps_routes |> filter(RANK <= 150) |> 
