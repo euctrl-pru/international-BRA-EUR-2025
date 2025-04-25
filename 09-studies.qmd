@@ -137,21 +137,28 @@ In 2024, traffic within FIR-CW exceeded 492,000 flights, representing a 25% incr
 
 The FIR-CW encompasses the Terminal Control Areas (TMA) of São Paulo, Rio de Janeiro, Curitiba, Florianópolis, Porto Alegre, Foz do Iguaçu, Campo Grande, Santa Maria, Macaé, Londrina, and Presidente Prudente.
 
-Currently, ACC-CW is divided into 18 sectors and two regions: North and South.
+One of the objectives of the cooperation agreement established between DECEA and MUAC—the Rostering Philosophies and Tools Agreement—is to support the implementation of the TOTAL ATM philosophy.
+
+ACC-CW was selected to be the first operational unit in Brazil to implement changes related to new philosophies and methodologies for operational staff rostering. It was also chosen to develop and implement, with the support of MUAC, the Air Traffic Support System for the Use of Human Resources in Operational Needs, known as SATURNO.
+
+The implementation of SATURNO began in March 2025 and is being carried out in phases, with completion expected by the end of the year.
+
+To improve planning for operational position configurations and the allocation of air traffic controllers during shifts, the ACC-CW airspace, currently, is divided into 18 sectors and two regions: North and South.
+
+![](figures/acc_ctb_northsouth.png)
 
 Comparison with EUROCONTROL
 
-![](figures/acc ctb overview.jpeg)
+![](figures/comp_acc.png)
 
-**Flight-hours controlled:\
-** The total number of controlled flight hours was calculated for the year 2023.
+Figure above provides an initial side-by-side comparison between DECEA and NAV Portugal (Continental) regarding selected operational characteristics of their Area Control Centers (ACCs). While each organization operates within its own regional and structural context, some key contrasts are worth highlighting.
 
-**ATCO-hours on duty:\
-** The total monthly scheduled hours of operators in the year 2024 were summed, considering the operational positions: Controller, Control Assistant, Coordinator, and Supervisor.
+Despite having a smaller controlled airspace, NAV Portugal managed a higher volume of IFR ACC movements than DECEA in the same period. This suggests a denser and more concentrated traffic environment, likely influenced by Portugal’s geographic position in Europe and the nature of its flight corridors.
 
-**Average transit time in minutes:\
-** The average transit time in minutes was calculated per
-sector for the year 2023, as it provides a complete annual sample
+Another point is the number of air traffic controllers (ATCOs) assigned to the operations room. NAV Portugal manages its operational workload with just 71 ATCOs, underscoring differences in operational models, automation levels, and staffing philosophies between the two organizations.
 
-**ATCOs in OPS:\
-** The number of ATCOs in operation was calculated based on the monthly average of qualified operators at ACC-CW, as recorded in SGPO. Currently, ACC-CW has 2,013 operators and 10 trainees.
+These contrasts reinforce the importance of considering regional particularities and contextual factors when analyzing air navigation service provision metrics and designing solutions like staffing systems or control room configurations.
+
+
+
+
