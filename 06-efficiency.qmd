@@ -41,48 +41,21 @@ The latter may be influenced by the predominant runway system configuration and 
 #| fig-cap: Additional taxi-in time [min/arr] (2023-2024)
 #| fig-height: 4
 
-fig_txit_annual(c(2019,2020,2024))
+fig_txit_annual(c(2023,2024))
 ```
 
 
 
 The annual development of the average additional taxi-in times at the study airports is depicted by @fig-txit-annual.
-The indicator varies across the different airports. 
-A threshold of 2 minutes per arrival emerges as an upper bound for the taxi-in performance.
 
-On average, taxi-in performance in Brazil ranged in 2022 well below this 2-minute-threshold for the majority of the airports.
-In general, taxi-in performance at Brazilian airports improved over the period 2019 to 2022[^BRA-txit].
-However, taxi-in performance decreased in 2023 at all studied airports.
-The pandemic-related drop in surface movements and pressure on the ground infrastructure is visible for the major hubs, i.e. Sao Paulo's (SBGR), Rio de Janeiro's Galeão (SBGL), Campinas (SBKP).
-Taxi-in performance at Campinas remained fairly constant ranging around 2.5 min/arr across the years with a discernible reduction in 2021.
-The picture at SBGL and SBGR is more varied.
-Taxi-in performance improved by about 1.5 min/arr comparing the pre-pandemic year 2019 with the performance observed in 2022.
-While the observed taxi-in inefficiencies in 2023 remained stable in SBGL, an increasing trend is observed in SBGR (which is the busiest airport in Brazil).
+The 2-minute threshold per arrival continues to serve as a practical reference point for evaluating taxi-in efficiency.
 
-<!-- footnote on changed values for txit @ BRA ------------------- 
----- keep this close to the para for editing purposes -------- -->
-[^BRA-txit]: While general trends are consistent with previous reports, the changed and improved data source provides now runway and stand/gate information for taxi-in operations. This allows for a more fine-grained analysis of the additional surface movement times. Accordingly, observed (and reported) taxi-in performance values differ from the earlier reports (which are based on airport-wide reference times).
-<!--------------------------------------------------------------- -->
+In Brazil, taxi-in performance in 2024 remained generally good, with most airports maintaining values close to or below 2 minutes. Notable exceptions were Congonhas (SBSP), which recorded the highest average additional taxi-in time, reaching approximately 3 minutes per arrival, followed closely by Guarulhos (SBGR), also nearing 3 minutes. Outside these two major hubs, all other studied Brazilian airports displayed taxi-in times well controlled around or below the 2-minute threshold. A particular highlight was Santos Dumont (SBRJ), which achieved a significant reduction in taxi-in times compared to the previous year.
 
-In Europe, the average additional taxi-in times ranged generally below the 2-minute-threshold for most of the study airports [^EUR-txit]. 
-Amongst the European study airports, Rome Fiumicino (LIRF) and London Heathrow (EGLL) showed regularly higher levels of inefficiency during the taxi-in phase.
-Taxi-in performance deteriorated in London Heathrow (EGLL) in 2022 ranging just under 5 minutes per arrival and exceeding the pro-COVID performance by about 2 minutes per incoming flight.
-In 2023, the average additional taxi-in improved by about 1 minute per arrival. 
-Rome Fiumicino observed a stable taxi-in performance ranging above 2.5 minutes per arrival. 
-This suggests that the complexity of the aerodrome layout requires a higher effort to deconflict arrivals from other arrivals or taxiing departures.
-Taxi-in performance in 2023 dropped further at LIRF to just under 3 minutes per arrival.
-Several airports in Europe showed higher or less improved additional taxi-in times during the pandemic years. 
-This is related to the fact that airports closed down portions of the infrastructure (e.g. terminals) to account for the lower demand in air traffic. 
-In some cases, this resulted in less favourable runway and gate/stand combinations.
-In Europe, the year 2022 is also characterised by a surge in delays due to the returning demand for air travel. 
-Associated ripple effects were still observed in 2023. 
-The lower punctuality also posed challenges for arriving traffic as incoming flights had to be serviced to other gates/stands to deconflict from delayed departures.
-The latter phenomenon shows more clearly for the major hubs amongst the study airports.
+In Europe, the patterns were slightly more varied. London Heathrow (EGLL) remained the airport with the highest additional taxi-in time, approaching 4 minutes per arrival in 2024, underlining persistent surface congestion challenges. Lisbon (LPPT) and Frankfurt (EDDF) also surpassed the 2-minute threshold, though only slightly. All other European airports maintained taxi-in times below 2 minutes. A remarkable highlight was Barcelona (LEBL), where taxi-in efficiency improved notably, with average additional taxi-in times dropping to below 1 minute per arrival.
 
-<!-- footnote EUR taxi-times ---------------------------------------------- -->
-[^EUR-txit]: To account for the low traffic demand during the pandemic years, the European data builds on modulated reference times for the period 2019 through 2022.
-This accounts for the high number of changed surface movement patterns (e.g. different runway/gate combinations infrequently or not used before the pandemic).
-While the overall trend is consistent, previous reports may show differnt values for the observed surface movement performance.
+Compared to 2023, taxi-in times remained relatively stable in both regions, although slight deteriorations were observed at some of the busiest hubs. These results emphasize the continued importance of optimizing surface management procedures to maintain overall predictability, particularly as traffic volumes increase at major airports.
+
 
 ### Monthly Variation of Additional Taxi-in Times
 
@@ -169,7 +142,7 @@ txot_eur_per_month()
 #| label: fig-txot-txit-mapping
 #| fig-cap: Mapping of additional taxi-in and taxi-out times
   
-plot_mapping_year1_year2(2019,2023)
+plot_mapping_year1_year2(2023,2024)
 ```
 
 This analysis builds on the previous sections. 
@@ -223,7 +196,7 @@ This will allow to better investigate the changes observed across the years. [^B
 #| label: fig-asma-vs-traffic-volume
 #| fig-cap: Comparison of additional time in terminal airspace
 
-asma_vs_traffic_volume(c(2019,2023))
+asma_vs_traffic_volume(c(2023,2024))
 ```
 
 @fig-asma-vs-traffic-volume depicts the change in terms of the average additional time in terminal airspace comparing 2019 and 2022.
