@@ -155,6 +155,7 @@ renamed figure 5.3 and 5.4
 Figure 5.3: Evolution of BRA - arrival punctuality -/+15 min vs traffic
 Figure 5.4: Evolution of EUR - arrival punctuality -/+15 min vs traffic
 cHECK BRA PUNCTUALITY ON FIGURE 5.3 AND INSERT TEXT
+
 ::: 
 
 
@@ -309,22 +310,24 @@ p2024<-create_earlylate_plot(comb_punc, "DEP",2024, .limits = c(-0.1, 0.6)) +
   theme(legend.position = 'top')
 ```
 
-The change of the share of early and late departures in 2019 and 2022 is shown in @fig-early-vs-late-departures.
-This presentation highlights the earlier observations.
-On average, European airports observed a higher share of delayed departures by a factor of 2-3 in comparison to Brazil.
-While the picture varies, the distored nature of the traffic in 2022 is visible in the higher share of delay departures in 2022 in Europe in comparison to the pre-pandemic levels in 2019.
-This put a strain on the schedule stability across Europe. 
-Local issues (e.g. reduced facilication capacity at airports) affected air traffic services in terms of surface movement, but also rippled into the network affecting the sequencing of arrivals and departure traffic.
+The change of the share of early and late departures in 2023 and 2024 is shown in @fig-early-vs-late-departures.
+
+Both Brazilian and European airports demonstrate a positive operational behavior: early departures (before scheduled time) are relatively small in both regions, which is favorable for maintaining schedule stability and high punctuality.
+
+In Brazil, the patterns observed in 2023 and 2024 are notably similar across the study airports, indicating consistent operational practices. Galeão (SBGL) was the airport with the highest share of late departures, reaching approximately 30% in both years. Despite this, most Brazilian airports maintained a balanced distribution, with a large proportion of flights departing within the -/+ 15-minute window.
+
+In Europe, while the general behavior remains similar, some airports experienced a deterioration in departure punctuality. Munich (EDDM) saw an increase in late departures, with the share rising above 40% in 2024. This trend reflects localized challenges that continue to affect surface operations and overall network sequencing.
+
+While surface movement operations appear stable at most airports, the growing share of late departures at specific locations signals the need for continuous monitoring and management interventions to assure the predictability of airport operations.
+
 
 ## Summary
 
 Arrival and departure punctuality play an important role in terms of balancing demand and capacity. 
-Strong distortions of the schedule will ultimately ripple down into reactionary delay and require a higher effort for both the arrival flow and surface movement control.
-Turnaround distortions affect therefore the planning accuracy of air navigation services and may lead to unwanted side-effects (e.g. longer sequencing and holding in the terminal airspace, passenger inconvenience due to longer taxi-times/blocked gates).
 
-Distinct patterns were observed in both regions that cannot only be explained by the level of traffic recovery. 
-On average, a higher share of flights arrives well ahead of schedule in Brazil. This pattern is largely unchanged when comparing 2019 and 2022. 
-The ripple effect of the low preparedness level of European airports to address the returning traffic in 2022 is well documented.
-This yielded a significant low performance in terms of departure punctuality exceeding levels observed in Brazil by a factor of 2-3.
-Distortions of the local schedule can have knock-on effects on the air navigation service provision, both in terms of surface movement and arrival sequencing.
-More research is needed to investigate and understand the underlying drivers and to what extent regional connectivity influences the observed patterns. 
+Arrival punctuality revealed distinct regional patterns. Brazilian airports continued to show a high share of early arrivals, largely due to the use of built-in buffer times in flight schedules. While this improves on-time performance metrics, it complicates air traffic management by reducing predictability. In contrast, European airports generally maintained lower shares of early arrivals and more stable punctuality performance across the study period. Operational comparisons, such as between Guarulhos (SBGR) and Lisbon (LPPT), highlighted the challenges faced by large, high-density hubs in sustaining punctuality under growing demand.
+
+Departure punctuality showed slightly better performance compared to arrivals in both regions. Early departures remained relatively rare, supporting schedule stability. However, challenges persisted, particularly at airports like Galeão (SBGL) in Brazil and Munich (EDDM) in Europe, where late departures increased. These patterns emphasize how local operational constraints, weather disruptions, and surface management practices directly influence performance.
+
+In both regions, maintaining high predictability levels remains critical to support efficient surface operations, arrival sequencing, and passenger experience. Continuous adaptation, proactive operational planning, and effective resource management are essential to sustain and improve predictability, especially as traffic demand continues to grow.
+
