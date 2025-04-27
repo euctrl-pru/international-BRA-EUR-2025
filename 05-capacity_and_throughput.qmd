@@ -108,18 +108,25 @@ The recovery pattern is also visible in the peak arrival throughput behaviour.
 arrival_tp_plot(c(2019:2024))
 ```
 
+::: callout-note
+only 8 labels each region is appearing on the graph @fig-arrival-throughput
+europe up to 2023. Must be update to 2024 data.
+
+:::
+
+
 ## Peak Departure Throughput
 
 In analogy to the previous section, @fig-departure-throughput shows the peak departure throughput.
 The latter is determined as the 95th percentile of the hourly number of departures.
 
-In Brazil, and with the exemption of Galeão, an interesting trend emerged.
-On average, "busy hour" throughput increased in comparison to the pre-pandemic levels.
-In the first chapters the overall recovery and growth of air traffic demand in Brazil was shown.
-With a reasonable lower departure delay performance, there exists a higher departure demand.
+In Brazil, Campinas, Brasilia and Santos Dumont reduced the peak departure in comparison with 2023.
+Only Curitiba and Porto Alegre mantained the same level as 2023. For others brazilians, the peak departure increased.
 
-The pattern at the European airports follows the arrival throughput trend and on average similar values were serviced.
-This suggests widely homogeneous demand patterns and iteratively recovery of air traffic services at the European airports.
+
+::: callout-note
+Insert data and text from europe
+:::
 
 
 ```{r}
@@ -128,6 +135,13 @@ This suggests widely homogeneous demand patterns and iteratively recovery of air
 
 departure_tp_plot(c(2019:2024))
 ```
+
+::: callout-note
+only 8 labels each region is appearing on the graph @fig-departure-throughput
+europe up to 2023. Must be update to 2024 data.
+
+:::
+
 
 ## Declared Capacity and Peak Throughput
 
@@ -144,7 +158,7 @@ cap_peak_tp_plot(key_year)
 Comparing the peak declared (arrival) capacity and throughput serviced at the differnt airports reveals a varying picture.
 On average, @fig-capvsthru evidences that the majority of the airports do not yet observe capacity constraints.
 In many instances, the achieved throughput ranges 5 to 10 flights per hour below the maximum declared capacity.
-In 2023, a low utilisation was observed at Galeão (SBGL), Brasilia (SBBR), and Rome Fiumicino (LIRF) where the spread between capacity and throughput exceeds 15 flights per hour.
+In 2024, a low utilisation was observed at Galeão (SBGL), Brasilia (SBBR), Rome Fiumicino (LIRF) and Paris Charles de Gaule (LFPG) where the spread between capacity and throughput exceeds 15 flights per hour.
 It is also noteworthy, that a subset of airport services operate at their maximum declared capacity (e.g. SBRJ, SBKP, LSZH).
 These airports are also characterised by a combination of complexity of the aerodrome layout and operational context.
 It will be interesting to study how these airports facilitate higher levels of demand.
@@ -152,6 +166,13 @@ Sao Paulo (SBSP) is the only airport that serviced a slightly higher peak arriva
 
 The analysis of the spread of the declared capacity vs achieved throughput is useful.
 However, it gives now indication on how often the demand reaches the declared capacity level.
+
+
+::: callout-note
+
+is figures below updated?
+
+:::
 
 ::: {layout="[55,45]"}
 ![Example of ordered hourly throughout in different years](figures/bli-pli-example.png){#fig-bli-pli-example}
@@ -183,18 +204,14 @@ Future work on understanding the drivers between operational concepts and demand
 
 ## Summary
 
-Traffic growth in Brazil exceeds pre-pandemic levels.
-In Europe demand is about to reach the pre-COVID levels.
-Throughout the past years the declared capacities have not been adapted.
-On average the declared peak capacities at Brazilian airports tend to be lower than in Europe.
-This suggests that Brazil possesses more flexibility in accommodating the projected future growth of traffic at its major airports.
-Within the European context, novel operational concepts offer the biggest growth potential, as the prevailing separation standards and capacities of the runway system provide for an upper bound.
 
-The observed throughput at Brazilian airports shows lower variability during the pandemic period.
-This suggests that demand remained concentrated during the peak operating hours.
-Comparing the utilisation of the capacity on the basis of a novel indicator reveals interesting patterns.
-With SBSP being one of the most constraint aerodrome facilities, but seeing the available capacity regularly utilised across the years and reaching pre-pandemic levels.
+This chapter analyzed the relationship between airport capacity, throughput, and demand management across Brazilian and European airports.
 
-On average the declared arrival capacity is commensurate with the peak traffic observed at the airports.
-This suggests that - at the time being - runway system capacities are not a limiting factor for servicing traffic in both regions.
-It will be interesting to study to what extent the various operational procedures applied across the airport support or impede the projected recovery and growth of air traffic.
+On average, declared peak capacities at Brazilian airports tend to be lower than in Europe, suggesting greater flexibility to accommodate future traffic growth at major Brazilian hubs.
+In contrast, many European airports will increasingly depend on novel operational concepts to achieve further gains, as their existing runway infrastructure and separation standards already impose operational limits.
+
+Comparing the utilisation of capacity based on a new indicator revealed interesting patterns. Most airports currently operate with a margin between declared capacity and observed peak throughput, suggesting that, at present, runway system capacities are not a limiting factor in either region.
+
+Notably, in 2024, low utilisation was observed at Galeão (SBGL), Brasília (SBBR), Rome Fiumicino (LIRF), and Paris Charles de Gaulle (LFPG), where the spread between capacity and peak throughput exceeded 15 flights per hour. Conversely, São Paulo Congonhas (SBSP) emerged as one of the most constrained facilities, servicing peak arrival rates close to or slightly above its declared capacity.
+
+Overall, the findings highlight that while current capacities are sufficient, maintaining system performance amid projected air traffic growth will increasingly depend on operational innovations and efficient management strategies in both regions. 
