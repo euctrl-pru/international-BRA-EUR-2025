@@ -76,18 +76,19 @@ txit_bra_per_month()
 txit_eur_per_month()
 ```
 
-The evolution of the taxi-in times at the study airports in Brazil and Europe is shown in @fig-bra-txit-timeline and @fig-eur-txit-timeline. 
-In @fig-bra-txit-timeline, we can see that the variation of additional taxi-in time smoothened over time on the Brazilian side.
-This effect appears to be associated broadly with the beginning of the pandemic. 
-Despite the significant return of demand in 2022 and continual growth in 2023, there are no significant monthly variations in the average additional time-in across the Brazilian airports.
-Operations at the larger airports, e.g. Guarulhos (SBGR), Rio de Janeiro (SBRJ), Brasilia (SBBR) observed a more systematic increase of the monthly average additional taxi-in times. 
-These trends should be monitored for the coming period. 
 
-The observed average additional taxi-in time varies across European airports on a monthly basis.
-In general, seasonality is a strong driver for month-on-month changes, as weather or seasonal traffic demand pose additional strains on the servicing of ground movements.
-To a certain degree, the pandemic period is discernible in the charts, except for Barcelona and Zurich, which showed a slight higher leve of taxi-in inefficiency. 
-Such less efficient average additional taxi-in times point to changes in the taxi-in procedures during the pandemic.
-Also noteworthy is Heathrow's behaviour, which showed an increase in its monthly average additional taxi-in times. This may be linked to difficulties accommodating the returning traffic. It will be interesting to study which factors impacted the significant increase in the taxi-in inefficiency.  
+::: callout-note
+is the graph @fig-eur-txit-timeline.  correct?
+Looks like almost the same information
+
+:::
+
+The evolution of the taxi-in time at the study airports, shown in @fig-bra-txit-timeline and @fig-eur-txit-timeline, reinforces the findings presented in the previous analysis.
+In Brazil, the figures clearly illustrate the increase in average taxi-in times at Porto Alegre (SBPA), Congonhas (SBSP), Salvador (SBSV), and Galeão (SBGL) throughout 2024. Congonhas and Guarulhos consistently maintained the highest levels within the Brazilian group, while Santos Dumont (SBRJ) stands out with a significant improvement, reducing its taxi-in times compared to previous years.
+
+In Europe, the data reveal a relatively stable pattern over the two-year period. Most airports maintained consistent taxi-in times, with minor variations. Lisbon (LPPT) showed a slight upward trend, while Barcelona (LEBL) remained a highlight, sustaining very low taxi-in times, well below 1 minute per arrival.
+
+These trends emphasize the importance of continuous monitoring of ground operations efficiency, especially as traffic demand grows.
 
 ## Taxi-Out Times
 
@@ -102,12 +103,10 @@ plot_annual_txot(c(2023,2024))
 ```
 
 On average, higher additional times for taxi-out are observed across all airports (c.f. @fig-txot-annual).
-During the pandemic, lower traffic demand resulted in 2020 and 2021 to a significant drop of the average additional taxi-out times.
-In comparison to the addtional taxi-in time, the taxi-out phase requires a higher level of management of the surface movements. 
-Departure procedures and flow control can impact the departure queue.
-Comparing the observed taxi-out performance across all study airports (  @fig-txot-annual), the interval of two to four minutes of average additional taxi-out time can serve as a benchmark. 
-There is a varied picture with several airports observing additinal taxi-out times of more than 4 minutes per departure, e.g. SBSP, SBRJ, SBGR in Brazil and LIRF, EGLL, and EGKK in Europe.
-In many instances the higher taxi-out times in 2022 and 2023 evidence the general increase in air traffic and the reopening of closed parts of the aerodrome infrastructure.
+
+In Brazil, Santos Dumont (SBRJ) showed a notable improvement, with a reduction of more than 2 minutes compared to 2023. For the remaining airports, only minor variations were observed, including slight increases at Curitiba (SBCT) and Galeão (SBGL). Congonhas (SBSP) continues to record the highest additional taxi-out times among Brazilian airports, reaching approximately 7 minutes.
+
+In Europe, a significant reduction in taxi-out times was observed across most airports. Zurich (LSZH) particularly stands out, achieving a reduction of about 2 minutes. Lisbon (LPPT) registered the highest taxi-out time among the European airports, nearing 7 minutes. Except for Lisbon, which saw a slight increase, all other European airports improved their taxi-out performance between 2023 and 2024.
 
 ### Monthly Variation of Additional Taxi-out Times
 
@@ -119,13 +118,6 @@ In many instances the higher taxi-out times in 2022 and 2023 evidence the genera
 txot_bra_per_month()
 ```
 
-Moving from the annual overview to the monthly level a more finegrained pattern emerges.
-Within the Brazilian context taxi-out performance increased during the beginning of COVID (c.f. @fig-txot-monthly).
-The actual order of magnitude varies across the airports, however a clear reaction can be observed for the initial phase (i.e. following the WHO pandemic declaration in March).
-
-The reaction to the unprecedented decline in air traffic is more prominent for European airports (c.f @fig-txot-eur-monthly).
-London Heathrow (EGLL) and London Gatwick (EGKK) evidenced a strong decline of traffic and associated additional taxi-out times following the start of the pandemic. 
-Strong weather influences drove the taxi-out performance at Amsterdam Schiphol (EHAM), Munich (EDDM) and Zurich (LSZH) in early 2021.
 
 ```{r}
 #| label: fig-txot-eur-monthly
@@ -134,6 +126,16 @@ Strong weather influences drove the taxi-out performance at Amsterdam Schiphol (
 
 txot_eur_per_month()
 ```
+
+
+
+The trends reinforce the observations from the annual figures.
+
+In Brazil, Santos Dumont (SBRJ) showed a significant improvement in 2024, with taxi-out times decreasing by more than two minutes. For the other airports, monthly variations were relatively small, although a gradual increase can be seen at Curitiba (SBCT) and Galeão (SBGL).
+Congonhas (SBSP) continues to register the highest additional taxi-out times among Brazilian airports, reaching nearly 7 minutes in 2024.
+
+In Europe, the overall trend is one of improvement, with most airports reducing their taxi-out times between 2023 and 2024. Zurich (LSZH) achieved a notable reduction of about two minutes. Lisbon (LPPT) stands out with the highest taxi-out time, close to 7 minutes. Except for Lisbon, which saw a slight increase, all other European study airports experienced reductions in taxi-out times, confirming a broad regional effort to improve surface efficiency.
+
 
 ## Mapping Additional Taxi-in and Taxi-out Times
 
@@ -145,10 +147,22 @@ txot_eur_per_month()
 plot_mapping_year1_year2(2023,2024)
 ```
 
+
+::: callout-note
+
+Is figure from 2019 / 2023 or 2023 / 2024 and only lables are not correct?
+Based on this, the text was not updated
+
+:::
+
+
 This analysis builds on the previous sections. 
-@fig-txot-txit-mapping compares the relationship between the taxi-in and taxi-out performance observed pre-pandemic (i.e. 2019) with the observed performance in 2023.
+@fig-txot-txit-mapping compares the relationship between the taxi-in and taxi-out performance observed.
+
 It also shows that on average taxi-out operations accrued more additional time than taxi-in operations (data points range below the dotted unit line, and as shown in the previous sections).
-For most of the airports, the overall performance shows a reduction in additional taxi-out times (i.e. characterised by a leftshift along the x-axis) when comparing the pre-pandemic year 2019 to 2023.
+
+For most of the airports, the overall performance shows a reduction in additional taxi-out times (i.e. characterised by a leftshift along the x-axis).
+
 A significant improvement in taxi-in performance can be obsered in Brazil across all study airports (i.e. decreasing trend along y-axis). 
 This is contrasted by the behaviour in Europe. 
 The majority of European airports observed no significant change in their taxi-in performance (i.e. no vertical trend).
@@ -170,9 +184,14 @@ Previous research and guidance suggests that reference time can be build for fli
 #| fig-cap: Additional time in terminal airspace
 #| fig-height: 4
 
-bra_eur_asma_plot(c(2019:2024))
+bra_eur_asma_plot(c(2023:2024))
 ```
 
+::: callout-note
+European data is not with 2024
+The text not updated
+
+:::
 @fig-asma compares the annual average of additional times in terminal airspace across the study airports.
 On average, the arrival flows at European airports are less constraint than in Brazil.
 
