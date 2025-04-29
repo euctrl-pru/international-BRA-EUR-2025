@@ -479,7 +479,7 @@ get_p_study4_bra <- function(.year_ref, .year_comp){
     labs(x = NULL, y = NULL) +
     scale_y_continuous(
       labels = scales::label_percent(accuracy = 1),
-      limits = c(-1.5, 0.2)
+      limits = c(-1.5, 0.9)
     ) +
     theme(
       legend.position = "none",

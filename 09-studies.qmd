@@ -100,15 +100,36 @@ bra_asmas |>
 
 
 ```{r}
+# load the data
+sbgr_2019 <- read_csv("./data/BRA-ASMA-SBGR-2019.csv", show_col_types = FALSE)
 
+sbgr_2019 <- sbgr_2019 |> 
+  rename(AIRPORT = ADES, DATE = MOF, FLTS = N_VALID, TOT_A100 = SUM_TRAVEL
+         , TOT_REF = SUM_REF, TOT_ADD = SUM_ADD_TIME, AVG_ADD = AVG_ADD_TIME) |> 
+  mutate(YEAR = 2019 |> as.character()) 
+
+sbgr_2024  <- read_csv("./data/BRA-ASMA.csv", show_col_types = F) |> mutate(YEAR = substr(DATE, 1, 4)) |> 
+  filter(AIRPORT == "SBGR", YEAR == 2024)
+
+sbgr_2024 |> bind_rows(sbgr_2019) |> 
+  mutate(X = substr(DATE, 6,7)) |> 
+  
+  ggplot() + 
+  geom_col(aes(x = X, y = AVG_ADD, fill = YEAR), position = position_dodge())
 ```
 
+<!-- HERE I CAN WRITE WHAT I WANT -->
 
+more text
+
+<!--
 ![](figures/asma_SBGR_2019.png)
 
 ![](figures/asma_SBGR_2024.png)
 
 ![](figures/asma_SBGR_2019_2024.png) 
+
+-->
 
 
 The results indicated an increase in additional time for both airports following the implementation of the PMS. This suggests that, operationally, the PMS enabled a higher occupancy rate within the TMA. By design, the PMS enhances the terminal's capacity to manage and organize inbound traffic more efficiently. However, the runway throughput remained unchanged, as increasing runway capacity would require physical infrastructure modifications. Consequently, although the terminal airspace can now accommodate a greater number of approaches simultaneously, the airport’s ground infrastructure cannot absorb this increased demand at the same pace. This mismatch leads to longer dwell times within the terminal area as aircraft await clearance to land.

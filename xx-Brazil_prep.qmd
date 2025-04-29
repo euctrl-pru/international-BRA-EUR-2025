@@ -1,0 +1,2049 @@
+---
+title: "Brazil's prep file"
+---
+
+```{r}
+# path to repo on drive: 	- https://drive.google.com/drive/folders/1gZloRgIM49SmPkFbi2-B89RUeFBwZsu3?usp=drive_link
+
+# path to zip-files
+path <- "C:/Users/rdrodrig/dev/repo"
+fns <- list.files(path) 
+
+# defaults
+ggplot2::theme_set(ggplot2::theme_minimal())
+
+# study airports
+bra_apts <- c("SBGR","SBGL","SBRJ","SBCF","SBBR","SBSV","SBKP","SBSP","SBCT","SBPA")
+```
+
+
+```{r}
+library(tidyverse)
+library(patchwork)
+library(flextable)
+library(magrittr)
+library(zoo)
+library(ggrepel)
+library(purrr)
+library(glue)
+library(pdftools)
+library(devtools)
+library(conflicted)
+library(readr)
+library(flightsbr)
+library(dplyr)
+library(ggplot2)
+library(dplyr)
+library(tidygraph)
+library(igraph)
+library(ggraph)
+library(purrr)
+library(sf)
+
+#install.packages("sf")
+
+conflicts_prefer(dplyr::filter)
+conflicts_prefer(dplyr::lag)
+```
+
+
+## Overview
+
+This quarto report documents the data preparatory stages for the 2024 exercise.
+
+Data was shared by DECEA via google-drive/sharepoint (https://drive.google.com/drive/folders/1gZloRgIM49SmPkFbi2-B89RUeFBwZsu3?usp=drive_link)
+The data comprises zip files covering the period 2019 through 2024.
+These source data are stored outside this project folder.
+
+
+# CHAP 2 - ANS CHARACTERIZATION
+
+#BUSIEST AIRPORT RANK
+
+```{r}
+# ANAC website Data Study
+# database: API ANAC - https://www.gov.br/anac/pt-br/assuntos/regulados/empresas-aereas/Instrucoes-para-a-elaboracao-e-apresentacao-das-demonstracoes-contabeis/envio-de-informacoes
+
+#flights_ANAC_2024 <- flightsbr::read_flights(2024)
+#write.csv(flights_ANAC_2024, "./data_proc/flights_ANAC_2024.csv")
+```
+
+```{r}
+cols <- c(
+  "sg_empresa_icao",
+  "nm_mes_partida_real",
+  "nr_mes_partida_real",
+  "sg_icao_origem",
+  "sg_icao_destino",
+  "lt_combustivel",
+  "sg_equipamento_icao",
+  "nm_regiao_origem",
+  "nm_pais_origem",
+  "nm_regiao_destino",
+  "nm_pais_destino",
+  "nr_horas_voadas",
+  NULL
+)
+
+flights_ANAC_2024_filtered <- read_csv("./data_proc/flights_ANAC_2024.csv", col_select = cols) |> 
+  rename(
+    ADEP = sg_icao_origem,
+    ADES = sg_icao_destino,
+    FUEL_BURN = lt_combustivel,
+    TYPE = sg_equipamento_icao,
+    REGIAO_DEP = nm_regiao_origem,
+    PAIS_ORIGEM = nm_pais_origem,
+    REGIAO_ARR = nm_regiao_destino,
+    PAIS_DESTINO = nm_pais_destino,
+    TEMPO_DE_VOO = nr_horas_voadas,
+    NULL
+)
+
+write.csv(flights_ANAC_2024_filtered, "./data_proc/flights_ANAC_2024_filtered.csv")
+
+
+## gráfico de Pareto (cumulative percentage) para mostrar a concentração dos voos nos principais aeroportos
+
+
+summary_routes_dep <- flights_ANAC_2024_filtered %>%
+  group_by(ADEP) %>%
+  summarise(Total_Destinos_arr = n_distinct(ADES)) %>%
+  arrange(desc(Total_Destinos_arr))
+
+
+summary_routes_des <- flights_ANAC_2024_filtered %>%
+  group_by(ADES) %>%
+  summarise(Total_Destinos_dep = n_distinct(ADEP)) %>%
+  arrange(desc(Total_Destinos_dep))
+
+
+summary_routes <- full_join(summary_routes_dep, summary_routes_des, 
+                            by = c("ADEP" = "ADES")) %>%
+  rename(AEROPORTO = ADEP) %>%  # Renomeia a coluna para AEROPORTO
+  replace_na(list(Total_Destinos_arr = 0, Total_Destinos_dep = 0))
+
+
+
+
+adep_counts <- flights_ANAC_2024_filtered |> 
+  group_by(ADEP, PAIS_ORIGEM) |>  # Group by ADEP and PAIS_ORIGEM
+  summarise(count = n(), .groups = "drop") |>  
+  arrange(desc(count))  
+
+ades_counts <- flights_ANAC_2024_filtered |> 
+  group_by(ADES, PAIS_DESTINO) |>  # # Group by ADES and PAIS_ORIGEM
+  summarise(count = n(), .groups = "drop") |>  
+  arrange(desc(count))  
+
+adep_counts_brasil <- adep_counts |> 
+  filter(PAIS_ORIGEM == "BRASIL")
+
+ades_counts_brasil <- ades_counts |> 
+  filter(PAIS_DESTINO == "BRASIL")
+
+
+# Merge the ADEP and ADES tables into a single table #### appears 2x airports due one is ADEP and other is ADES
+combined_counts <- bind_rows(
+  adep_counts_brasil |> rename(airport = ADEP) |> select(airport, count),
+  ades_counts_brasil |> rename(airport = ADES) |> select(airport, count),
+)
+
+
+# Group by airport and sum counts
+summed_counts <- combined_counts |> 
+  group_by(airport) |> 
+  summarise(total_count = sum(count, na.rm = TRUE)) |> 
+  arrange(desc(total_count))
+
+
+
+
+"Prepare the data with cumulative sum and percentages"
+flights_data <- summed_counts |> 
+  arrange(desc(total_count)) |>  
+  mutate(
+    cumulative_percent = cumsum(total_count) / sum(total_count) * 100,  
+    rank = row_number()  
+  )
+
+"Start the rank with 0 airport and 0 percent - plot will begin in 0,0"
+flights_data_with_zero <- flights_data |> 
+  bind_rows(data.frame(rank = 0, cumulative_percent = 0)) |>  # Adicionar o ponto inicial
+  arrange(rank)
+
+write.csv(flights_data_with_zero, "./data_proc/flights_data_with_zero.csv")
+
+
+
+summary_routes_final <- summary_routes |> 
+  left_join(flights_data_with_zero |> select(airport, total_count, cumulative_percent, rank), 
+            by = c("AEROPORTO" = "airport")) |> 
+  replace_na(list(total_count = 0, cumulative_percent = 0, rank = 0))
+
+
+
+write.csv(summary_routes_final, "./data_proc/summary_routes_final.csv")
+
+
+
+
+
+
+
+
+# Points that I want: x=10 (top 10 airports), y= 80, 90, 95 and 99%
+point_x10 <- flights_data_with_zero |> filter(rank == 10)  # Ponto no eixo X = 10
+point_y80 <- flights_data_with_zero |> filter(cumulative_percent >= 80) |> slice(1)  # Primeiro ponto no eixo Y >= 80
+point_y90 <- flights_data_with_zero |> filter(cumulative_percent >= 90) |> slice(1)  # Primeiro ponto no eixo Y >= 90
+point_y95 <- flights_data_with_zero |> filter(cumulative_percent >= 95) |> slice(1)  # Primeiro ponto no eixo Y >= 95
+point_y99 <- flights_data_with_zero |> filter(cumulative_percent >= 99) |> slice(1)  # Primeiro ponto no eixo Y >= 99
+
+# Max Rank - total number of airports
+max_rank <- max(flights_data_with_zero$rank, na.rm = TRUE)
+
+p_cumsum_bra <- ggplot(flights_data_with_zero, aes(x = rank, y = cumulative_percent)) +
+  # cum line
+  geom_path(color = "blue") +
+  # cont and fixed lines - x and y
+  geom_hline(yintercept = 0, color = "black", size = 0.5) +  # Linha no eixo X (y = 0)
+  geom_vline(xintercept = 0, color = "black", size = 0.5) +  # Linha no eixo Y (x = 0)
+  # Dotted lines limited to the points (x,y)
+  geom_segment(aes(x = point_x10$rank, xend = point_x10$rank, y = 0, yend = point_x10$cumulative_percent), 
+               linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = 1, xend = point_y80$rank, y = 80, yend = 80), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = point_y80$rank, xend = point_y80$rank, y = 0, yend = 80), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = 1, xend = point_y90$rank, y = 90, yend = 90), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = point_y90$rank, xend = point_y90$rank, y = 0, yend = 90), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = 1, xend = point_y95$rank, y = 95, yend = 95), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = point_y95$rank, xend = point_y95$rank, y = 0, yend = 95), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = 1, xend = point_y99$rank, y = 99, yend = 99), linetype = "dotted", color = "gray40", size = 0.8) +
+  geom_segment(aes(x = point_y99$rank, xend = point_y99$rank, y = 0, yend = 99), linetype = "dotted", color = "gray40", size = 0.8) +
+  # Highlighting points
+  geom_point(data = point_x10, aes(x = rank, y = cumulative_percent), color = "orange", size = 3) +
+  geom_point(data = point_y80, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  geom_point(data = point_y90, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  geom_point(data = point_y95, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  geom_point(data = point_y99, aes(x = rank, y = cumulative_percent), color = "blue", size = 3) +
+  # Labels
+ geom_label(aes(x = point_x10$rank, y = point_x10$cumulative_percent, label = "TOP 10"), 
+             fill = "orange", color = "white", fontface = "bold", size = 3) +
+  geom_label(aes(x = point_y80$rank, y = point_y80$cumulative_percent, label = "80%"), 
+             fill = "blue", color = "white", fontface = "bold", size = 3) +
+  geom_label(aes(x = point_y90$rank, y = point_y90$cumulative_percent, label = "90%"), 
+             fill = "blue", color = "white", fontface = "bold", size = 3) +
+  geom_label(aes(x = point_y95$rank, y = point_y95$cumulative_percent, label = "95%"), 
+             fill = "blue", color = "white", fontface = "bold", size = 3) +
+  geom_label(aes(x = point_y99$rank, y = point_y99$cumulative_percent, label = "99%"), 
+             fill = "blue", color = "white", fontface = "bold", size = 3) +
+  # Axis customization
+  scale_x_continuous(
+    limits = c(0, max_rank),
+    breaks = c(10, 150, point_y80$rank, point_y90$rank, point_y95$rank, point_y99$rank, max_rank),
+    labels = c(10, 150, point_y80$rank, point_y90$rank, point_y95$rank, point_y99$rank, max_rank)
+  ) +
+  scale_y_continuous(
+    breaks = c(0, 20, 50, 80, 90, 95, 100, point_x10$cumulative_percent),
+    labels = c(0, 20, 50, 80, 90, 95, 100, round(point_x10$cumulative_percent, 2))
+  ) +
+  labs(
+    x = "Number of airports - Rank",
+    y = "Cumulative Percentage by Flights",
+    title = "Cumulative Percentage by Airport Rank"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text = element_text(size = 12),  # Increase the size of the numbers on axis
+    axis.title = element_text(size = 12)  # Increase the size of the axis titles
+  )
+
+p_cumsum_bra # Graph visualization
+```
+
+
+```{r}
+cols <- c(
+  "localidade_id",
+  "nome",
+  "latitude",
+  "longitude",
+  "tipo_util",
+  NULL
+)
+
+aeroportos_data <- read_csv("./data/airport.csv", col_select = cols) |> 
+  rename(airport = localidade_id,
+    NULL)
+```
+
+
+```{r}
+# Função para converter "graus minutos segundos" (GMS) para decimal
+convert_gms_to_decimal <- function(coord) {
+  parts <- str_match(coord, "(\\d+)\\s(\\d+)\\s(\\d+)([NSEW])")  # Extrai os valores
+  graus <- as.numeric(parts[,2])
+  minutos <- as.numeric(parts[,3])
+  segundos <- as.numeric(parts[,4])
+  hemisferio <- parts[,5]
+  
+  decimal <- graus + (minutos / 60) + (segundos / 3600)
+  
+  # Ajustar sinal para Sul e Oeste
+  if (hemisferio %in% c("S", "W")) {
+    decimal <- -decimal
+  }
+  
+  return(decimal)
+}
+
+# Adicionar a tabela flights_data (criar a flights_data_all), as colunas do aeroportos_data (nome, latitude, longitude, tipo) + categoria_movimento + latitude_decimal e longitude_decimal
+
+flights_data_all <- flights_data |> 
+  left_join(aeroportos_data, by = "airport") %>%
+  mutate(
+    categoria_movimento = case_when(
+      total_count < 1000 ~ "Rosa",
+      total_count >= 1000 & total_count < 5000 ~ "Verde",
+      total_count >= 5000 & total_count < 10000 ~ "Amarelo",
+      total_count >= 10000 & total_count < 50000 ~ "Laranja",
+      total_count >= 50000 & total_count < 100000 ~ "Vermelho",
+      total_count >= 100000 ~ "Azul"
+    ),
+    latitude_decimal = map_dbl(latitude, convert_gms_to_decimal),
+    longitude_decimal = map_dbl(longitude, convert_gms_to_decimal)
+    )
+```
+
+
+
+```{r}
+# Filtro aeroportos:
+#so inserir os aeroportos pub ou pub/mil. exclui os privados e so inserir os aeroportos com mais de 5k movimentos.
+
+flights_data_all_filtered <- flights_data_all %>%
+  filter(tipo_util %in% c("PUB/MIL", "PUB"), # so inserir os aeroportos pub ou pub/mil. exclui os privados
+         total_count >= 5000) # so inserir os aeroportos com mais de 5k movimentos.
+```
+
+
+```{r}
+# Criar o gráfico so dos aeroportos
+
+ggplot() +
+  # Adicionar o mapa do Brasil
+  geom_polygon(data = map_data("world") %>% filter(region == "Brazil"), 
+               aes(x = long, y = lat, group = group), 
+               fill = "gray90", color = "gray80") +
+  
+  # Adicionar pontos dos aeroportos com cor de acordo com o número de movimentos
+  geom_point(data = flights_data_all_filtered, aes(x = longitude_decimal, y = latitude_decimal, color = categoria_movimento),
+             size = 3, alpha = 0.8) +  # O tamanho dos pontos agora é fixo
+  
+  # Ajustar as cores das categorias
+  scale_color_manual(values = c("Azul" = "blue", 
+                                "Verde" = "green", 
+                                "Amarelo" = "yellow", 
+                                "Laranja" = "orange", 
+                                "Vermelho" = "red", 
+                                "Rosa" = "pink")) +
+  
+  # Adicionar rótulos dos aeroportos
+  geom_text(data = flights_data_all_filtered, aes(x = longitude_decimal, y = latitude_decimal, label = airport),
+            hjust = 1.2, vjust = 1.2, size = 3) +
+  
+  theme_minimal() +
+  labs(title = "Hubs Aéreos no Brasil",
+       subtitle = "Aeroportos categorizados pelo número de movimentos",
+       x = "Longitude", y = "Latitude", color = "Movimentos Totais")
+```
+
+
+```{r}
+#definir os city_pairs com regiao, tempo de voo, e tipo de voo
+
+city_pairs <- flights_ANAC_2024_filtered |> 
+  group_by(ADEP, ADES) |> 
+  summarise(
+    total_voos = n(),
+    tempo_medio_voo_horas = mean(TEMPO_DE_VOO, na.rm = TRUE),  # Média do tempo de voo em horas
+    tempo_medio_voo_minutos = mean(TEMPO_DE_VOO, na.rm = TRUE) * 60,  # Média em minutos
+    REGIAO_DEP = first(REGIAO_DEP),
+    PAIS_ORIGEM = first(PAIS_ORIGEM),
+    REGIAO_ARR = first(REGIAO_ARR),
+    PAIS_DESTINO = first(PAIS_DESTINO),
+    .groups = "drop"
+  ) |> 
+  mutate(
+    tipo_voo = case_when(
+      PAIS_ORIGEM != "BRASIL" | PAIS_DESTINO != "BRASIL" ~ "INTERNACIONAL",
+      is.na(REGIAO_DEP) | is.na(REGIAO_ARR) ~ "INTERNACIONAL",
+      TRUE ~ "Doméstico"
+    )
+  ) |> 
+  arrange(desc(total_voos))
+
+
+# Criar a classificação dos hubs
+
+p90 <- quantile(city_pairs$total_voos, 0.90)  # 90º percentil (Hubs Primários)
+p50 <- quantile(city_pairs$total_voos, 0.50)  # 50º percentil (Hubs Secundários)
+
+city_pairs_hubs <- city_pairs |> 
+  mutate(
+    hub_class = case_when(
+      total_voos >= p90 ~ "Hub Primário",
+      total_voos >= p50 ~ "Hub Secundário",
+      TRUE ~ "Outros"
+    )
+  )
+
+
+write.csv(city_pairs_hubs, "./data_proc/city_pairs_hubs.csv")
+```
+
+
+```{r}
+# Filtro conexoes:
+# mais de 1000 voos e evitar loops
+
+city_pairs_filtered <- city_pairs_hubs |> 
+  filter(ADEP %in% flights_data_all_filtered$airport & 
+         ADES %in% flights_data_all_filtered$airport & 
+         ADEP != ADES & 
+         total_voos > 1000)  # Apenas conexões relevantes
+
+
+
+```
+
+
+
+```{r}
+# Criar dataframe para plotar conexões entre aeroportos
+edges <- city_pairs_filtered |> 
+  left_join(flights_data_all_filtered, by = c("ADEP" = "airport")) |> 
+  rename(x_start = longitude_decimal, y_start = latitude_decimal) |> 
+  left_join(flights_data_all_filtered, by = c("ADES" = "airport")) |> 
+  rename(x_end = longitude_decimal, y_end = latitude_decimal) |> 
+  mutate(categoria_conexao = case_when(
+    total_voos >= 10000 ~ "Vermelho",  # Acima de 10k voos
+    total_voos >= 5000 & total_voos < 10000 ~ "Laranja",  # Entre 5k e 10k voos
+    total_voos >= 1000 & total_voos < 5000 ~ "Verde"  # Entre 1k e 5k voos
+  ))
+
+# Criar categoria de cores para os aeroportos com base no número total de movimentos
+flights_data_all_filtered <- flights_data_all_filtered |> 
+  mutate(categoria_movimento = case_when(
+    total_count < 1000 ~ "Rosa",
+    total_count >= 1000 & total_count < 5000 ~ "Verde",
+    total_count >= 5000 & total_count < 10000 ~ "Amarelo",
+    total_count >= 10000 & total_count < 50000 ~ "Laranja",
+    total_count >= 50000 & total_count < 100000 ~ "Vermelho",
+    total_count >= 100000 ~ "Azul"
+  ))
+
+# Criar scatter plot dos aeroportos e adicionar conexões diferenciadas por cores
+ggplot() +
+  # Adicionar conexões entre aeroportos com cores baseadas no número de voos
+  geom_curve(data = edges, aes(x = x_start, y = y_start, xend = x_end, yend = y_end, 
+                               color = categoria_conexao), curvature = 0.2, alpha = 0.6) +  
+  # Ajustar cores das conexões
+  scale_color_manual(name = "Frequência da Rota", values = c(
+    "Vermelho" = "red", 
+    "Laranja" = "orange", 
+    "Verde" = "green"
+  )) +
+
+  # Adicionar pontos dos aeroportos (mesmo tamanho, cor baseada no total_count)
+  geom_point(data = flights_data_all_filtered, aes(x = longitude_decimal, y = latitude_decimal, color = categoria_movimento), 
+             size = 3, alpha = 0.8) +  # ✅ Tamanho fixo para todos
+  
+  # Ajustar cores dos aeroportos com base no número de movimentos
+  scale_color_manual(name = "Movimentos Totais", values = c(
+    "Rosa" = "pink", 
+    "Verde" = "green", 
+    "Amarelo" = "yellow", 
+    "Laranja" = "orange", 
+    "Vermelho" = "red", 
+    "Azul" = "blue"
+  )) +
+
+  # Adicionar rótulos dos aeroportos
+  geom_text(data = flights_data_all_filtered, aes(x = longitude_decimal, y = latitude_decimal, label = airport),
+            hjust = 1.2, vjust = 1.2, size = 3, color = "black") +
+
+  theme_minimal() +
+  labs(title = "Rede Aérea - Conexões Entre Aeroportos",
+       x = "Longitude",
+       y = "Latitude",
+       color = "Legenda")
+```
+
+
+
+# CHAP 3 - TRAFFIC CHARACTERIZATION
+
+# REGIONAL DAILY AIR TRAFFIC
+
+# extracting data for movment = mov
+
+```{r}
+# path to zip-files
+path <- "C:/Users/rdrodrig/dev/repo"
+fns <- list.files(path) # lista de arquivos que existem dentro de path
+# caminho completo do arquivo "Dados Mov_Taxa Pico_new.zip"
+tfc_fn <- list.files(path, pattern = "Dados Mov_Taxa Pico_new.zip", full.names = TRUE)
+
+
+# Carregamento dos dados até o arquivo 2022
+.exdir   <- "./temp" # diretório para onde os arquivos extraídos serão salvos
+.pattern <- "TATIC_ano_" # padrão de nomenclatura de arquivos que serão lidos
+.skip    <- 2 # linhas que serão puladas na leitura dos csvs 
+
+# unzip dos arquivos salvando na pasta .exdir
+unzip(zipfile = tfc_fn, exdir = .exdir, junkpaths = TRUE) 
+# lista dos arquivos zipados em "Dados Mov_Taxa Pico_new.zip"
+my_xlsxs <- list.files(path = .exdir, pattern = .pattern ,full.names = TRUE)
+# le os arquivos unzipados e une em um único dataframe
+tfc_df <- my_xlsxs |> purrr::map_dfr(.f = ~ readxl::read_xlsx(.x, skip = .skip))
+# apaga os arquivos unzipados
+unlink(.exdir, recursive = TRUE)
+
+# Carrega dados de jul/22 pra frente, 
+
+# Caminho para pasta que armazena arquivos fonte zipados
+path <- "C:/Users/rdrodrig/dev/repo"
+fns <- list.files(path) # lista de arquivos que existem dentro de path
+# caminho completo do arquivo "Dados Mov_Taxa Pico_2022_to_now.zip"
+tfc_fn <- list.files(path, pattern = "Dados Mov_Taxa Pico_2022_to_now.zip", full.names = TRUE)
+
+# Carregamento dos dados
+.exdir   <- "./temp" # diretório para onde os arquivos extraídos serão salvos
+.pattern <- "TATIC_ano_" # padrão de nomenclatura de arquivos que serão lidos
+.skip    <- 2 # linhas que serão puladas na leitura dos csvs 
+
+# unzip dos arquivos salvando na pasta .exdir
+unzip(zipfile = tfc_fn, exdir = .exdir, junkpaths = TRUE) 
+# lista dos arquivos zipados em "Dados Mov_Taxa Pico_2022_to_now.zip"
+my_xlsxs <- list.files(path = .exdir, pattern = .pattern ,full.names = TRUE)
+# le os arquivos unzipados e une em um único dataframe
+tfc_df2 <- my_xlsxs |> purrr::map_dfr(.f = ~ readxl::read_xlsx(.x, skip = .skip))
+# apaga os arquivos unzipados
+unlink(.exdir, recursive = TRUE)
+```
+
+# Renaming 
+
+```{r}
+tfc_renamed <- tfc_df |>
+  rename(
+    FLTID = Indicativo
+   ,ICAO  = Locality
+   ,PHASE = `Tipo Operacao`
+  ,FLTTYP= `Tipo Voo`
+   ,TYPE  = Equipamento
+   ,EOBT  = `Eobt Previsto`
+   ,PBCL  = `Autorizado Push Back`   # push back clearance
+   ,ATOT  = Decolagem
+   ,ALDT  = `Pouso Real`
+   ,AIBT  = `Aeronave Estacionada`
+   ,EIBT  = `Eta Previsto`
+  ) |>
+  mutate(DATE = case_when(
+         PHASE == "DEP" ~ lubridate::date(ATOT)
+        ,PHASE == "ARR" ~ lubridate::date(ALDT)
+        ,TRUE ~ as.Date(NA)
+    )
+    )
+
+tfc_renamed2 <- tfc_df2 |>
+  rename(
+    FLTID = Indicativo
+   ,ICAO  = Locality
+   ,PHASE = `Tipo Operacao`
+  ,FLTTYP= `Tipo Voo`
+   ,TYPE  = Equipamento
+   ,EOBT  = `Eobt Previsto`
+   ,PBCL  = `Autorizado Push Back`   # push back clearance
+   ,ATOT  = Decolagem
+   ,ALDT  = `Pouso Real`
+   ,AIBT  = `Aeronave Estacionada`
+   ,EIBT  = `Eta Previsto`
+  ) |>
+  mutate(DATE = case_when(
+         PHASE == "DEP" ~ lubridate::date(ATOT)
+        ,PHASE == "ARR" ~ lubridate::date(ALDT)
+        ,TRUE ~ as.Date(NA)
+    )
+    )
+
+```
+
+# Exclui dados duplicados 
+# Relatório de 2023 considerou o periodo entre 2022-06-23 e 2022-07-15
+```{r}
+tfc_renamed <- tfc_renamed |> filter(!(DATE >= lubridate::ymd("2022-07-01"))) # this step was to remove the duplicated data from btw 1st to 10th july 2022
+
+```
+
+# Bind datasets
+```{r}
+tfc_fix <- tfc_renamed |> bind_rows(tfc_renamed2)
+```
+
+# Save dataset
+```{r}
+write_csv(tfc_fix, "./data_proc/tfc_fix.csv")
+```
+
+
+# Exclusão de Helicopteros
+
+
+```{r}
+
+
+#################################### CHECK DECEA HELICOPTER TABLE
+
+
+
+# helicopters vector investigation, using a table from Rainer and chatgpt to write it down 
+
+helicopters <- c("GAZL", "ZEFR", "ZA6", "YNHL", "X49", "X3", "X2", "WZ10", "WESX", "WASP", "W3", "V500", "ULTS", "UH1Y", "UH12", "UH1", "TIGR", "SYCA", "SURN", "SUCO", "SH4", "SH09", "SCOU", "SCOR", "SB1", "S97", "S92", "S76", "S65C", "S64", "S62", "S61R", "S61", "S58T", "S58P", "S55T", "S55P", "S52", "S51", "S434", "S360", "S330", "S285", "S278", "S274", "RVAL", "RP1", "RMOU", "R66", "R44", "R4", "R22", "PUMA", "PSW4", "PHIL", "OH1", "NH90", "NA40", "MI8", "MI6", "MI4", "MI38", "MI34", "MI28", "MI26", "MI24", "MI2", "MI14", "MI10", "MH20", "MD60", "MD52", "M74", "LYNX", "LR2T", "LCH", "LAMA", "KMAX", "KH4", "KA62", "KA52", "KA50", "KA27", "KA26", "KA25", "K226", "K209", "K126", "JAG2", "IS2", "HX2", "HUCO", "HSMT", "H64", "H60", "H53S", "H53", "H500", "H47", "H46", "H43B", "H43A", "H269", "H21", "H2", "H160", "H12T", "G2CA", "FREL", "FH11", "EXPL", "EXEJ", "EXEC", "ES11", "EN48", "EN28", "ELTO", "EH10", "EGL3", "EC75", "EC55", "EC45", "EC35", "EC30", "EC25", "EC20", "DYH2", "DRAG", "DJIN", "COMU", "CHIF", "CH7", "CH14", "CH12", "BSTP", "BRB2", "BK17", "BABY", "B525", "B505", "B47T", "B47J", "B47G", "B430", "B429", "B427", "B412", "B407", "B305", "B230", "B222", "B214", "B212", "B150", "B105", "B06T", "B06", "AS65", "AS55", "AS50", "AS3B", "AS32", "ANST", "ALO3", "ALO2", "ALH", "AC33", "AC31", "A600", "A2RT", "A189", "A169", "A149", "A139", "A129", "A119", "A109")
+
+
+tfc_no_hel <- tfc_fix  |>
+  filter(!(TYPE %in% helicopters)) 
+
+tfc_movts_all_no_hel <- tfc_no_hel  |>
+  group_by(DATE) |>
+  summarise(DLY_FLTS = n()) |>
+  ungroup() |>
+  mutate(MVTS_NORM_ROLLAVG = zoo::rollmean(x = DLY_FLTS, k = 7, align = "center", fill = NA)
+         )
+
+tfc_movts_all <- tfc_fix  |>
+  group_by(DATE) |>
+  summarise(DLY_FLTS = n()) |>
+  ungroup() |>
+  mutate(MVTS_NORM_ROLLAVG = zoo::rollmean(x = DLY_FLTS, k = 7, align = "center", fill = NA)
+         )
+
+write_csv(tfc_no_hel, "./data_proc/tfc_no_hel.csv")
+write_csv(tfc_movts_all_no_hel, "./data_proc/tfc_movts_all_no_hel.csv")
+write_csv(tfc_movts_all, "./data_proc/tfc_movts_all.csv")
+```
+
+
+
+```{r}
+##### FOR STUDY / CHECK
+
+# # to have an idea of the helicop impact 
+# 
+# tfc_fix |> filter(TYPE %in% helicopters) |>  group_by(ICAO) |> summarise(N=n()) |> arrange(desc(N))
+# 
+# ## Help to check the data
+# # Filter double ALDT (same time), excluding empty cells
+# aldt_duplicates <- tfc_fix %>%
+#   filter(!is.na(ALDT)) %>%  # Exclude NA
+#   filter(duplicated(ALDT) | duplicated(ALDT, fromLast = TRUE))
+# 
+# # Filter double ALDT (same time), excluding empty cells - AND have the same FLTID
+# aldt_fltid_duplicates <- tfc_fix %>%
+#   filter(!is.na(ALDT)) %>%  # Exclude NA in ALDT
+#   group_by(ALDT, FLTID) %>%  # Group
+#   filter(n() > 1) %>%  # Mantain groups with more than 1 occurrency
+#   ungroup()  
+# 
+# tfc_fix|> filter(TYPE %in% helicopters)|> group_by(ICAO) |> summarise(N= n()) |> arrange(desc(N)) |>  print(n = 200) |> slice_head(n = 34)  |>  print(n = 200)
+# 
+# 
+# ##Studing TOP 34 APTs vs All APTS
+# 
+# # Identify less busy airport
+# less_busy_apt <- tfc_fix |> 
+#   filter(TYPE %in% helicopters) |> #NO HELICOPTERS
+#   group_by(ICAO) |> 
+#   summarise(N = n()) |> 
+#   arrange(desc(N)) |> 
+#   slice(35:n()) |> # SELECT THE LESS NUMBER YOU WANT
+#   pull(ICAO)
+# 
+# tfc_movts_all_no_hel_top34apt <- tfc_fix  |>
+#   filter(!(ICAO %in% less_busy_apt)) |> 
+#   filter(!(TYPE %in% helicopters)) |>
+#   group_by(DATE) |>
+#   summarise(DLY_FLTS = n()) |>
+#   ungroup()|> 
+#   mutate(MVTS_NORM_ROLLAVG = zoo::rollmean(x = DLY_FLTS, k = 7, align = "center", fill = NA)) 
+# 
+# 
+# plotdatatop34 <- tfc_movts_all_no_hel_top34apt |> 
+#   ggplot(aes(x = DATE)) +
+#   geom_line(aes(y = MVTS_NORM_ROLLAVG), colour = "red") +
+#   geom_point(aes(y = DLY_FLTS), colour = "pink", alpha = 0.2, size = 0.5)
+# 
+# plotdatanew <- tfc_movts_all_no_hel |> 
+#   ggplot(aes(x = DATE)) +
+#   geom_line(aes(y = MVTS_NORM_ROLLAVG), colour = "darkblue") +
+#   geom_point(aes(y = DLY_FLTS), colour = "blue", alpha = 0.2, size = 0.5)
+# 
+# plotdatanew + geom_line(data = tfc_movts_all_no_hel_top34apt, aes(y = MVTS_NORM_ROLLAVG), colour = "red") +
+#   geom_point(data = tfc_movts_all_no_hel_top34apt, aes(y = DLY_FLTS), colour = "pink", alpha = 0.2, size = 0.5)
+
+
+```
+
+
+```{r}
+# Split in years - ax
+year_boundaries <- seq(as.Date("2019-01-01"), as.Date("2024-01-01"), by = "years")
+
+tfc_movts_all <- read.csv("./data_proc/tfc_movts_all.csv")
+
+# MAX and MIN per year
+max_min_by_year <- tfc_movts_all %>%
+  mutate(DATE = as.Date(DATE)) %>%
+  group_by(YEAR = lubridate::year(DATE)) %>%
+  summarise(
+    max_avg = max(MVTS_NORM_ROLLAVG, na.rm = TRUE),  
+    max_date = DATE[which.max(MVTS_NORM_ROLLAVG)],
+    min_avg = min(MVTS_NORM_ROLLAVG, na.rm = TRUE),  
+    min_date = DATE[which.min(MVTS_NORM_ROLLAVG)]
+  ) %>%
+  mutate(
+    max_avg = round(max_avg),  # round - no decimal places
+    min_avg = round(min_avg)   
+  )
+
+write_csv(max_min_by_year, "./data_proc/max_min_by_year.csv")
+
+```
+
+
+
+
+# Airport Level Air Traffic
+
+```{r}
+tfc_fix <- read_csv("./data_proc/tfc_fix.csv")
+```
+
+```{r}
+# By YEAR
+# restrict data to study airports
+bra_apts <-c("SBBR","SBGR","SBSP","SBKP","SBRJ","SBGL","SBCF","SBSV","SBPA","SBCT")
+eur_apts <-c("EHAM","LFPG","EGLL","EDDF","EDDM","LEMD","LIRF","LEBL","EGKK","LSZH")
+
+study_apt_lvl <- tfc_fix |> 
+  filter(ICAO %in% bra_apts) |> 
+  #filter(!(TYPE %in% helicopters)) |> ### it is not necessary to exclude helicopters
+  select(ICAO, PHASE, DATE, TYPE) |>
+  mutate(YEAR = lubridate::year(DATE)) |> 
+  group_by(ICAO, YEAR) |>
+  summarise(TOT_FLTS_YEAR = n()) |>
+  mutate(YEAR = as.character(YEAR))
+
+write_csv(study_apt_lvl, "./data_proc/study_apt_lvl.csv")
+
+
+```
+
+```{r}
+# By MONTH
+# restrict data to study airports
+bra_apts <-c("SBBR","SBGR","SBSP","SBKP","SBRJ","SBGL","SBCF","SBSV","SBPA","SBCT")
+eur_apts <-c("EHAM","LFPG","EGLL","EDDF","EDDM","LEMD","LIRF","LEBL","EGKK","LSZH")
+
+study_apt_lvl_month <- tfc_fix |> 
+  filter(ICAO %in% bra_apts) |> 
+ #filter(!(TYPE %in% helicopters)) |>  ### it is not necessary to exclude helicopters
+  select(ICAO, PHASE, DATE, TYPE) |>
+  mutate(YEAR = lubridate::year(DATE), MONTH=lubridate::month(DATE)) |> 
+  group_by(ICAO, YEAR, MONTH) |>
+  summarise(TOT_FLTS_MONTH = n())
+
+write_csv(study_apt_lvl_month, "./data_proc/study_apt_lvl_month.csv")
+```
+
+# Peak Day Traffic
+
+```{r}
+
+
+
+# Peakday
+
+# peak day = 99th percentile of daily traffic
+
+extract_airport_tfc_counts_bra <- function(.tfc, .bra_apts = bra_apts){
+  this_tfc_apts <- .tfc |> 
+  filter(ICAO %in% .bra_apts) |> 
+  mutate(DATE = case_when(
+      PHASE == "ARR" ~ lubridate::date(ALDT)
+    , PHASE == "DEP" ~ lubridate::date(ATOT)
+    , TRUE ~ NA)
+    ) |> group_by(ICAO, DATE) |> 
+  summarise( ARRS = sum(PHASE == "ARR")
+            ,DEPS = sum(PHASE == "DEP")
+            , SRC_NA = sum(is.na(PHASE))
+            , ARRS_REG = NA    # need to map to ADEP/ADES with taxi files?
+            , DEPS_REG = NA
+            , HEL = sum(CLASS %in% "HEL")
+            , H = sum(substr(CLASS,1,1) %in% "H")
+            , M = sum(substr(CLASS,1,1) %in% "M")
+            , L = sum(substr(CLASS,1,1) %in% "L")
+            , WTC_NA = sum(is.na(CLASS))
+            , .groups = "drop")
+  return(this_tfc_apts)
+}
+
+```
+
+```{r}
+# dataset retirado do repositório RQ
+ac_wtc_class <- read_csv("./data/ac_wtc_class.csv", show_col_types = FALSE)
+
+tfc_with_class <- tfc_fix |> left_join(ac_wtc_class, by = "TYPE")
+tfc_apts <- extract_airport_tfc_counts_bra(tfc_with_class)
+
+```
+
+```{r}
+write.csv(tfc_with_class, "./data_proc/BRA-airport-tfc-with-class.csv")
+write.csv(tfc_apts, "./data_proc/BRA-airport-tfc.csv")
+```
+
+```{r}
+peak_day_from_counts <- function(.counts, .pct = 0.99){
+  peak <- .counts %>% 
+    mutate( YEAR = lubridate::year(DATE)
+           ,TOT  = ARRS + DEPS) %>% 
+    group_by(ICAO, YEAR) %>% 
+    summarise(PEAK_DAY_PCT = quantile(TOT, probs = .pct), .groups = "drop")
+}
+
+add_nbr_rwy <- function(.pdfc){
+  peak <- .pdfc %>% 
+    mutate(RWY = case_when(
+       ICAO == "EHAM" ~ 6
+      ,ICAO %in% c("EDDF","LFPG","LEMD","LIRF") ~ 4
+      ,ICAO %in% c("LEBL","LSZH") ~ 3
+      ,ICAO %in% c("EGLL","EDDM","SBGR","SBSP","SBGL","SBBR","SBRJ","SBSV","SBCT") ~ 2
+      ,ICAO %in% c("EGKK","SBKP","SBCF","SBPA") ~ 1
+      ,TRUE ~ as.numeric(NA)
+    ))
+}
+peak_day_traffic <- read_csv("./data_proc/BRA-airport-tfc.csv", show_col_types = FALSE) |> 
+  peak_day_from_counts() |> add_nbr_rwy()
+```
+
+```{r}
+write.csv(peak_day_traffic, "./data_proc/BRA-airport-tfc-peakday-fix.csv")
+```
+
+# CHAP 4 - Predictability
+
+# Punctuality
+
+```{r}
+# Caminho para pasta que armazena arquivos fonte zipados
+path <- "C:/Users/rdrodrig/dev/repo"
+fns <- list.files(path) # lista de arquivos que existem dentro de path
+# caminho completo do arquivo "Dados Mov_Taxa Pico.zip"
+tfc_fn <- list.files(path, pattern = "Dados Punctuallity.zip", full.names = TRUE)
+tfc_fn
+
+
+# Carregamento dos dados
+.exdir   <- "./temp" # diretório para onde os arquivos extraídos serão salvos
+.pattern <- "Monito_Tatico_" # padrão de nomenclatura de arquivos que serão lidos
+.skip    <- 0 # linhas que serão puladas na leitura dos csvs 
+
+# unzip dos arquivos salvando na pasta .exdir
+unzip(zipfile = tfc_fn, exdir = .exdir, junkpaths = TRUE) 
+# lista dos arquivos zipados em "Dados Mov_Taxa Pico.zip"
+my_xlsxs <- list.files(path = .exdir, pattern = .pattern ,full.names = TRUE)
+# le os arquivos unzipados e une em um único dataframe
+punc <- my_xlsxs |> purrr::map_dfr(.f = ~ readxl::read_xlsx(.x, skip = .skip))
+# apaga os arquivos unzipados
+unlink(.exdir, recursive = TRUE)
+
+```
+
+
+
+standard naming conventions
+
+helper function for delay groups (PBWG)
+
+```{r}
+add_delay_and_dlygrp <- function(.apdf){
+  tmp <- .apdf |> 
+    mutate(
+      BLOCK_DLY = difftime(BLOCK_TIME, SCHED_TIME, units = "mins") |> as.numeric()
+      , DLY_GRP = case_when(
+        -Inf < BLOCK_DLY & BLOCK_DLY <= -60 ~ "(-INF,-60]"
+        ,- 60 < BLOCK_DLY & BLOCK_DLY <= -55 ~ "(-60,-55]"
+        ,- 55 < BLOCK_DLY & BLOCK_DLY <= -50 ~ "(-55,-50]"
+        ,- 50 < BLOCK_DLY & BLOCK_DLY <= -45 ~ "(-50,-45]"
+        ,- 45 < BLOCK_DLY & BLOCK_DLY <= -40 ~ "(-45,-40]"
+        ,- 40 < BLOCK_DLY & BLOCK_DLY <= -35 ~ "(-40,-35]"
+        ,- 35 < BLOCK_DLY & BLOCK_DLY <= -30 ~ "(-35,-30]"
+        ,- 30 < BLOCK_DLY & BLOCK_DLY <= -25 ~ "(-30,-25]"
+        ,- 25 < BLOCK_DLY & BLOCK_DLY <= -20 ~ "(-25,-20]"
+        ,- 20 < BLOCK_DLY & BLOCK_DLY <= -16 ~ "(-20,-16]"
+        ,- 16 < BLOCK_DLY & BLOCK_DLY <= -10 ~ "(-16,-10]"
+        ,- 10 < BLOCK_DLY & BLOCK_DLY <= - 5 ~ "(-10,-5]"
+        ,-  5 < BLOCK_DLY & BLOCK_DLY <=   0 ~ "(-5,0]"
+        ,   0 < BLOCK_DLY & BLOCK_DLY <=   5 ~ "(0,5)"
+        ,  5 <= BLOCK_DLY & BLOCK_DLY <   10 ~ "[5,10)"
+        , 10 <= BLOCK_DLY & BLOCK_DLY <   15 ~ "[10,15)"
+        , 15 <= BLOCK_DLY & BLOCK_DLY <   20 ~ "[15,20)"
+        , 20 <= BLOCK_DLY & BLOCK_DLY <   25 ~ "[20,25)"
+        , 25 <= BLOCK_DLY & BLOCK_DLY <   30 ~ "[25,30)"
+        , 30 <= BLOCK_DLY & BLOCK_DLY <   35 ~ "[30,35)"
+        , 35 <= BLOCK_DLY & BLOCK_DLY <   40 ~ "[35,40)"
+        , 40 <= BLOCK_DLY & BLOCK_DLY <   45 ~ "[40,45)"
+        , 45 <= BLOCK_DLY & BLOCK_DLY <   50 ~ "[45,50)"
+        , 50 <= BLOCK_DLY & BLOCK_DLY <   55 ~ "[50,55)"
+        , 55 <= BLOCK_DLY & BLOCK_DLY <   60 ~ "[55,60)"
+        , 60 <= BLOCK_DLY & BLOCK_DLY <  Inf ~ "[60,INF)"
+        , TRUE ~ NA_character_
+      ) # end case_when
+    )
+}
+
+sort_vector <- c(
+    "(-INF,-60]", "(-60,-55]", "(-55,-50]", "(-50,-45]", "(-45,-40]", "(-40,-35]"
+    ,"(-35,-30]", "(-30,-25]", "(-25,-20]", "(-20,-15]", "(-15,-10]", "(-10,-5]"
+    ,   "(-5,0]",     "(0,5)",    "[5,10)",   "[10,15)",   "[15,20)",  "[20,25)"
+    ,  "[25,30)",   "[30,35)",   "[35,40)",   "[40,45)",   "[45,50)",  "[50,55)"
+    ,  "[55,60)",   "[60,INF)"
+    )
+```
+
+```{r}
+punc2 <- punc |> 
+  rename(
+     FLTID = Callsign
+    ,ADEP  = `Sigla ADEP`
+    ,ADES  = `Sigla ADES`
+    ,APT   =  `Sigla LOCALITY`
+    ,PHASE = Evento
+    ,SCHED_TIME = `DH Prev Calco Strat`
+    ,BLOCK_TIME = `DH Real Calco Tat`
+    ) |> 
+  # subset for airports in study
+  filter(APT %in% bra_apts) |> 
+  add_delay_and_dlygrp()
+
+mvts_per_year <- punc2 |> 
+  group_by(APT, PHASE, YEAR = lubridate::year(BLOCK_TIME)) |> 
+  summarise(N_VALID = n())
+
+mvts_per_month <- punc2 |> 
+  group_by(APT, PHASE, YEAR = lubridate::year(BLOCK_TIME), MONTH = lubridate::month(BLOCK_TIME)) |> 
+  summarise(N_VALID_MONTH = n())
+
+punc2 <- punc2 |> 
+  mutate(DATE = lubridate::date(BLOCK_TIME), YEAR = lubridate::year(BLOCK_TIME), MONTH = lubridate::month(BLOCK_TIME)
+      , COUNT = 1) |> 
+    distinct() |> 
+    left_join(mvts_per_year, by = join_by(APT, PHASE, YEAR)) |> 
+    left_join(mvts_per_month, by = join_by(APT, PHASE, YEAR, MONTH)) |>
+  group_by(APT, DATE, PHASE, DLY_GRP, N_VALID, N_VALID_MONTH) |> 
+  summarise(COUNT = sum(COUNT), .groups = "drop") |> 
+  pivot_wider(
+      id_cols = c("APT","DATE","PHASE","N_VALID", "N_VALID_MONTH")
+    , names_from = DLY_GRP
+    , values_from = COUNT
+    , values_fill = 0
+    ) |>  
+  select(APT, DATE, PHASE, N_VALID, N_VALID_MONTH
+        ,"(-INF,-60]"
+        ,"(-60,-55]"
+        ,"(-55,-50]"
+        ,"(-50,-45]"
+        ,"(-45,-40]"
+        ,"(-40,-35]"
+        ,"(-35,-30]"
+        ,"(-30,-25]"
+        ,"(-25,-20]"
+        ,"(-20,-16]"
+        ,"(-16,-10]"
+        , "(-10,-5]"
+        ,"(-5,0]"
+        ,"(0,5)"
+        ,"[5,10)"
+        ,"[10,15)"
+        ,"[15,20)"
+        ,"[20,25)"
+        ,"[25,30)"
+        ,"[30,35)"
+        ,"[35,40)"
+        ,"[40,45)"
+        ,"[45,50)"
+        ,"[50,55)"
+        ,"[55,60)"
+        ,"[60,INF)")
+```
+
+
+
+```{r}
+write_csv(punc2, "./data_proc/BRA-punc.csv")
+```
+
+
+
+
+
+
+
+# CHAP 05 - Capacity and Throughput
+
+
+```{r}
+tfc_fix <- read_csv("./data_proc/tfc_fix.csv", show_col_types = FALSE)
+# Excluir dados de helicopteros do tfc_fix
+```
+
+
+```{r}
+daily_tfc <- tfc_fix |> 
+  filter(ICAO %in% bra_apts) |> 
+  select(FLTID, ICAO, PHASE, DATE) |> group_by(ICAO, DATE) |> 
+  summarise(N = n(), N_VALID = sum(!is.na(PHASE))
+            , ARRS = sum(PHASE == "ARR")
+            , DEPS = sum(PHASE == "DEP")
+            , .groups = "drop") |> 
+  mutate(FLTS = ARRS + DEPS)
+```
+
+```{r}
+pk_day <- daily_tfc |> 
+  group_by(ICAO, YEAR = year(DATE)) |> 
+  summarise(N = n(), PK_DAY = quantile(FLTS, p = 0.99)) 
+
+pk_day |> write_csv(file = "./data_proc/BRA-airport-tfc-peakday-fix.csv")
+```
+
+
+
+# airport throughput
+
+```{r}
+arrs <- tfc_fix |> filter(ICAO %in% bra_apts, PHASE == "ARR") |> 
+  select(ICAO, FLTID, PHASE, MVT_TIME = ALDT) |> 
+  distinct() |> 
+  mutate(BIN = floor_date(MVT_TIME, unit = "hour"))
+
+deps <- tfc_fix |> filter(ICAO %in% bra_apts, PHASE == "DEP") |> 
+  select(ICAO, FLTID, PHASE, MVT_TIME = ATOT) |> 
+  distinct() |> 
+  mutate(BIN = floor_date(MVT_TIME, unit = "hour"))
+```
+
+```{r}
+arr_thru <- arrs |> group_by(ICAO, BIN) |> 
+  summarise(ARRS = n(), .groups = "drop")
+
+dep_thru <- deps |> group_by(ICAO, BIN) |> 
+  summarise(DEPS = n(), .groups = "drop")
+```
+
+combine
+
+```{r}
+apt_thru <- full_join(arr_thru, dep_thru, by = join_by(ICAO, BIN)) |> 
+  mutate(across(.cols = c("ARRS","DEPS"), .fns = ~replace_na(.x,0))) 
+
+apt_thru |> write_csv("./data_proc/BRA-THRU-analytic.csv")
+```
+
+# BLI x PLI
+
+```{r ad-capacity-data}
+## TODO RENAME VARIABLES and CLEAN CHAPTER
+bra_cap <- tribble(   # CHECK AND VERIFY BRA DATA! # Manually updated all airport values reffereing to DECEA 2021 Report
+  ~APT_ICAO, ~YEAR, ~MAX_CAP
+  , "SBCT" , 2018 , 24
+  , "SBCT" , 2019 , 28
+    , "SBCT" , 2020 , 32
+    , "SBCT" , 2021 , 32
+  , "SBCT" , 2022 , 32
+   , "SBCT" , 2023 , 32
+  , "SBCT" , 2024 , 32
+  , "SBPA" , 2018 , 26
+  , "SBPA" , 2019 , 30
+   , "SBPA" , 2020 , 34
+   , "SBPA" , 2021 , 36
+  , "SBPA" , 2022 , 36
+   , "SBPA" , 2023 , 36
+  , "SBPA" , 2024 , 36
+  , "SBSV" , 2018 , 28
+  , "SBSV" , 2019 , 32
+   , "SBSV" , 2020 , 36
+   , "SBSV" , 2021 , 36
+  , "SBSV" , 2022 , 36
+  , "SBSV" , 2023 , 36
+  , "SBSV" , 2024 , 36
+  , "SBRJ" , 2018 , 29
+  , "SBRJ" , 2019 , 29
+   , "SBRJ" , 2020 , 29
+   , "SBRJ" , 2021 , 29
+  , "SBRJ" , 2022 , 29
+   , "SBRJ" , 2023 , 29
+  , "SBRJ" , 2024 , 29
+  , "SBKP" , 2018 , 31
+  , "SBKP" , 2019 , 35
+   , "SBKP" , 2020 , 40
+   , "SBKP" , 2021 , 40
+  , "SBKP" , 2022 , 40
+  , "SBKP" , 2023 , 40
+  , "SBKP" , 2024 , 40
+  , "SBCF" , 2018 , 31
+  , "SBCF" , 2019 , 35
+   , "SBCF" , 2020 , 37
+   , "SBCF" , 2021 , 37
+  , "SBCF" , 2022 , 37
+  , "SBCF" , 2023 , 37
+  , "SBCF" , 2024 , 37
+  , "SBSP" , 2018 , 41
+  , "SBSP" , 2019 , 41
+   , "SBSP" , 2020 , 41    
+   , "SBSP" , 2021 , 41    
+  , "SBSP" , 2022 , 41
+  , "SBSP" , 2023 , 44    
+  , "SBSP" , 2024 , 44
+  , "SBGL" , 2018 , 48
+  , "SBGL" , 2019 , 54
+   , "SBGL" , 2020 , 60
+   , "SBGL" , 2021 , 60
+  , "SBGL" , 2022 , 60
+ , "SBGL" , 2023 , 60
+  , "SBGL" , 2024 , 60
+  , "SBGR" , 2018 , 55
+  , "SBGR" , 2019 , 57
+   , "SBGR" , 2020 , 57     
+   , "SBGR" , 2021 , 57     
+  , "SBGR" , 2022 , 57
+   , "SBGR" , 2023 , 60     
+  , "SBGR" , 2024 , 60
+  , "SBBR" , 2018 , 64
+  , "SBBR" , 2019 , 72
+   , "SBBR" , 2020 , 80
+   , "SBBR" , 2021 , 80
+  , "SBBR" , 2022 , 80
+  , "SBBR" , 2023 , 80
+  , "SBBR" , 2024 , 80
+  , "SBRF" , 2018 , 30
+  , "SBRF" , 2019 , 34
+   , "SBRF" , 2020 , 38
+   , "SBRF" , 2021 , 38
+  , "SBRF" , 2022 , 38
+  , "SBRF" , 2023 , 38
+  , "SBRF" , 2024 , 38
+  , "SBFL" , 2018 , 15
+  , "SBFL" , 2019 , 25
+  , "SBFL" , 2020 , 25
+  , "SBFL" , 2021 , 25
+  , "SBFL" , 2022 , 25
+  , "SBFL" , 2023 , 25
+  , "SBFL" , 2024 , 25
+)
+
+eur_cap <- tribble(
+  ~APT_ICAO, ~YEAR, ~MAX_CAP
+  , "EDDF" , 2018 , 100
+  , "EDDF" , 2019 , 106
+      , "EDDF" , 2020 , 106
+      , "EDDF" , 2021 , 106
+  , "EDDF" , 2022 , 106
+  , "EDDM" , 2018 , 90
+  , "EDDM" , 2019 , 90
+    , "EDDM" , 2020 , 90
+    , "EDDM" , 2021 , 90
+  , "EDDM" , 2022 , 90
+  , "EGKK" , 2018 , 55
+  , "EGKK" , 2019 , 55
+    , "EGKK" , 2020 , 55
+    , "EGKK" , 2021 , 55
+  , "EGKK" , 2022 , 55
+  , "EGLL" , 2018 , 88
+  , "EGLL" , 2019 , 88
+    , "EGLL" , 2020 , 88
+    , "EGLL" , 2021 , 88
+  , "EGLL" , 2022 , 88
+  , "EHAM" , 2018 , 112
+  , "EHAM" , 2019 , 112
+    , "EHAM" , 2020 , 112
+    , "EHAM" , 2021 , 112
+  , "EHAM" , 2022 , 112
+  , "LEBL" , 2018 , 78
+  , "LEBL" , 2019 , 78
+    , "LEBL" , 2020 , 78
+    , "LEBL" , 2021 , 78
+  , "LEBL" , 2022 , 78
+  , "LEMD" , 2018 , 100
+  , "LEMD" , 2019 , 100
+    , "LEMD" , 2020 , 100
+    , "LEMD" , 2021 , 100
+  , "LEMD" , 2022 , 100
+  , "LFPG" , 2018 , 120
+  , "LFPG" , 2019 , 120
+    , "LFPG" , 2020 , 120
+    , "LFPG" , 2021 , 120
+  , "LFPG" , 2022 , 120
+  , "LIRF" , 2018 , 90
+  , "LIRF" , 2019 , 90
+    , "LIRF" , 2020 , 90
+    , "LIRF" , 2021 , 90
+  , "LIRF" , 2022 , 90
+  , "LSZH" , 2018 , 66
+  , "LSZH" , 2019 , 66
+    , "LSZH" , 2020 , 66
+    , "LSZH" , 2021 , 66
+  , "LSZH" , 2022 , 66
+)
+```
+
+```{r}
+hourly_thrus_bra <- tfc_fix |> 
+  filter(ICAO %in% bra_apts) |> 
+  select(ICAO, FLTID, PHASE, ATOT, ALDT ) |> 
+  distinct() |> 
+  mutate(MVT_TIME_UTC = case_when(PHASE == "ARR" ~ ALDT, PHASE == "DEP" ~ ATOT )) |> 
+  select(-c(ATOT, ALDT)) |> 
+  mutate(BIN_HR = floor_date(MVT_TIME_UTC, unit = "hour")) |> 
+  group_by(ICAO, BIN_HR) |> 
+  summarise(TOT_THRU = n(), THRU_ARRS = sum(PHASE == "ARR"), THRU_DEPS = sum(PHASE == "DEP"), .groups = "drop")
+
+bra_cap3 <- bra_cap |> 
+  bind_rows(bra_cap |> filter(YEAR == 2022) |> mutate(YEAR = 2023))
+
+hourly_thrus_bra <- hourly_thrus_bra |> 
+  mutate(YEAR = year(BIN_HR)) |> 
+  left_join(bra_cap3 |> rename(ICAO = APT_ICAO), by = join_by(ICAO, YEAR))
+
+bli_pli_bra <- hourly_thrus_bra |> 
+  mutate( PLI = TOT_THRU >= 0.8 * MAX_CAP
+         ,BLI = TOT_THRU >= 0.2 * MAX_CAP
+         ) |> 
+  group_by(ICAO, YEAR) |> 
+  summarise(N = n(), PLI = sum(PLI, na.rm = TRUE), BLI = sum(BLI, na.rm = TRUE)
+            , .groups = "drop") |>
+  mutate(PLI = PLI / N, BLI = BLI /N)
+
+
+write_csv(bli_pli_bra, "./data_proc/BRA-BLI-PLI.csv")
+```
+
+
+# CHAP 6 - Efficiency
+
+# TAXI-IN
+
+```{r}
+unzip_and_read_csv_files <- function(
+      .ziparchive
+    , .pattern, .exdir = "./temp"
+    , .force_all_characters = FALSE
+    ){
+  # unzip zip file to temporary folder
+  unzip(zipfile = this_fn, exdir = .exdir, junkpaths = TRUE)
+  # check what we unzipped
+  zipped_fns <- list.files(path = .exdir, pattern = .pattern, full.names = TRUE)
+  # iterate over file list and read in files - here: csv
+  if(.force_all_characters == FALSE){
+    zipped_data <- zipped_fns |> 
+      purrr::map_dfr(.f = readr::read_csv, show_col_types = FALSE)
+  }
+  if(.force_all_characters == TRUE){
+    zipped_data <- zipped_fns |> 
+      purrr::map_dfr(.f = readr::read_csv, col_types = cols(.default = col_character()))
+  }
+  # remove temp folder
+  unlink(.exdir, recursive = TRUE)
+  return(zipped_data)
+}
+```
+
+
+```{r}
+# Caminho para pasta que armazena arquivos fonte zipados
+path <- "C:/Users/rdrodrig/dev/repo"
+fns <- list.files(path) # lista de arquivos que existem dentro de path
+# caminho completo do arquivo "Taxi_in_out.zip"
+this_fn <- list.files(path, pattern = "Taxi_in_out.zip", full.names = TRUE)
+
+taxi_ins <- unzip_and_read_csv_files(this_fn, .pattern = "Taxi_in",.force_all_characters = TRUE)
+
+```
+
+```{r}
+taxi_ins2 <- taxi_ins |> select(
+    APT = Aerop.
+  , FLTID = Indicativo
+  , TYPE = Aeronave
+  , AIBT = `AOBT/AIBT`
+  , ALDT = `ATOT/ALDT`
+  , TXIT = `Taxi (min)`
+  , REF  = Desimp.
+  , ADD_TIME = Adicional
+  ) |> 
+  filter(APT %in% bra_apts) |> 
+  mutate( ADD_TIME = gsub(pattern = "\\,", replacement = "\\.", ADD_TIME )
+         ,ADD_TIME = as.numeric(ADD_TIME)
+         ,DATE = lubridate::date(AIBT))
+
+txit <- taxi_ins2 |> 
+  summarise(MVTS = n(), ADD_TIME = sum(ADD_TIME, na.rm = TRUE), .by = c("APT","DATE")) |> 
+  mutate(AVG_ADD_TIME = ADD_TIME / MVTS, PHASE = "TXIT") |> 
+  select(APT, PHASE, DATE, everything())
+```
+
+
+```{r}
+write_csv(txit, file = "./data_proc/BRA-txit.csv")
+```
+
+
+# TAXI OUT
+
+```{r}
+# Caminho para pasta que armazena arquivos fonte zipados
+path <- "C:/Users/rdrodrig/dev/repo"
+fns <- list.files(path) # lista de arquivos que existem dentro de path
+# caminho completo do arquivo "Taxi_in_out.zip"
+this_fn <- list.files(path, pattern = "Taxi_in_out.zip", full.names = TRUE)
+
+taxi_outs <- unzip_and_read_csv_files(this_fn, .pattern = "Taxi_out",.force_all_characters = TRUE)
+```
+
+```{r}
+taxi_outs2 <- taxi_outs |> select(
+    APT = Aerop.
+  , FLTID = Indicativo
+  , TYPE = Aeronave
+  , AOBT = `AOBT/AIBT`
+  , ATOT = `ATOT/ALDT`
+  , TXOT = `Taxi (min)`
+  , REF  = Desimp.
+  , ADD_TIME = Adicional
+  ) |> 
+  filter(APT %in% bra_apts) |> 
+  mutate( ADD_TIME = gsub(pattern = "\\,", replacement = "\\.", ADD_TIME )
+         ,ADD_TIME = as.numeric(ADD_TIME)
+         ,DATE = lubridate::date(AOBT))
+
+txot <- taxi_outs2 |> 
+  summarise(MVTS = n(), ADD_TIME = sum(ADD_TIME, na.rm = TRUE), .by = c("APT","DATE")) |> 
+  mutate(AVG_ADD_TIME = ADD_TIME / MVTS, PHASE = "TXOT") |> 
+  select(APT, PHASE, DATE, everything())
+```
+
+```{r}
+write_csv(txot, file = "./data_proc/BRA-TXOT.csv")
+```
+
+
+
+# ASMA
+
+# Reference TIME
+
+```{r}
+# helper function to check for file extensions
+get_file_extension <- function(.fn) strsplit(.fn, ".", fixed=TRUE)[[1]][-1]
+
+unzip_and_read_csv_files <- function(
+    .ziparchive,
+    .pattern,
+    .exdir = "./temp",
+    .force_all_characters = FALSE,
+    .sep = ","
+) {
+  # unzip zip file to temporary folder
+  unzip(zipfile = .ziparchive, exdir = .exdir, junkpaths = TRUE)
+  
+  # check what we unzipped
+  zipped_fns <- list.files(path = .exdir, pattern = .pattern, full.names = TRUE)
+  
+  # iterate over file list and read in files - here: csv
+  if (.force_all_characters == FALSE) {
+    zipped_data <- purrr::map_dfr(
+      zipped_fns,
+      .f = ~ readr::read_delim(.x, delim = .sep, show_col_types = FALSE)
+    )
+  } else {
+    zipped_data <- purrr::map_dfr(
+      zipped_fns,
+      .f = ~ readr::read_delim(.x, delim = .sep, col_types = readr::cols(.default = readr::col_character()))
+    )
+  }
+  
+  # remove temp folder
+  unlink(.exdir, recursive = TRUE)
+  
+  return(zipped_data)
+}
+```
+
+# standardise asma dataset
+
+```{r}
+standardise_bra_asma <- function(.df, .apts_scope = bra_apts){
+  this_df <- .df |> 
+    select(
+        ADES = ades
+      , ADEP = adep 
+      , FLTID = fltid
+      , CLASS
+      , TYPE = type
+      , RWY = drwy
+      , C40_BRG = c40_bear
+      , C40_TIME = c40time
+      , C100_BRG = c100_bear
+      , C100_TIME = c100time
+      , AIBT = aibt
+      , ALDT = aldt
+  ) |> 
+  filter(ADES %in% .apts_scope) |>
+  mutate(C40_TIME = lubridate::parse_date_time(C40_TIME, orders = c("Ymd HMS","dmY HMS"))
+         ,C100_TIME = lubridate::parse_date_time(C100_TIME, orders = c("Ymd HMS","dmY HMS"))
+         ,AIBT = lubridate::parse_date_time(AIBT, orders = c("Ymd HMS","dmY HMS"))
+         ,ALDT = lubridate::parse_date_time(ALDT, orders = c("Ymd HMS","dmY HMS"))
+         ,DATE = lubridate::date(ALDT)
+         ,YEAR = year(DATE)
+         ,MONTH = month(DATE)
+  )
+  return(this_df)
+}
+```
+
+
+# Path and read - ASMA files
+
+```{r}
+path <- "C:/Users/rdrodrig/dev/repo"
+this_fn    <- list.files(path, pattern = "Dados ASMA.zip", full.names = TRUE)
+inside_fns <- unzip(this_fn, list = TRUE)$Name
+inside_fns
+
+bra_apts <- c("SBGR","SBGL","SBRJ","SBCF","SBBR","SBSV","SBKP","SBSP","SBCT","SBPA")
+
+# read in ASMA files
+asma <- unzip_and_read_csv_files(this_fn, .pattern = "KPI08", .force_all_characters = TRUE, .sep = ";") |>
+  standardise_bra_asma()
+```
+
+# clean data - # filtering and changing col names,time format
+
+```{r}
+asma2 <- asma |> select(
+  FLTID,
+  ADEP, 
+  ADES,
+  TYPE, 
+  CLASS,
+  RWY, 
+  C100_BRG, 
+  C100_TIME, 
+  ALDT) |> 
+  filter(ADES %in% bra_apts, (YEAR = lubridate::year(ALDT)) %in% 2019:2024) |> tidyr::drop_na()
+
+glimpse(asma2)
+
+# write out analytic data set for later
+#asma2 |> write_csv("./data_proc/ASMA-analytic.csv")
+
+```
+
+
+
+# Calc ref time - ICAO = 20th percentile / PBWG = (15th + 5 th) /2
+
+
+```{r}
+#  ICAO = 20th percentile / probs = 0.2
+calc_asma_ref_icao <- function(.asma_ref_sample, .threshold = 0){
+  tmp <- .asma_ref_sample |>
+    mutate(
+      ALDT = as.POSIXct(ALDT, format = "%Y-%m-%dT%H:%M:%OS", tz = "UTC"),
+      C100_TIME = as.POSIXct(C100_TIME, format = "%Y-%m-%dT%H:%M:%OS", tz = "UTC"),
+      A100_TIME = as.numeric(difftime(ALDT, C100_TIME, units = "mins"))
+      ) |> 
+    filter(between(A100_TIME, 5, 45))
+  
+  ref <- tmp |> 
+    group_by(ADES, CLASS, C100_SECT, RWY, REF_YEAR) |> 
+    summarise( REF_ICAO = quantile(A100_TIME, probs = 0.2)
+             , REF_ICAO_SMPL = n()
+             , .groups = "drop"
+             )
+ 
+# #  PBWG = (15th + 5 th) /2 
+
+    pbwg <- tmp |> 
+    group_by(ADES, CLASS, C100_SECT, RWY, REF_YEAR) |> 
+    summarise( P05 = quantile(A100_TIME, probs = 0.05)
+              ,P15 = quantile(A100_TIME, probs = 0.15)
+              ,REF_PBWG_SMPL = length(A100_TIME[A100_TIME >= P05 & A100_TIME <= P15])
+               , .groups = "drop"
+              ) |> 
+    mutate(REF_PBWG = (P05 + P15) / 2)
+  
+  ref <- ref |> left_join(pbwg)
+  
+  return(ref)
+}
+```
+
+
+# ASMA Sector
+
+```{r}
+# add numbered sectors based on bearing and break-vector
+append_asma_sectors <- function(df, .year, .break_vec =c(0,50,150, 260, 335, 360), .span_across_north = FALSE) {
+  ref <- df |> filter(YEAR %in% .year) |> 
+    select(ADES, FLTID
+           , CLASS
+           , C100_BRG
+           , C100_TIME
+           , ALDT
+           , RWY ) |> 
+    mutate(
+        C100_BRG = as.numeric(C100_BRG),
+        C100_SECT = cut( x = C100_BRG
+                      ,breaks = .break_vec
+                      ,include.lowest = TRUE) |> as.numeric(),
+        REF_YEAR = paste(unlist(.year), collapse = '-')
+        )
+  if(.span_across_north == TRUE){message("HEY ADD OVERRUN")
+    ref <- ref |> mutate(C100_SECT = ifelse(C100_SECT == max(C100_SECT), 1, C100_SECT))
+    }    
+  return(ref)
+  
+}
+```
+
+```{r}
+.ref_year = c(2023)
+
+# SBGR - c(0,50,150, 270, 335, 360)  - north span T
+sects <- c(0,50,150, 270, 335, 360)
+sbgr_ref <- asma2 |> 
+  filter(ADES == "SBGR") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = T) |> 
+  calc_asma_ref_icao()
+
+# SBSP - c(0,50,150, 260, 335, 360) - north span T
+sects <- c(0,50,150, 260, 335, 360)
+sbsp_ref <- asma2 |> 
+  filter(ADES == "SBSP") |>
+  mutate(YEAR = lubridate::year(ALDT)) |>
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = T) |>
+  calc_asma_ref_icao()
+
+# SBKP c(70, 130, 260, 360) F
+sects <- c(0,70, 130, 260, 360)
+sbkp_ref <- asma2 |> 
+  filter(ADES == "SBKP") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = F) |> 
+  calc_asma_ref_icao()
+
+# SBBR  c(0,85,155,230,270,360) F
+sects <- c(0,85,155,230,270,360)
+sbbr_ref <- asma2 |> 
+  filter(ADES == "SBBR") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = F) |> 
+  calc_asma_ref_icao()
+
+# SBRJ    c(0,150,270, 360)  FALSE
+sects <- c(0,150,270, 360)
+sbrj_ref <- asma2 |> 
+  filter(ADES == "SBRJ") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = F) |> 
+  calc_asma_ref_icao()
+
+# SBPA      
+sects <- c(0, 80, 200, 250, 340)   
+sbpa_ref <- asma2 |> 
+  filter(ADES == "SBPA") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = T) |> 
+  calc_asma_ref_icao()
+
+# SBCF    c(0, 80, 120, 190, 250, 360)   FALSE
+sects <- c(0, 80, 120, 190, 250, 360)
+sbcf_ref <- asma2 |> 
+  filter(ADES == "SBCF") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = F) |> 
+  calc_asma_ref_icao()
+
+# SBSV <- c(0,25, 60, 180, 300,360)  TRU
+sects <- c(0,25, 60, 180, 300,360)
+sbsv_ref <- asma2 |> 
+  filter(ADES == "SBSV") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = T) |> 
+  calc_asma_ref_icao()
+
+
+#SBCT   c(25,90, 200, 280, 340 ) T
+sects <- c(25,90, 200, 280, 340)
+sbct_ref <- asma2 |> 
+  filter(ADES == "SBCT") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = T) |> 
+  calc_asma_ref_icao()
+
+#SBGL c(0,80,200, 240, 280, 360)   FALSE
+sects <- c(0,80,200, 240, 280, 360)
+sbgl_ref<- asma2 |> 
+  filter(ADES == "SBGL") |> 
+  mutate(YEAR = lubridate::year(ALDT)) |> 
+  append_asma_sectors(.year = .ref_year,.break_vec = sects, .span_across_north = F) |> 
+  calc_asma_ref_icao()
+
+```
+
+# ADD ASMA Sector
+
+```{r}
+add_asma_sector <- function(.asma2, .break_vec, .span_north = FALSE){
+  with_sector <- .asma2 |> mutate(
+        C100_SECT = cut( x = as.numeric(C100_BRG)
+                      ,breaks = .break_vec
+                      ,include.lowest = TRUE) |> as.numeric() 
+        )
+  if(.span_north == TRUE){message("spanning North")
+    with_sector <- with_sector |> 
+      mutate(C100_SECT = ifelse(C100_SECT == max(C100_SECT), 1, C100_SECT))
+  }
+  return(with_sector)
+}
+
+prepare_asma <- function(.asma2, .apt){ 
+  df <- .asma2 |> filter(ADES == .apt) |> 
+    mutate(A100_TIME = difftime(ALDT, C100_TIME, units = "min") |> as.numeric()) |> 
+    filter(between(A100_TIME, 15, 100))
+  
+   return(df) 
+}
+```
+
+
+
+## ASMA ANALYSIS FUNCTION
+
+```{r}
+asma_analysis <- function(.asma_df){
+  .asma_df |> 
+  mutate(ADD_TIME = A100_TIME - REF, MOF = substr(ALDT, 1,7)) |> 
+  group_by(ADES, MOF, REF_YEAR) |> 
+  summarise(N = n(), N_VALID = sum(!is.na(ADD_TIME))
+            , SUM_TRAVEL = sum(A100_TIME[!is.na(ADD_TIME)])
+            , SUM_REF = sum(REF[!is.na(ADD_TIME)])
+            , CHECK_ADD = sum(ADD_TIME, na.rm = TRUE)
+            , .groups = "drop") |> 
+  mutate(  SUM_ADD_TIME = SUM_TRAVEL - SUM_REF
+         , OK = abs(CHECK_ADD - SUM_ADD_TIME) < 0.01
+         , AVG_ADD_TIME = SUM_ADD_TIME / N_VALID
+         )
+}
+```
+
+
+## SBGR
+
+```{r}
+tmp_ref <- sbgr_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+rwy_change <- ref |>
+  mutate(RWY = case_when(
+     RWY == "09L" ~ "10L", 
+     RWY == "09R" ~ "10R", 
+     RWY == "09" ~ "10",
+     RWY == "27L" ~ "28L",
+     RWY == "27R" ~ "28R",
+     RWY == "10L" ~ "10L", 
+     RWY == "10R" ~ "10R", 
+     RWY == "10" ~ "10",
+     RWY == "28L" ~ "28L",
+     RWY == "28R" ~ "28R"
+     ))
+
+sects <- c(0,50,150, 270, 335, 360) 
+span_north <- TRUE
+
+my_asma <- asma2 |> 
+  mutate(RWY = case_when(
+     RWY == "09L" ~ "10L", 
+     RWY == "09R" ~ "10R", 
+     RWY == "09" ~ "10",
+     RWY == "27L" ~ "28L",
+     RWY == "27R" ~ "28R",
+     RWY == "10L" ~ "10L", 
+     RWY == "10R" ~ "10R", 
+     RWY == "10" ~ "10",
+     RWY == "28L" ~ "28L",
+     RWY == "28R" ~ "28R"
+     )
+) |>
+# check runway change vs year of calculation ==> TODO double refs and save them!
+#  my_asma <- asma2 |> 
+  prepare_asma("SBGR") |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbgr_asma_results <- my_asma |> asma_analysis()
+sbgr_asma_results
+
+sbgr_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME))
+```
+
+## SBSP
+
+```{r}
+tmp_ref <- sbsp_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0,50,150, 260, 335, 360)
+span_north <- TRUE
+
+my_asma <- asma2 |> 
+  prepare_asma("SBSP") |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbsp_asma_results <- my_asma |> asma_analysis()
+sbsp_asma_results
+
+sbsp_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME))
+```
+
+
+## SBKP
+
+```{r}
+this_apt <- "SBKP"
+tmp_ref <- sbkp_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(70, 130, 260, 360)
+span_north <- FALSE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbkp_asma_results <- my_asma |> asma_analysis()
+sbkp_asma_results
+
+sbkp_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+## SBBR
+
+```{r}
+# SBBR  c(0,85,155,230,270,360) F
+
+this_apt <- "SBBR"
+tmp_ref <- sbbr_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0,85,155,230,270,360)
+span_north <- FALSE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbbr_asma_results <- my_asma |> asma_analysis()
+sbbr_asma_results
+
+sbbr_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+
+# SBRJ   
+
+```{r}
+this_apt <- "SBRJ"
+tmp_ref <- sbrj_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0,150,270, 360)
+span_north <- FALSE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbrj_asma_results <- my_asma |> asma_analysis()
+sbrj_asma_results
+
+sbrj_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+
+# SBPA      
+
+```{r}
+this_apt <- "SBPA"
+tmp_ref <- sbpa_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0, 80, 200, 250, 340)
+span_north <- FALSE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbpa_asma_results <- my_asma |> asma_analysis()
+sbpa_asma_results
+
+sbpa_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+# SBCF   
+
+```{r}
+this_apt <- "SBCF"
+tmp_ref <- sbcf_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0, 80, 120, 190, 250, 360)
+span_north <- FALSE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbcf_asma_results <- my_asma |> asma_analysis()
+sbcf_asma_results
+
+sbcf_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+
+## SBSV 
+
+
+```{r}
+this_apt <- "SBSV"
+tmp_ref <- sbsv_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0,25, 60, 180, 300,360)
+span_north <- TRUE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbsv_asma_results <- my_asma |> asma_analysis()
+sbsv_asma_results
+
+sbsv_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+## SBGL
+
+```{r}
+this_apt <- "SBGL"
+tmp_ref <- sbgl_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(0,80,200, 240, 280, 360)
+span_north <- TRUE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbgl_asma_results <- my_asma |> asma_analysis()
+sbgl_asma_results
+
+sbgl_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME)) 
+```
+
+## SBCT 
+
+```{r}
+this_apt <- "SBCT"
+tmp_ref <- sbct_ref
+ref   <- tmp_ref |> select(ADES, CLASS, C100_SECT, RWY, REF = REF_PBWG, REF_YEAR)
+
+sects <- c(25,90, 200, 280, 340)
+span_north <- TRUE
+
+my_asma <- asma2 |> 
+  prepare_asma(this_apt) |> 
+  add_asma_sector(sects, span_north) |> 
+  left_join(ref, by = join_by(ADES, CLASS, RWY, C100_SECT))
+my_asma
+
+sbct_asma_results <- my_asma |> asma_analysis()
+sbct_asma_results
+
+sbct_asma_results |> ggplot() + geom_point(aes(x = MOF, y = AVG_ADD_TIME))
+```
+
+
+
+## AIRPORT,DATE,FLTS,RWY,TOT_A100,TOT_REF,TOT_ADD,AVG_ADD
+
+```{r}
+bra_asma <- 
+  bind_rows(
+     sbgr_asma_results, sbsp_asma_results, sbkp_asma_results, sbbr_asma_results
+    ,sbrj_asma_results, sbpa_asma_results, sbcf_asma_results, sbsv_asma_results
+    ,sbgl_asma_results, sbct_asma_results
+    ) |> 
+  select(AIRPORT = ADES, DATE = MOF, FLTS = N_VALID, TOT_A100 = SUM_TRAVEL
+         ,TOT_REF = SUM_REF, TOT_ADD = SUM_ADD_TIME, AVG_ADD = AVG_ADD_TIME, REF_YEAR) |> 
+  filter(!is.na(REF_YEAR))
+
+
+bra_asma |> write_csv("./data_proc/BRA-ASMA.csv")
+
+```
+
+```{r}
+bra_asma <- read_csv("./data_proc/BRA-ASMA.csv")
+```
+
+
+```{r}
+bra_asma_year <- bra_asma |> select(AIRPORT, DATE, FLTS, AVG_ADD, TOT_ADD) |>
+  mutate(YEAR = lubridate::ym(DATE)
+        ,YEAR = lubridate::year(YEAR)
+        ) |>
+  group_by(AIRPORT, YEAR) |> 
+  summarise(AVG_ADD_ASMA = sum(TOT_ADD)/ sum(FLTS)
+         ,N_VALID = sum(FLTS)) |> 
+  ungroup() |>
+  select(AIRPORT, YEAR, AVG_ADD_ASMA, N_VALID) |>
+  mutate(REGION = "BRA")
+
+bra_asma_year |> write_csv("./data_proc/BRA-ASMA_year.csv")
+```
+
+
+
+###################################################
+
+
+
+```{r}
+ggplot(data = bra_asma_year, mapping = aes(y = AIRPORT, x = AVG_ADD_ASMA, fill = as.factor(YEAR))) +
+geom_col(position = position_dodge(-.9), width = 0.9) + 
+  geom_vline(xintercept = c(2,7), linetype = "dotted")
+```
+
+
+
+
+# VARIABILITY
+
+```{r}
+Tabela_VRA<- read_delim("C:/Users/rdrodrig/dev/raw-data/Variability.zip", 
+                                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+```
+
+Tabela_VRA<- read_delim("Dados EUR 2019-2022/Dados Variability/VRA_ano2023.csv", 
+                                         delim = ";", escape_double = FALSE, trim_ws = TRUE)
+
+
+
+```{r}
+Tabela_qtde_voos_saida <- Tabela_VRA %>%
+  count(sg_origem, name = "dep")%>%
+  #arrange(dep)%>%
+  rename(aeroporto=sg_origem)
+
+
+Tabela_qtde_voos_chegada <- Tabela_VRA %>%
+  count(sg_destino, name = "arr")%>%
+  #arrange(arr)%>%
+  rename(aeroporto=sg_destino)
+
+
+# Unir as tabelas com base na coluna 'nome'
+tabela_dep_e_pouso <- merge(Tabela_qtde_voos_chegada, Tabela_qtde_voos_saida, by = "aeroporto", all = TRUE)
+
+# Calcular a soma de dep e arrival
+tabela_dep_e_pouso$total <- rowSums(tabela_dep_e_pouso[, c("arr", "dep")], na.rm = TRUE)
+
+# Somente aeroporto com SBxx
+aeroportos_brasil <- tabela_dep_e_pouso %>%
+  filter(startsWith(aeroporto, "SB"))%>%
+  mutate(percentual_mov_total= sprintf("%.2f%%", total / sum(total) * 100))%>%
+    arrange(desc(total))
+ 
+
+```
+
+
+```{r}
+
+# Calculando a soma acumulada
+aeroportos_brasil$soma_acumulada <- 
+cumsum(aeroportos_brasil$total)
+
+
+# Criando a coluna com o percentual acumulado
+aeroportos_brasil <- aeroportos_brasil %>%
+  mutate(valores_percentuais_acumulados = sprintf("%.2f%%", soma_acumulada / 1768784 * 100))
+
+
+#Gerando o gráfico
+ggplot(aeroportos_brasil)+
+  geom_col(aes(x=aeroporto, y=valores_percentuais_acumulado))
+
+
+
+ggplot(aeroportos_brasil, aes(x = aeroporto, y = valores_percentuais_acumulados, fill = aeroporto)) +
+  geom_col(position = position_dodge()) +
+  labs(title = "Percentual em relação ao total por Aeroporto",
+       x = "Aeroporto",
+       y = "Percentual em relação ao total") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) # Rotacionar os rótulos do eixo x para melhor visualização
+
+
+plot(ecdf(aeroportos_brasil$valores_percentuais_acumulados))
+plot(aeroportos_brasil$valores_percentuais_acumulados, main = "Distribuição Acumulada", xlab = "aeroporto", ylab = "valores_percentuais_acumulados")
+
+
+```
+
+
+
