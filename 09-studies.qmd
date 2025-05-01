@@ -174,11 +174,13 @@ Comparison with EUROCONTROL
 
 Figure above provides an initial side-by-side comparison between DECEA and NAV Portugal (Continental) regarding selected operational characteristics of their Area Control Centers (ACCs). While each organization operates within its own regional and structural context, some key contrasts are worth highlighting.
 
-Despite having a smaller controlled airspace, NAV Portugal managed a higher volume of IFR ACC movements than DECEA in the same period. This suggests a denser and more concentrated traffic environment, likely influenced by Portugal’s geographic position in Europe and the nature of its flight corridors.
+Despite operating within a smaller controlled airspace, NAV Portugal managed a higher volume of IFR ACC movements than DECEA during the same period while handling nearly 25% fewer flight hours. This points to a denser and more concentrated traffic environment, likely driven by Portugal’s geographical location within Europe and the structure of its flight corridors.
 
-Another point is the number of air traffic controllers (ATCOs) assigned to the operations room. NAV Portugal manages its operational workload with just 71 ATCOs, underscoring differences in operational models, automation levels, and staffing philosophies between the two organizations.
+Another relevant aspect is the number of air traffic controllers (ATCOs) assigned to the operations room. NAV Portugal handles its operational workload in a larger OPS room with only 71 ATCOs, highlighting distinct differences in operational models, levels of automation, and staffing philosophies between the two organizations.
 
-These contrasts reinforce the importance of considering regional particularities and contextual factors when analyzing air navigation service provision metrics and designing solutions like staffing systems or control room configurations.
+In terms of sector configuration, Curitiba (ACC-CW) operated up to 13 sectors at the end of 2024, compared to a maximum of 9 in Portugal. For the year as a whole, the total number of sector hours was similar, with Portugal recording approximately 2,000 more hours.
+
+These contrasts underscore the importance of accounting for regional characteristics and operational context when interpreting air navigation service metrics or designing systems such as staffing models or control room layouts.
 
 
 
