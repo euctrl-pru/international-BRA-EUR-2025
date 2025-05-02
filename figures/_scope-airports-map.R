@@ -262,9 +262,9 @@ combi_plot_scope <-
 combi_plot_scope
 
 combi_plot_scope |> ggsave(
- # filename = here::here("figures","_scope-airports-map.png")
-  filename = here::here("figures","_scope-airports-map.pdf")
+  filename = here::here("figures","_scope-airports-map.png")
+ # filename = here::here("figures","_scope-airports-map.pdf")
   ,dpi = 320
-  ,width = 12, height = 6, units = "in"
+  ,width = 8, height = 5, units = "in"
   ,bg = "white")
 
