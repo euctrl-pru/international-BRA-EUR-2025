@@ -22,18 +22,17 @@ DECEA holds the vital role of overseeing all activities related to the safety an
 Its mission encompasses the management and control of all air traffic within the sovereign Brazilian airspace, with a significant emphasis on contributing to national defence efforts.
 To achieve this, DECEA operates a comprehensive and fully integrated civil-military system.
 
-In 2021, a public company, NAV Brasil, was created to take over some facilities that were linked to an old airport infrastructure provider company in Brazil (INFRAERO).
-Today, this company has 1698 employees in 44 different units, providing aerodrome control services, nonradar approach, meteorology and aeronautical information for these locations.
-Despite having important numbers, Nav Brasil does not plan to establish radar facilities or provide en-route services.
+In 2021, a public company, NAV Brasil, was created to take over some facilities that were linked to an older airport infrastructure provider company in Brazil (INFRAERO).
+Today, NAV Brasil has 1698 employees in 44 different units, providing aerodrome control services, non-radar approach, meteorology and aeronautical information for the respective locations.
+Despite serving a significant number of air transport movements, NAV Brasil does not plan to establish radar facilities or provide en-route services.
 
 The Brazilian airspace, covering an area of approximately 22 million square kilometres (8.5 million square nautical miles of non-oceanic airspace), is divided into five Flight Information Regions.
 These regions are further subdivided and managed by five Area Control Centers (ACC), 57 Tower facilities (TWR), one digital tower (D-TWR), 41 Approach Units (APP) and 79 AFIS/Remote-AFIS.
 
 The non-oceanic airspace in Europe covers an area of 11.5 million square kilometres.
 When it comes to the provision of air traffic services, the European approach involves a multitude of service providers, with 37 distinct en-route Air Navigation Service Providers (ANSPs), each responsible for different geographical regions.
-These services are primarily organised along state boundaries and FIR (Flight Information Region) borders, with limited cross-border agreements in place between adjacent airspaces and air traffic service units.
-
-A noteworthy exception to this predominantly national approach is the Maastricht Upper Area Control (UAC), which represents a unique multinational collaboration offering air traffic services in the upper airspace of northern Germany, the Netherlands, Belgium, and Luxembourg.
+These services are primarily organised along state boundaries and FIR (Flight Information Region) borders, with a number of limited cross-border agreements in place between adjacent airspaces and air traffic service units.    
+A noteworthy exception to this predominantly national approach is the Maastricht Upper Area Control, which represents a unique multinational collaboration offering air traffic services in the upper airspace of northern Germany, the Netherlands, Belgium, and Luxembourg.
 
 Civil-military integration levels across European countries vary.
 Within the European context, the central coordination of Air Traffic Flow Management (ATFM) and Airspace Management (ASM) is facilitated by the Network Manager.
@@ -49,16 +48,27 @@ Subsequently, the NMOC implements the relevant flow management initiatives as re
 
 ## High Level System Comparison
 
+```{r}
+#| label: HLC-numbers
+# BRA ATCO increase
+bra_atco_2019 <- 3126
+bra_actos     <- c("2023" = 3677, "2024" = 3890)
+bra_atcos_pct <- ((bra_actos / bra_atco_2019) - 1) * 100
+```
+
+
 @fig-HLC2022 summarises the key characteristics of the Brazilian and European air navigation system for 2024.
-Comparing the high-level numbers, Brazil utilised an increased number of Air Traffic Controllers (ATCOs) even during the pandemic period.
-In contrast, the European system showed a reduction of total ATCOs in service.
-The different behaviour suggests a difference in work force flexibility between the systems.
+Comparing the high-level numbers, Brazil observed a steady increase in the number of Air Traffic Controllers (ATCOs) compared to 2019 (e.g. 2023 vs 2019: `r round(bra_atcos_pct[1], 1)`%, 2024 vs 2019: `r round(bra_atcos_pct[2], 1)`%). 
+In contrast, the European system showed only a mild increase in total ATCOs in service following the strong reduction during the pandemic in terms of work force.
+The different behaviour suggests a difference in work force flexibility between the systems. Brazil reacted swiftly to the increase of air traffic ranging at `r ( ((1935139/1594442) - 1) * 100) |> round(1)`% higher than in 2019. 
+Europe has seen a mild modulation of ATCO numbers with the annual traffic in 2024 ranging about 4% below the 2019 level.  
 This may be partly explained by the fact that DECEA shares part of the structure used in basic training with other Air Force training processes.
 This leads to a more centralised and rigid process, in which abrupt reactions in hiring planning are unwanted due to the lengthy process of calling for candidates according to Brazilian laws related to public service jobs.
 In Europe, there exists a mix of organisational models and labour contracts ranging from public service to fully commercial organisation.
-En gros, European providers were able to react to the lower demand levels by delaying/stopping recruitment/training and offering early retirement packages.
+Thus, European providers tend to react more conservative to anticipated changes in air traffic demand. 
 
-<!-- Note: this table is imported from powerpoint - check for figures-handmade.pptx in ./figures -->
+<!-- Note: this table is imported from powerpoint - check for figures-handmade.pptx in ./figures or the file / data specifically created for this iteration
+-->
 
 ```{r}
 #| label: fig-HLC2022
@@ -69,35 +79,55 @@ knitr::include_graphics("./figures/HLC-table1.png")
 ```
 
 Another key difference affecting performance in both regions for this report is the development of air traffic demand.
-Unlike in Europe, it is interesting to note that Brazil ended 2022 already servicing air traffic movements above the pre-pandemic (i.e. 2019) level.
-However, as will be shown later, much of this growth was due to the strong increase in general aviation and only to a lower extent in commercial aviation.\
+Unlike in Europe, it is interesting to note that Brazil ended 2022 already servicing air traffic movements above the pre-pandemic level.
+There is a continual increase in air traffic in Brazil accounting now for 21,4% of more traffic than in 2019.
+<!-- However, as will be shown later, much of this growth was due to the strong increase in general aviation and only to a lower extent in commercial aviation.\ -->
 Overall, the volume of air traffic also rebounded in Europe.
-At the end of 2023, the level reached about 90% of the pre-pandemc air traffic (vs about 85% in 2022).
+At the end of 2023, the level reached about 90% of the pre-pandemc air traffic, and with 2024 the gap is closing to about 96%.
+These recovery numbers are impacted by the geo-political developments. 
+Due to the Russion invasion of Ukraine, a certain share of flights are currently banned to operate to/from Europe.
 
 Both regions operate with similar operational concepts, procedures and supporting technology.
-Yet, Brazil, with lower traffic density related to airspace use, finds probably a more challenging cost-benefit ratio to maintain communication coverage and surveillance for regions with low-traffic.
+Considering the non-oceanic dimension of the airspace, Brazil services an area about 22% smaller than Europe. 
+Brazil, with lower traffic density related to airspace, finds probably a more challenging cost-benefit ratio to maintain communication coverage and surveillance for regions with low-traffic.
+The higher traffic density in Europe may cross all aspects of flight management.
+In particular, the European region faces more considerable challenges in coordinating efforts to adress operational constraints and service the current demand.
 
-In comparison, the European region faces more considerable challenges in coordinating efforts to adress operational constraints and service the current demand.
+## Network Characterisation
 
-::: callout-note
-The following graphic is a snapshot made in early April.\
-The network analysis is work in progress.
-Thus, the visualisation and section may change, and with a smaller data set.
-:::
+To address the changes in air traffic and develop a better understanding of the nature of the air transportation network, this report expands the characterisation of the network.
+@fig-apt-rank-comparison-2024 depicts the cumulative share of departures from airports in both regions.
 
 ```{r, message=FALSE, warning=FALSE}
-#| label: fig-Apt-Rank-Comparison2024
+#| label: fig-apt-rank-comparison-2024
 #| fig-cap: "Airport Rank Comparison 2024"
 #| out-width: 90%
 
-# funciton - deactivated as it requires 900MB data file ==> side-study == to be completed plot_cumulative_percentage_by_apt_rank()
+# funciton - deactivated as it requires 900MB data file 
+# ==> side-study == to be completed plot_cumulative_percentage_by_apt_rank()
 
 comb_deps_routes <- arrow::read_parquet("./data/BRA-EUR-dep-counts-2024.parquet")
 
-#comb_deps_routes |> group_by(REGION) |> mutate(RANK = RANK / max(RANK)) |> 
-comb_deps_routes |> filter(RANK <= 150) |> 
+tmp <- comb_deps_routes |> filter(RANK <= 200) |> 
+  #------------- patch for missing 0 data ----------------
+  rows_append(
+    tribble(
+        ~ADEP,~DEPS,~REGION, ~RANK, ~SHARE, ~CUM_SHARE
+        ,"SXXX", 0, "BRA", 0, 0, 0
+        ,"EZZZ", 0, "EUR", 0, 0, 0
+        )
+    ) |> 
+  arrange(REGION, RANK)
+
+  #---------------- and plot ----------------------------
+tmp |> 
   ggplot() + 
-  geom_step(aes(x = RANK, y = CUM_SHARE, group = REGION))
+  geom_step(aes(x = RANK, y = CUM_SHARE, group = REGION, color = REGION)) +
+  scale_color_manual(values = c(BRA = bra_col, EUR = eur_col)) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs( x = "airport rank in terms of departures in 2024"
+       ,y = "share of regional departures" )
+  
 
 #knitr::include_graphics("./figures/fig-Apt-Rank-Comparison2024-1.png")
 ```
