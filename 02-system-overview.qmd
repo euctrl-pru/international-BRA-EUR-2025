@@ -57,7 +57,7 @@ bra_atcos_pct <- ((bra_actos / bra_atco_2019) - 1) * 100
 ```
 
 
-@fig-HLC2022 summarises the key characteristics of the Brazilian and European air navigation system for 2024.
+@tbl-HLC summarises the key characteristics of the Brazilian and European air navigation system for 2024.
 Comparing the high-level numbers, Brazil observed a steady increase in the number of Air Traffic Controllers (ATCOs) compared to 2019 (e.g. 2023 vs 2019: `r round(bra_atcos_pct[1], 1)`%, 2024 vs 2019: `r round(bra_atcos_pct[2], 1)`%). 
 In contrast, the European system showed only a mild increase in total ATCOs in service following the strong reduction during the pandemic in terms of work force.
 The different behaviour suggests a difference in work force flexibility between the systems. Brazil reacted swiftly to the increase of air traffic ranging at `r ( ((1935139/1594442) - 1) * 100) |> round(1)`% higher than in 2019. 
@@ -71,8 +71,8 @@ Thus, European providers tend to react more conservative to anticipated changes 
 -->
 
 ```{r}
-#| label: fig-HLC2022
-#| fig-cap: High Level Comparison 2024
+#| label: tbl-HLC
+#| tbl-cap: High Level Comparison 2024
 #| out-width: 95%
 
 knitr::include_graphics("./figures/HLC-table1.png")
@@ -119,73 +119,128 @@ tmp <- comb_deps_routes |> filter(RANK <= 200) |>
     ) |> 
   arrange(REGION, RANK)
 
+tmp_label <- tmp |> filter(RANK %in% c(10,50, 100))
+
   #---------------- and plot ----------------------------
-tmp |> 
-  ggplot() + 
-  geom_step(aes(x = RANK, y = CUM_SHARE, group = REGION, color = REGION)) +
+ggplot() + 
+  geom_vline(xintercept = c(10,50, 100), linetype = "dotted") +
+  geom_step(data = tmp, aes(x = RANK, y = CUM_SHARE, group = REGION, color = REGION)) +
+  geom_point(data = tmp_label, aes(x = RANK, y = CUM_SHARE, color = REGION)
+             ,show.legend = FALSE) +
+  geom_label(data = tmp_label, aes(x = RANK, y = CUM_SHARE, color = REGION
+                                   , label = paste0(round(CUM_SHARE * 100), "%"))
+             , nudge_x = 8, nudge_y = -0.03
+             , show.legend = FALSE) +
   scale_color_manual(values = c(BRA = bra_col, EUR = eur_col)) +
   scale_y_continuous(labels = scales::percent_format()) +
   labs( x = "airport rank in terms of departures in 2024"
-       ,y = "share of regional departures" )
-  
-
-#knitr::include_graphics("./figures/fig-Apt-Rank-Comparison2024-1.png")
+       ,y = "share of regional departures"
+       ,color = element_blank()) +
+  theme(legend.position = "inside", legend.position.inside = c(0.85, 0.875) )
 ```
 
-::: callout-note
-The distribution of air traffic in Brazil confirms that most flights are concentrated in a small number of airports.
-In 2024, the 10 busiest airports handled 66.23% of all flights.
-The top 18 airports accounted for 80% of operations, while 90% of all flights took place at just 32 airports.
-If we consider the 49 busiest airports, they covered 95% of traffic, and 99% of all flights occurred at the top 100 airports in the country.
-The latest edition of Brazil’s Annual Performance Report (it can be found on http://performance.decea.mil.br reflects this reality. It now includes 100 airport locations instead of only the top 34, ensuring that almost all flights are included in the analysis. This distribution shows that many aerodromes operate with low traffic volumes. Because of that, it is important to study alternative ways to provide air traffic services.
+@tbl-HLC lists the overall serviced traffic in both regions.
+In 2024 Brazil observed just under a fifth (18.2%) of the traffic handled in Europe. 
+With overflights representing a small share of the traffic in both regions, @fig-apt-rank-comparison-2024 focusses on the aerodrome movements considering all observed departures.
+The distribution of air traffic in Brazil confirms that most flights are concentrated in a small number of airports. 
+Traffic in Europe operates from a larger number of aerodromes.
+For example, in 2024, the 10 busiest airports in Brazil handled 61% of all departing flights whereas in Europe, the top 10 airports account for 19% of all departures.
+The spread in shares remains broadly constant up to the 50th rank of all departures and narrows to 30% with the top 100 airports in both regions.
+The latter marking 97% of all departures in Brazil and 67% in Europe.
 
-In Brazil, the Aerodrome Flight Information Service (AFIS) has been an effective strategy to ensure safety at locations where the traffic does not justify the installation of a control tower (TWR).
-This service, usually provided via Radio, gives essential information to pilots, helping to use resources efficiently and keeping safe operations.
+The latest edition of Brazil’s Annual Performance Report (it can be found on http://performance.decea.mil.br reflects this reality. 
+It now includes 100 airport locations instead of only the top 34, ensuring that almost all flights are included in the analysis. 
+This distribution shows that many aerodromes operate with low traffic volumes. 
+Because of that, it is important to study alternative ways to provide air traffic services.
+
+In Brazil, the Aerodrome Flight Information Service (AFIS) is an effective strategy to ensure safety at locations where the traffic does not justify the installation of a control tower (TWR).
+This service, usually provided via radio telephony only, gives essential information to pilots, helping to use resources efficiently and keeping operations safe.
 Since 2016, Brazil has been expanding the use of remote AFIS units (R-AFIS), especially in strategic areas like the Amazon region.
 These services are provided from ACCs (Area Control Centers), which means they don’t need dedicated local infrastructure.
 Also, in 2024, demand for air traffic services continued to grow.
 This shows the need to review and improve how services are organized in Brazil.
-Expanding the use of the AFIS model in strategic areas may be a smart and safe way to meet future needs and make better use of SISCEAB’s resources.
+Expanding the use of the AFIS model in strategic areas may be a cost-effective and safe way to meet future needs and make better use of SISCEAB’s resources.
 
-The distribution of air traffic in Brazil confirms that most flights are concentrated in a small number of airports.
-In 2024, the 10 busiest airports handled 66.23% of all flights.
-The top 18 airports accounted for 80% of operations, while 90% of all flights took place at just 32 airports.
-If we consider the 49 busiest airports, they covered 95% of traffic, and 99% of all flights occurred at the top 100 airports in the country.
-The latest edition of Brazil’s Annual Performance Report (it can be found on http://performance.decea.mil.br reflects this reality. It now includes 100 airport locations instead of only the top 34, ensuring that almost all flights are included in the analysis. This distribution shows that many aerodromes operate with low traffic volumes. Because of that, it is important to study alternative ways to provide air traffic services.
+The more spread out distribution in Europe showcases the historical development of the European network. 
+The traditional focus on national hubs and carriers resulted in the development of a higher number of major aerodromes (typically servicing the capital, major metropoles, or economic centers) interconnecting with other national hubs across the continent.
+There exists a mix of the organisation of smaller operations in Europe.
+Dependent on the national or local setup, the resources of the national service provider are  often complemented by local service providers.
+Thus, the provision of services varies between smaller manned towers and remotely provided FIS functions provided by nearby ACCs.
+This includes instrument procedures to approach (and depart) from an uncontrolled aerodrome.
+Given this mix of organisation and funding in Europe, no consolidated pan-European data was available to specifically account for local AFIS services.
+Across Europe, there is an interest in consolidating aerodrome control services at important low frequency sites through the deployment of digital remote tower operations.
+This ranges from site specific remote tower operations (e.g. Cork/Ireland) to a multi-remote tower center (e.g. Stockholm/Sweden, Bodo/Norway) servicing multiple airports simultaneously.
 
-In Brazil, the Aerodrome Flight Information Service (AFIS) has been an effective strategy to ensure safety at locations where the traffic does not justify the installation of a control tower (TWR).
-This service, usually provided via Radio, gives essential information to pilots, helping to use resources efficiently and keeping safe operations.
-Since 2016, Brazil has been expanding the use of remote AFIS units (R-AFIS), especially in strategic areas like the Amazon region.
-These services are provided from ACCs (Area Control Centers), which means they don’t need dedicated local infrastructure.
-Also, in 2024, demand for air traffic services continued to grow.
-This shows the need to review and improve how services are organized in Brazil.
-Expanding the use of the AFIS model in strategic areas may be a smart and safe way to meet future needs and make better use of SISCEAB’s resources.
-:::
+While the view on the concentration of air traffic provides first insights, the level of connectivity is not immediately identifiable.
 
-This report launched a first analysis of the systems' network utilisation, taking advantage of the rich experience in comparing two regional aviation systems.
-Aviation infrastructure is always expensive and complex to maintain, including cost for the provision of air navigation services.
-The analysis of the facilities' locations distribution for this service has always basically accompanied the distribution of airports in a region.
-Recently, technological feasibility modified this logic with the possibility of remote services and still with the possibility of joining more than one remote installation to provide services to several locations simultaneously.
 
-Still, a closer look at the dynamics of these routes and potential connectivity between sites may indicate the potential for capacity to be exploited by the aviation community or that idle capacity is installed without reasonable prospects for use.
+```{r}
+#| label: fig-share-intnl-regional
+#| fig-cap: "Share of international and regional/domestic traffic in 2024"
+#| 
+# load international movement data set for 2024
+bra_mvts_intnl <- read_csv("./data/BRA-network-conns-intnl.csv", show_col_types = FALSE) |> mutate(REGION = "BRA")
 
-In @fig-Apt-Rank-Comparison2024, we see the distribution of commercial departures for 2022 in both regions.
-Note that the concentration is proportionally slightly higher on the Brazilian side, with less than 50 airports handlinging 80% of the commercial take-offs that year.
-In comparison, the European system distributed the same percentage over approximately 100 airports.\
-For both regions, the aforementioned share of air traffic is centralised in a small subset of airports.
-On the other hand, the cumulative charts in @fig-Apt-Rank-Comparison2024 show that a high number of airports service under 1% of the regional air traffic volume.
-In both systems, this represents more than half of the airports that serve commercial flights.
-In Europe, approximately 486 airports handle only 1% of the movements, while in Brazil, there are 210 for the same percentage.\
-Despite being an already historically established distribution and somewhat expected, the aviation sector agents must revisit this data constantly to verify the use of deployed resources and capacity.
-There is scope for further assessing the service provision at smaller operations with a view to accommodate demand and capacity.
+eur_mvts_intnl <- read_csv("./data/EUR-network-conns-intnl.csv", show_col_types = FALSE) |> mutate(REGION = "EUR") 
 
-Analysing the part of ANS, specifically on the Brazilian side, the proportion of flights using AFIS aerodromes in this sample is 10.73%.
-Among them, the busiest airport serviced approximately 4146 commercial departures in 2022 while only 124 were handled at the least busy AFIS aerodrome.
-In most cases, these operations represent remote airports where aviation is deemed needed to give access to that community.
-For the European data, a similar pattern is expected.
-The current data does not allow for a labelling of all aerodromes in terms of ATS service provision (in particular, the identification of AFIS-only services).
+calc_group_rankings <- function(
+      .dfwithgroup
+    , .grp_vars = c("REGION","TYPE","LABEL")
+    , .rank_var = DEPS){
+  rankings <- .dfwithgroup |>
+    dplyr::group_by( dplyr::across( dplyr::all_of(.grp_vars) ) ) |> 
+    dplyr::reframe({{ .rank_var }} := sum( .data$DEPS)) |> 
+    dplyr::arrange(dplyr::desc({{ .rank_var }})) |> 
+    dplyr::mutate( 
+        RANK      = dplyr::row_number()
+       ,SHARE     = {{ .rank_var }} / sum( {{ .rank_var }})
+       ,CUM_SHARE = cumsum(SHARE) 
+                  )
+  
+  return(rankings)  
+}
 
-Future work may highlight to what extent also resources within the European context are bound to establishing basic connectivity.
+bra_reg_intnl <- bra_mvts_intnl |> 
+  rename(TYPE = TFC_TYPE, LABEL = DES_PRU) |> calc_group_rankings() 
+
+eur_reg_intnl <- eur_mvts_intnl |> 
+  rename(TYPE = TFC_TYPE, LABEL = DES_PRU) |> calc_group_rankings()
+
+bind_rows(bra_reg_intnl, eur_reg_intnl) |> tidyr::drop_na() |> 
+  
+  ggplot() + 
+  geom_col(aes(x = TYPE, y = SHARE, fill = TYPE)) + 
+  facet_wrap(. ~  REGION) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(x = element_blank(), y = element_blank()) +
+  theme(legend.position = "none")
+  
+```
+
+@fig-share-intnl-regional shows the distribution of regional/domestic and international departures. 
+
+```{r}
+subset_international <- function(.intnl_tfc_shares){
+  this_subset <- .intnl_tfc_shares |> 
+  filter(TYPE %in% "international", !is.na(LABEL)) |> 
+  mutate(LABEL = forcats::fct_infreq(LABEL, w = DEPS))
+  
+  return(this_subset)
+}
+
+bind_rows(
+   bra_reg_intnl |> subset_international()
+  ,eur_reg_intnl |> subset_international()
+  ) |> 
+  ggplot() + 
+  geom_col(aes(x = LABEL, y = SHARE, fill = LABEL)) + 
+  scale_y_continuous(labels = scales::percent_format()) + 
+  labs(x = element_blank(), y = element_blank()) + 
+  facet_wrap(.~ REGION, scales = "free_x")
+```
+
+
+Future work may highlight to what extent resources within both regions are bound to establishing basic connectivity and what type of services are provided to accommodate the demand. 
 Further research can explore how both regions can maximise installed capacity, benefit from novel operational or technical concepts, and suggest improvements for ANS provision.
 
 ## Regional Approach to Operational Performance Monitoring

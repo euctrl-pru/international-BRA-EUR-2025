@@ -1,0 +1,90 @@
+DEP_CNTRY,IS_STUDY,DES_CNTRY,TFC_TYPE,DES_PRU,DEPS,YEAR
+BR,TRUE,BR,regional,Southern America,483555,2024
+BR,FALSE,BR,regional,Southern America,311331,2024
+BR,TRUE,AR,international,Southern America,11963,2024
+BR,TRUE,US,international,Northern America,8922,2024
+BR,TRUE,CL,international,Southern America,8482,2024
+BR,TRUE,PT,international,Eurocontrol,3993,2024
+BR,TRUE,PA,international,Southern America,3763,2024
+BR,TRUE,CO,international,Southern America,3259,2024
+BR,TRUE,UY,international,Southern America,2509,2024
+BR,TRUE,PE,international,Southern America,2448,2024
+BR,TRUE,ES,international,Eurocontrol,2041,2024
+BR,TRUE,FR,international,Eurocontrol,1827,2024
+BR,FALSE,AR,international,Southern America,1711,2024
+BR,FALSE,PT,international,Eurocontrol,1632,2024
+BR,FALSE,CL,international,Southern America,1592,2024
+BR,TRUE,IT,international,Eurocontrol,1572,2024
+BR,TRUE,PY,international,Southern America,1174,2024
+BR,TRUE,GB,international,Eurocontrol,1120,2024
+BR,TRUE,EC,international,Southern America,1114,2024
+BR,TRUE,DE,international,Eurocontrol,1024,2024
+BR,TRUE,BO,international,Southern America,1020,2024
+BR,FALSE,US,international,Northern America,812,2024
+BR,TRUE,MX,international,Southern America,799,2024
+BR,TRUE,QA,international,Middle East,734,2024
+BR,TRUE,NL,international,Eurocontrol,684,2024
+BR,FALSE,CO,international,Southern America,664,2024
+BR,TRUE,AE,international,Middle East,600,2024
+BR,TRUE,CA,international,Northern America,598,2024
+BR,TRUE,TR,international,Eurocontrol,571,2024
+BR,FALSE,EC,international,Southern America,445,2024
+BR,TRUE,DO,international,Southern America,437,2024
+BR,TRUE,ZA,international,Africa,373,2024
+BR,TRUE,ET,international,Africa,368,2024
+BR,TRUE,CH,international,Eurocontrol,365,2024
+BR,FALSE,PA,international,Southern America,324,2024
+BR,TRUE,AO,international,Africa,255,2024
+BR,FALSE,SR,international,Southern America,213,2024
+BR,FALSE,UY,international,Southern America,207,2024
+BR,FALSE,FR,international,Eurocontrol,179,2024
+BR,TRUE,LU,international,Eurocontrol,116,2024
+BR,TRUE,CW,international,Southern America,112,2024
+BR,TRUE,SN,international,NA,95,2024
+BR,TRUE,VE,international,Southern America,87,2024
+BR,FALSE,VE,international,Southern America,58,2024
+BR,TRUE,PR,international,Southern America,52,2024
+BR,FALSE,GF,international,Southern America,51,2024
+BR,FALSE,PE,international,Southern America,46,2024
+BR,FALSE,DE,international,Eurocontrol,42,2024
+BR,FALSE,PY,international,Southern America,39,2024
+BR,TRUE,CR,international,Southern America,21,2024
+BR,TRUE,MQ,international,Southern America,21,2024
+BR,FALSE,CA,international,Northern America,20,2024
+BR,FALSE,GY,international,Southern America,13,2024
+BR,TRUE,PL,international,Eurocontrol,12,2024
+BR,FALSE,GN,international,Africa,11,2024
+BR,FALSE,CV,international,Africa,7,2024
+BR,FALSE,ES,international,Eurocontrol,7,2024
+BR,TRUE,AW,international,Southern America,6,2024
+BR,TRUE,KE,international,Africa,6,2024
+BR,TRUE,EG,international,Middle East,5,2024
+BR,FALSE,NI,international,Southern America,4,2024
+BR,FALSE,DO,international,Southern America,3,2024
+BR,TRUE,MA,international,Africa,3,2024
+BR,FALSE,MX,international,Southern America,2,2024
+BR,FALSE,TT,international,Southern America,2,2024
+BR,TRUE,BE,international,Eurocontrol,2,2024
+BR,TRUE,CV,international,Africa,2,2024
+BR,TRUE,GH,international,Africa,2,2024
+BR,FALSE,BO,international,Southern America,1,2024
+BR,FALSE,CH,international,Eurocontrol,1,2024
+BR,FALSE,CI,international,Africa,1,2024
+BR,FALSE,CR,international,Southern America,1,2024
+BR,FALSE,GP,international,Southern America,1,2024
+BR,FALSE,HT,international,Southern America,1,2024
+BR,FALSE,IT,international,Eurocontrol,1,2024
+BR,FALSE,JM,international,Southern America,1,2024
+BR,FALSE,LR,international,Africa,1,2024
+BR,FALSE,MQ,international,Southern America,1,2024
+BR,FALSE,PR,international,Southern America,1,2024
+BR,FALSE,TG,international,Africa,1,2024
+BR,FALSE,TR,international,Eurocontrol,1,2024
+BR,TRUE,DZ,international,Africa,1,2024
+BR,TRUE,GF,international,Southern America,1,2024
+BR,TRUE,HT,international,Southern America,1,2024
+BR,TRUE,LB,international,Middle East,1,2024
+BR,TRUE,MR,international,Africa,1,2024
+BR,TRUE,SL,international,Africa,1,2024
+BR,TRUE,TD,international,Africa,1,2024
+BR,TRUE,TT,international,Southern America,1,2024

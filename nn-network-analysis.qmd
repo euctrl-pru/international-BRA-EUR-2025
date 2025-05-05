@@ -506,7 +506,32 @@ append_ades_regions <- function(
   return(this_flt)
 }
 
-bra_mvts <- bra_mvts |> trim_ANAC() |> append_iso_adep_ades() |> append_ades_regions()
+append_adep_regions <- function(
+     .flt_adep_iso2
+    ,.region_lookup = icao_iso_other |> 
+      filter(!is.na(iso2c)) |> 
+      select(  DEP_CNTRY = iso2c
+             , DEP_ICAO  = icao.region   
+             , DEP_STATF = eurocontrol_statfor
+             , DEP_PRU = eurocontrol_pru)
+){
+  this_flt <- .flt_adep_iso2 |> 
+    dplyr::left_join(.region_lookup, by = dplyr::join_by(DEP_CNTRY))
+  
+  return(this_flt)
+}
+```
+
+```{r}
+eur_mvts |> append_adep_regions() |> 
+  append_ades_regions() |> filter(year(DATE) == 2024) |> 
+  arrow::write_parquet(sink = here::here("data_proc","EUR-network-connectivity-2024.parquet"))
+
+bra_mvts <- bra_mvts |> trim_ANAC() |> append_iso_adep_ades() |> 
+  append_adep_regions() |> 
+  append_ades_regions()
+
+bra_mvts |> arrow::write_parquet(sink = here::here("data_proc","BRA-network-connectivity-2024.parquet"))
 ```
 
 
@@ -557,5 +582,34 @@ ip2_url <- "https://raw.githubusercontent.com/ip2location/ip2location-iata-icao/
 
 
 icao_ip2 <- readr::read_csv(ip2_url)
+```
+
+
+```{r}
+bra_mvts <- arrow::read_parquet("data_proc/BRA-network-connectivity-2024.parquet")
+eur_mvts <- arrow::read_parquet("data_proc/EUR-network-connectivity-2024.parquet")
+```
+
+international traffic
+
+```{r}
+bra_mvts_intnl <- bra_mvts |> 
+  filter(DEP_CNTRY == "BR") |>  
+  mutate(
+     TFC_TYPE = ifelse(DEP_CNTRY == "BR" & DES_CNTRY == "BR", "regional", "international")
+    ,IS_STUDY = ADEP %in% bra_apts) |> 
+    group_by(DEP_CNTRY, IS_STUDY, DES_CNTRY, TFC_TYPE, DES_PRU) |> reframe(DEPS = n())  |> arrange(desc(DEPS))
+
+# bra_mvts_intnl |> mutate(YEAR = 2024) |> write_csv("./data/BRA-network-conns-intnl.csv")
+
+eur_mvts_intnl <- eur_mvts |> 
+  filter(DEP_PRU == "Eurocontrol") |> 
+  mutate(TFC_TYPE = ifelse(DEP_PRU == "Eurocontrol" & DES_PRU == "Eurocontrol", "regional","international"), IS_STUDY = ADEP %in% eur_apts) |> 
+    group_by(DEP_CNTRY, IS_STUDY, DES_CNTRY, TFC_TYPE, DES_PRU) |> 
+  reframe(DEPS = n()) |> 
+  arrange(desc(DEPS))
+
+#eur_mvts_intnl |> mutate(REGION = "EUR", YEAR = 2024) |> 
+  write_csv("./data/EUR-network-conns-intnl.csv")
 ```
 
