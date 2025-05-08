@@ -44,20 +44,22 @@ In 2018 CGNA had developed a refined method for the determination of the runway 
 
 # Parâmetros gerais
 lb <- 2019
-ub <- 2023
+ub <- 2024
 lab_size <- 7
 
+bra_cap <- bra_cap2 |> filter(APT_ICAO %in% bra_apts) 
+eur_cap <- eur_cap2 |> filter(APT_ICAO %in% eur_apts)
+
 # Geração dos gráficos
-p1 <- peak_cap_plot(lb, ub, lab_size)
-p2 <- peak_cap_plot_eur(lb, ub, lab_size)
+p1 <- bra_cap  |> peak_cap_plot(bra_apts_names, lb, ub, lab_size)
+p2 <- eur_cap  |> peak_cap_plot(eur_apts_names, lb, ub, lab_size)
 
 # Combinação dos gráficos
 p1 | p2
 ```
 
 The capacity of airports (and the associated runway system) is predominantly influenced by their infrastructure.
-The existence of independent parallel runways, e.g.
-Brasilia (SBBR) and Munich (EDDM), can support decisively the resulting capacity.
+The existence of independent parallel runways, e.g. Brasilia (SBBR) and Munich (EDDM), can support decisively the resulting capacity.
 Furthermore, operational procedures can lead to increased in airport capacity.
 London Heathrow (EGLL), in the past, and Guarulhos (SBGR) in recent years show that changes in operational procedures can help the airport absorb significant traffic increases or reduce the additional sequencing time in the terminal airspace.
 Guarulhos, for example, benefited from the implementation of segregated operations under VMC conditions, and Heathrow increased its capacity through the introduction of time-based separation on final.
@@ -65,7 +67,8 @@ Guarulhos, for example, benefited from the implementation of segregated operatio
 In this context, @fig-peak-declared-cpacity shows the declared peak capacity for the study airports.
 As observable in the case of Amsterdam Schiphol (EHAM, 6 runways), the number of runways is not a direct indication of the maximum capacity.
 For example, the two-runway airports Brasilia (SBBR), London Heathrow (EGLL), and Munich (EDDM) share a similar runway system layout and range above the 3-runway systems of Barcelona (LEBL) and Zurich (LSZH).
-London Gatwick (EGKK) is reknown for its maximisation of its single-runway throughput.
+London Gatwick (EGKK) is renown for its maximisation of its single-runway throughput.
+Please note that Lisbon (LPPT) was added to this comparison report and capacity values for earlier years were not available at the time of writing.
 
 As mentioned above, the capacity declaration/determination process takes into account the varying local conditions and constraints.
 It balances the need to accommodate growth vs policy priorities and public interests.
@@ -75,11 +78,8 @@ A potential area for further research could be a closer investigation of the ope
 #| label: fig-peak-declared-cpacity
 #| fig-cap: !expr glue::glue("Peak declared capacity {this_year}")
 
-generate_capacity_plot(2023)
+generate_capacity_plot(bra_cap, eur_cap, 2024)
 ```
-
-
-
 
 ## Peak Arrival Throughput
 

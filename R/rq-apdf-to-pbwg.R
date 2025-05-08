@@ -72,6 +72,7 @@ ecac_2digits <- function(){
 # ----------------- END HELPER FUNCTIONS --------------------------------------
 
 
+#=== DAILY STATS ===========================================================
 extract_daily_stats <- function(.apdf, .apt = apt, .yr = yr, ...){
   
   ecac <- ecac_2digits()
@@ -181,3 +182,25 @@ puncs_eur <- check_zip_content(pth_apdf, which_zip) |>
 what_year <- 2024
 #puncs_eur |> dplyr::bind_rows() |> 
 #  write_csv(here::here("data", paste0("PBWG-EUR-PUNC-", what_year, ".csv")))
+
+
+# THROUGHPUT ==============================================================
+source(here::here("R","rq-check-vars.R"))
+source(here::here("R","rq-calc-throughput.R"))
+
+which_year <- 2024
+which_zip <- paste0("apdf-", which_year, ".zip")
+#which_zip <- "LPPT-apdf.zip"
+which_zip <- "EGKK+LEBL-apdf-2019-2022.zip"
+
+thrus <- check_zip_content(pth_apdf, which_zip) |>   
+  purrr::pmap(.f = ~ 
+                read_zip(pth_apdf, which_zip, .files = ..1) |> 
+                prep_apdf() |> 
+                calc_throughput()
+  ) |> 
+  dplyr::bind_rows()
+
+# write out
+thrus |> dplyr::filter(lubridate::year(BIN) == which_year) |> 
+  write_csv(here::here("data", paste0("EUR-THRU-analytic-", which_year, ".csv")))

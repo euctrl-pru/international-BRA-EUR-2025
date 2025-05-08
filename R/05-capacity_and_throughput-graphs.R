@@ -30,7 +30,7 @@ eur_rwys <- tribble(
   , "LEMD", 4
   , "LEBL", 3
   , "LIRF", 4
-  , "LPPT", 1
+  , "LPPT", 1     # while there is a 2nd runway ~ it is no longer used
 )
 
 # restrict data to study airports
@@ -156,6 +156,13 @@ eur_cap <- tribble(
   , "LSZH" , 2022 , 66
 )
 
+eur_cap_lppt <- tribble(
+  ~APT_ICAO, ~YEAR, ~MAX_CAP
+  , "LPPT" , 2023 , 40
+  , "LPPT" , 2024 , 40)
+
+eur_cap <- eur_cap |> bind_rows(eur_cap_lppt)
+
 # no change to 2022
 no_change_cap <- function(.caps, .this_year){
   now_year_cap <- .caps |> 
@@ -165,12 +172,13 @@ no_change_cap <- function(.caps, .this_year){
   .caps <- .caps |> bind_rows(now_year_cap)
   return(.caps)
 }
-bra_cap <- bra_cap |> no_change_cap(2023)
-eur_cap <- eur_cap |> no_change_cap(2023)
+
+bra_cap <- bra_cap |> no_change_cap(2023) |> no_change_cap(2024)
+eur_cap <- eur_cap |> no_change_cap(2023) |> no_change_cap(2024)
 
 
 
-tmp <- bra_cap %>% 
+bra_cap2 <- bra_cap %>% 
   add_row(APT_ICAO = "SBGR", YEAR = 2015:2017, MAX_CAP = 47) %>%
   add_row(APT_ICAO = "SBBR", YEAR = 2015:2017, MAX_CAP = 52) %>%
   add_row(APT_ICAO = "SBGL", YEAR = 2015:2017, MAX_CAP = 44) %>%
@@ -199,6 +207,7 @@ eur_cap2 <- eur_cap %>%
 plot_cap_panel <- function(.df, .ncol = 2){
   g <- ggplot() + 
     geom_line(data = .df, mapping = aes(x = YEAR, y = MAX_CAP)) + 
+    scale_y_continuous(limits = c(0, NA)) +
     facet_wrap(.~APT_ICAO, ncol = .ncol) +
     bra_eur_theme_minimal +
     theme(axis.text.x   = element_text(size = 7)
@@ -208,23 +217,26 @@ plot_cap_panel <- function(.df, .ncol = 2){
   return(g)
 }
 
-peak_cap_plot <- function(lb, ub, lab_size) {
-  tmp |> 
-    filter(YEAR >= lb & YEAR <= ub, APT_ICAO %in% bra_apts) |> 
-    inner_join(bra_apts_names, by = join_by(APT_ICAO == ICAO)) |> 
+peak_cap_plot <- function(.df, .apt_names, lb, ub, lab_size) {
+  cap_plot <- .df |> 
+    filter(YEAR >= lb & YEAR <= ub) |> 
+    inner_join(.apt_names, by = join_by(APT_ICAO == ICAO)) |> 
     mutate(APT_ICAO = paste(APT_ICAO, NAME)) |> 
     plot_cap_panel() +
     theme(axis.text.x = element_text(size = lab_size, angle = 90, vjust = 0.5))
+  
+  return(cap_plot)
 }
 
-peak_cap_plot_eur <- function(lb, ub, lab_size) {
-  eur_cap2 |> 
-    filter(YEAR >= lb & YEAR <= ub) |> 
-    inner_join(eur_apts_names, by = join_by(APT_ICAO == ICAO)) |> 
-    mutate(APT_ICAO = paste(APT_ICAO, NAME)) |> 
-    plot_cap_panel() +
-    theme(axis.text.x = element_text(size = lab_size, angle = 90, vjust = 0.5))
-}
+# replaced through generalisation
+# peak_cap_plot_eur <- function(lb, ub, lab_size) {
+#   eur_cap2 |> 
+#     filter(YEAR >= lb & YEAR <= ub) |> 
+#     inner_join(eur_apts_names, by = join_by(APT_ICAO == ICAO)) |> 
+#     mutate(APT_ICAO = paste(APT_ICAO, NAME)) |> 
+#     plot_cap_panel() +
+#     theme(axis.text.x = element_text(size = lab_size, angle = 90, vjust = 0.5))
+# }
 
 
 
@@ -232,7 +244,16 @@ peak_cap_plot_eur <- function(lb, ub, lab_size) {
 ## Max Cap x Num RWY
 ############################################################################
 
-generate_capacity_plot <- function(this_year) {
+generate_capacity_plot <- function(
+      .bra_cap
+    , .eur_cap
+    , this_year
+    , .bra_apts_names = bra_apts_names
+    , .eur_apts_names = eur_apts_names
+    , .bra_rwys = bra_rwys
+    , .eur_rwys = eur_rwys
+    , ...     # e.g. bra_eur_colors
+    ) {
   # Define temas customizados
   bra_eur_theme_minimal <- 
     theme_minimal() + 
@@ -243,25 +264,25 @@ generate_capacity_plot <- function(this_year) {
   
   # Filtra e organiza os dados
   cap <- bind_rows(
-    bra_cap %>% mutate(REGION = "BRA") %>% filter(APT_ICAO %in% bra_apts),
-    eur_cap %>% mutate(REGION = "EUR")
-  ) %>%
+    .bra_cap  |>  mutate(REGION = "BRA"),
+    .eur_cap  |>  mutate(REGION = "EUR")
+  )  |> 
     filter(YEAR == this_year)
   
   # Adiciona informações de pistas
-  cap_rwys <- bind_rows(bra_rwys, eur_rwys) |> 
+  cap_rwys <- bind_rows(.bra_rwys, .eur_rwys) |>
     mutate(YEAR = this_year)
-  
-  cap <- cap  |> 
+
+  cap <- cap  |>
     inner_join(cap_rwys, by = c("APT_ICAO", "YEAR")) |>
-    inner_join(bind_rows(bra_apts_names, eur_apts_names),
+    inner_join(bind_rows(.bra_apts_names, .eur_apts_names),
                by = join_by(APT_ICAO == ICAO))
-  
+
   # Gera o gráfico
-  plot <- cap |> 
-    ggplot(aes(x = MAX_CAP, y = reorder(NAME, MAX_CAP))) + 
+  this_plot <- cap |>
+    ggplot(aes(x = MAX_CAP, y = reorder(NAME, MAX_CAP))) +
     geom_col(aes(fill = REGION)) +
-    scale_fill_manual(values = bra_eur_colours) + 
+    scale_fill_manual(values = bra_eur_colours) +
     geom_text(aes(x = 0, label = APT_ICAO),
               hjust = 0, color = "white", size = 3) +
     facet_grid(RWY ~ ., as.table = FALSE, switch = "y", scales = "free", space = "free") +
@@ -274,7 +295,7 @@ generate_capacity_plot <- function(this_year) {
       axis.ticks = element_blank()
     )
   
-  return(plot)
+  return(this_plot)
 }
 
 
@@ -284,7 +305,16 @@ generate_capacity_plot <- function(this_year) {
 
 # load throughput data
 bra_thru <- read_csv("./data/BRA-THRU-analytic.csv", show_col_types = FALSE)
-eur_thru <- read_csv("./data/EUR-THRU-analytic.csv", show_col_types = FALSE)
+eur_thru <- list.files("./data/", pattern = "^EUR-THRU-", full.names = TRUE) |> 
+  purrr::map(.f = ~ readr::read_csv(.x, show_col_types = FALSE)) |> 
+  dplyr::bind_rows() |> 
+  #-------- clean changed var name convention
+  dplyr::mutate( ARRS = ifelse(is.na(ARRS), ARR_THRU, ARRS)
+          ,DEPS = ifelse(is.na(DEPS), DEP_THRU, DEPS)
+          ,FLTS = ARRS + DEPS
+  ) |> 
+  dplyr::select(-dplyr::contains("_THRU")) |> 
+  dplyr::filter(ICAO %in% eur_apts)
 
 bra_arr_thru <- bra_thru |> 
   select(ICAO, BIN, ARRS) |> 
@@ -293,9 +323,8 @@ bra_arr_thru <- bra_thru |>
   mutate(REG = "BRA")
 
 eur_arr_thru <- eur_thru |> 
-  rename(ARRS = ARR_THRU) |> 
   select(ICAO, BIN, ARRS) |> 
-  filter(between(year(BIN), 2019,2023)) |> 
+  filter(between(year(BIN), 2019,2024)) |> 
   mutate(BIN2 = floor_date(BIN, unit = "hour")) |> 
   group_by(ICAO, BIN2) |> 
   summarise(ARRS = sum(ARRS, na.rm = TRUE), .groups = "drop") |> 
@@ -375,7 +404,7 @@ bra_dep_thru <- bra_thru |>
   summarise(PK_THRU = quantile(DEPS, p = 0.95), .groups = "drop") |> 
   mutate(REG = "BRA")
 
-eur_dep_thru <- eur_thru |> rename(DEPS = DEP_THRU) |> 
+eur_dep_thru <- eur_thru |> # rename(DEPS = DEP_THRU) |> 
   select(ICAO, BIN, DEPS) |> 
   # filter(between(year(BIN), 2019,2022)) |> 
   mutate(BIN2 = floor_date(BIN, unit = "hour")) |> 
