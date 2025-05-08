@@ -613,3 +613,406 @@ eur_mvts_intnl <- eur_mvts |>
   write_csv("./data/EUR-network-conns-intnl.csv")
 ```
 
+
+upset presentation
+
+for upset plot we need to identify the group membership"S".
+
+```{r}
+library(ComplexUpset)
+
+bra_neighbours <- tribble(
+  ~ISO2, ~CNTRY_NAME
+  , "AR", "Argentina"
+  , "CL", "Chile"
+  , "CO", "Columbia"
+  , "UY", "Uruguay")
+
+bra_upset <- bra_mvts |> 
+  mutate(ID = row_number(), IS_STUDY = ifelse(ADEP %in% bra_apts, 1, 0)
+         , CASE = paste0(DEP_CNTRY,"-",DES_CNTRY,"_",IS_STUDY) 
+         ,NEIGHBOUR = case_when(
+           DES_CNTRY %in% bra_neighbours$ISO2 ~ DES_CNTRY
+          , .default = "Other")
+         , DUMMY = 1 ) |> 
+  
+  filter(DES_PRU %in% c("Southern America"), DES_CNTRY != "BR") |> 
+  select(ID,CASE, IS_STUDY, DEP_CNTRY, DES_CNTRY, DES_PRU, DUMMY, NEIGHBOUR) |>
+  mutate(  STUDY_APT = ifelse(IS_STUDY, TRUE, FALSE)
+         , NON_STUDY_APT = ifelse(!IS_STUDY, TRUE, FALSE)) |> 
+  pivot_wider(id_cols = c(ID, CASE, DES_CNTRY, DES_PRU, STUDY_APT, NON_STUDY_APT)
+              , names_from = NEIGHBOUR
+              , values_from = DUMMY, values_fill = 0)
+
+# make nice names
+# look up (named) vector
+bra_neighbours_vec <- deframe(bra_neighbours)
+study_apt_label    <- c(STUDY_APT = "airport in study", NON_STUDY_APT = "non-study airport")
+nice_name_vec     <- c(bra_neighbours_vec, study_apt_label)
+
+bra_upset <- bra_upset |> 
+  rename_with(.fn = ~ nice_name_vec[.x], .cols = any_of(names(nice_name_vec))) 
+
+tiks <- names(bra_upset)[-c(1:4)]
+#tiks <- c("STUDY_APT", "Argentina", "Chile", "Columbia", "Uruguay", "Other", "NON_STUDY_APT")
+
+
+plot_bra_upset <- bra_upset |> upset(
+    intersect = tiks
+  , name = "connections"
+  , base_annotations = list(
+    # fine-tune presentation of Intersection size portion
+    'Intersection size'=intersection_size(
+            fill = bra_col,
+            text_colors = c(
+                on_background='black', on_bar='white'
+            )
+            ,text_mapping = aes(
+              label = paste0(
+                 !!get_size_mode('exclusive_intersection'),"\n"
+                ,!!upset_text_percentage())
+            )
+            , text = list(size = 9 , size.unit = "pt")
+        )
+    # add ggplot layer for total numbers
+        + annotate(
+            geom='text', x=Inf, y=Inf,
+            label=paste('total number \nof non-regional \nflights:', nrow(bra_upset)),
+            vjust=1, hjust=1
+        ) +
+      labs(y = "departures")
+  ),
+  # fine-tune query part
+  # queries=list(upset_query(set='airport in study', fill='blue'))
+  # remove the sizes/query part ... not sure what it adds
+  set_sizes = FALSE
+)
+plot_bra_upset
+```
+
+```{r}
+plot_bra_upset |> ggsave(filename = "./figures/BRA-upset-national-connections.png", width = 8, height = 5, bg = "white")
+```
+
+
+BRA-EUR traffic
+
+```{r}
+study_br <- c("SBBR", "SBCF", "SBCT", "SBGL", "SBGR", "SBKP", "SBPA", "SBRJ", "SBSP", "SBSV")
+study_eu <- c("EDDF", "EDDM", "EGKK", "EGLL", "EHAM", "LEBL", "LEMD", "LFPG", "LPPT", "LSZH")
+
+# Named vectors for readable names
+br_labels <- c(
+  SBBR = "Brasília", SBCF = "Belo Horizonte", SBCT = "Curitiba",
+  SBGL = "Galeão", SBGR = "Guarulhos", SBKP = "Campinas", SBPA = "Porto Alegre",
+  SBRJ = "Santos Dumont", SBSP = "Congonhas", SBSV = "Salvador"
+)
+
+eu_labels <- c(
+  EDDF = "Frankfurt", EDDM = "Munich", EGKK = "Gatwick", EGLL = "Heathrow",
+  EHAM = "Amsterdam", LEBL = "Barcelona", LEMD = "Madrid", LFPG = "Paris CDG",
+  LPPT = "Lisbon", LSZH = "Zurich"
+)
+
+# trim connections
+eur_bra_conns <- eur_mvts |> 
+  filter(DEP_PRU == "Eurocontrol", DES_CNTRY == "BR") |> 
+  group_by(ADEP, ADES) |> reframe(DEPS = n()) |> arrange(desc(DEPS)) 
+
+conns_threshold <- 90
+
+major_nonstudy_eur <- eur_bra_conns |> 
+  filter(!(ADEP %in%  study_eu)) |>   # only exclude study airports on the origin side
+  group_by(ADEP)  |> 
+  reframe(TOT_DEPS = sum(DEPS))  |> 
+  filter(TOT_DEPS >= conns_threshold) %>%
+  pull(ADEP)
+
+major_nonstudy_bra <- eur_bra_conns |> 
+  filter(!(ADES %in%  study_br)) |>   # only exclude study airports on the origin side
+  group_by(ADES)  |> 
+  reframe(TOT_DEPS = sum(DEPS))  |> 
+  filter(TOT_DEPS >= conns_threshold) %>%
+  pull(ADES)
+
+
+eur_bra_grouped <- eur_bra_conns %>%
+  mutate(
+    ORIG_GROUP = case_when(
+      ADEP %in% study_eu ~ eu_labels[ADEP],
+      ADEP %in% major_nonstudy_eur ~ paste0(ADEP, " (Major Non-Study)"),
+      TRUE ~ "Other Europe"
+    ),
+    DEST_GROUP = case_when(
+      ADES %in% study_br ~ br_labels[ADES],
+      ADES %in% major_nonstudy_bra ~ paste0(ADES, " (Major Non-Study)"),
+      TRUE ~ "Other Brazil"
+    )
+  )
+
+```
+
+```{r}
+library(ggalluvial)
+
+ggplot(eur_bra_grouped, aes(axis1 = ORIG_GROUP, axis2 = DEST_GROUP, y = DEPS)) +
+  geom_alluvium(aes(fill = ORIG_GROUP), width = 1/12) +
+  geom_stratum(width = 1/12, fill = "grey80", color = "black") +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 3.5) +
+  scale_x_discrete(limits = c("Europe", "Brazil"), expand = c(.05, .05)) +
+  labs(y = "Flights", title = "Main Europe–Brazil Air Connections") +
+  theme_minimal()
+
+
+
+ggplot(eur_bra_grouped,
+       aes(axis1 = ORIG_GROUP, axis2 = DEST_GROUP, y = DEPS)) +
+  geom_alluvium(aes(fill = ORIG_GROUP), width = 0.2, alpha = 0.8) +
+  geom_stratum(width = 0.2, fill = "grey90", color = "black") +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)),
+            size = 3, angle = 0, hjust = 0.5, vjust = 0.5) +
+  scale_x_discrete(limits = c("Origin", "Destination"), expand = c(.05, .05)) +
+  theme_minimal() +
+  theme(axis.text.y = element_blank(),
+        axis.ticks = element_blank(),
+        panel.grid = element_blank())
+
+```
+
+```{r}
+ggplot(eur_bra_grouped, aes(axis1 = ORIG_GROUP, axis2 = DEST_GROUP, y = DEPS)) +
+  geom_alluvium(aes(fill = ORIG_GROUP), width = 1/12) +
+  geom_stratum(width = 1/12, fill = "grey90", color = "black") +
+  geom_text(stat = "stratum", aes(label = after_stat(stratum)), size = 3.2) +
+  scale_x_discrete(limits = c("Europe", "Brazil")) +
+  labs(title = "Flight Flows from Europe to Brazil", y = "Flights") +
+  theme_minimal()
+
+```
+
+```{r}
+library(ggforce)
+
+library(ggplot2)
+library(ggforce)
+library(dplyr)
+
+# Make sure both ORIG_GROUP and DEST_GROUP are factors (important!)
+flows_grouped <- eur_bra_grouped %>%
+  mutate(
+    ORIG_GROUP = ifelse(ORIG_GROUP %in% study_eu, , "Study", "Non-Study"),
+    DEST_GROUP = ifelse(DEST_GROUP %in% study_br,  "Study", "Non-Study")
+  )
+
+ggplot(flows_grouped) +
+  geom_parallel_sets(aes(
+    ORIG_GROUP,
+    DEST_GROUP,
+    weight = DEPS,
+    fill = ORIG_GROUP
+  ), alpha = 0.8) +
+  # geom_parallel_sets_axes(axis.width = 0.1, fill = "gray90") +
+  # geom_parallel_sets_labels(angle = 0, size = 3) +
+  # scale_x_discrete(labels = c("Origin", "Destination")) +
+  theme_minimal() +
+  labs(title = "Flight Flows from Europe to Brazil",
+       subtitle = "Grouped by Origin and Destination Airport Categories",
+       y = "Number of Departures")
+
+```
+
+```{r}
+flows_grouped <-  eur_bra_grouped |> 
+  mutate(
+    ORIG_STUDY = ifelse(ADEP %in% eur_apts, "Study", "Non-Study"),
+    DEST_STUDY = ifelse(ADES %in% bra_apts, "Study", "Non-Study")
+)
+flows_long <- flows_grouped %>%
+  mutate(across(c(ORIG_STUDY, DEST_STUDY), as.factor)) %>%
+  gather_set_data(x = c("ORIG_GROUP", "DEST_GROUP"))
+
+# Create the parallel sets plot with Study/Non-Study grouping
+ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
+  geom_parallel_sets(aes(fill = ORIG_GROUP), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.1, fill = "gray90") +
+  geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
+  scale_x_discrete(labels = c("Origin", "Destination")) +
+  #scale_fill_brewer(type = "qual", palette = "Set2") +  # Use a color palette
+  theme_minimal() +
+  labs(
+    title = "Flight Flows from Europe to Brazil (Study vs Non-Study)",
+    subtitle = "Grouped by Origin and Destination Airport Categories",
+    y = "Number of Departures"
+  )
+
+```
+
+```{r}
+ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
+  geom_parallel_sets(aes(fill = ORIG_STUDY), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.1, fill = "gray90") +
+  geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
+  scale_x_discrete(labels = c("Origin", "Destination")) +
+  scale_fill_manual(
+    values = c("Study" = "blue", "Non-Study" = "lightblue")
+    ) + # , 
+  #                              "Study Brazil" = "red", "Non-Study Brazil" = "lightcoral")) +  # Custom color palette
+  theme_minimal() +
+  labs(
+    title = "Flight Flows from Europe to Brazil (Study vs Non-Study)",
+    subtitle = "Grouped by Origin and Destination Airport Categories",
+    y = "Number of Departures"
+  )
+
+```
+
+```{r}
+ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
+  geom_parallel_sets(aes(fill = ORIG_STUDY), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.1, fill = "gray90") +
+  geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
+  scale_x_discrete(labels = c("Origin", "Destination")) +
+  scale_fill_manual(values = c("Study" = "blue", "Non-Study" = "lightblue")) +
+  theme_minimal() +
+  labs(
+    # title = "Flight Flows from Europe to Brazil (Study vs Non-Study)",
+    # subtitle = "Grouped by Origin and Destination Study Status",
+    y = "Number of Departures", x = element_blank(), fill = element_blank()
+  ) +
+  theme(legend.position = "inside", legend.position.inside = c(0.1,0.1))
+
+```
+
+
+flows_grouped <- flows_grouped %>%
+  mutate(
+    ORIG_LABEL = case_when(
+      ORIG_GROUP %in% study_airports_europe ~ paste0("Study: ", ORIG_GROUP),
+      ORIG_GROUP %in% top_airports_europe ~ paste0("Non-Study: ", ORIG_GROUP),
+      TRUE ~ paste0("Other: ", ORIG_GROUP)
+    ),
+    DEST_LABEL = case_when(
+      DEST_GROUP %in% study_airports_brazil ~ paste0("Study: ", DEST_GROUP),
+      DEST_GROUP %in% top_airports_brazil ~ paste0("Non-Study: ", DEST_GROUP),
+      TRUE ~ paste0("Other: ", DEST_GROUP)
+    )
+  )
+
+# Custom order of factor levels
+all_airports <- unique(c(flows_grouped$ORIG_LABEL, flows_grouped$DEST_LABEL))
+
+study_levels <- sort(unique(grep("^Study", all_airports, value = TRUE)))
+non_study_levels <- sort(unique(grep("^Non-Study", all_airports, value = TRUE)))
+other_levels <- sort(unique(grep("^Other", all_airports, value = TRUE)))
+
+ordered_levels <- c(study_levels, non_study_levels, other_levels)
+
+# Apply the factor levels
+flows_grouped <- flows_grouped %>%
+  mutate(
+    ORIG_LABEL = factor(ORIG_LABEL, levels = ordered_levels),
+    DEST_LABEL = factor(DEST_LABEL, levels = ordered_levels)
+  )
+
+flows_long <- flows_grouped %>%
+  gather_set_data(x = c("ORIG_LABEL", "DEST_LABEL"))
+
+ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
+  geom_parallel_sets(aes(fill = ORIG_LABEL), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.1, fill = "gray95") +
+  geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
+  scale_x_discrete(labels = c("Origin", "Destination")) +
+  scale_fill_manual(values = RColorBrewer::brewer.pal(9, "Set1")[1:length(study_levels)]) +
+  theme_minimal() +
+  labs(
+    title = "Flight Flows: Brazil–Europe",
+    subtitle = "Airports grouped and ordered by Study, Non-Study, Other",
+    y = "Departures"
+  )
+
+
+```{r}
+# trim connections
+eur_bra_conns <- eur_mvts |> 
+  filter(DEP_PRU == "Eurocontrol", DES_CNTRY == "BR") |> 
+  group_by(ADEP, ADES) |> reframe(DEPS = n()) |> arrange(desc(DEPS)) 
+
+conns_threshold <- 90
+
+major_nonstudy_eur <- eur_bra_conns |> 
+  filter(!(ADEP %in%  study_eu)) |>   # only exclude study airports on the origin side
+  group_by(ADEP)  |> 
+  reframe(TOT_DEPS = sum(DEPS))  |> 
+  filter(TOT_DEPS >= conns_threshold) %>%
+  pull(ADEP)
+
+major_nonstudy_bra <- eur_bra_conns |> 
+  filter(!(ADES %in%  study_br)) |>   # only exclude study airports on the origin side
+  group_by(ADES)  |> 
+  reframe(TOT_DEPS = sum(DEPS))  |> 
+  filter(TOT_DEPS >= conns_threshold) %>%
+  pull(ADES)
+
+eur_bra_grouped <- eur_bra_conns %>%
+  mutate(
+    ORIG_NAME = case_when(
+      ADEP %in% study_eu ~ eu_labels[ADEP],
+      ADEP %in% major_nonstudy_eur ~ ADEP,
+      TRUE ~ "Other Europe"
+    ),
+    DEST_NAME = case_when(
+      ADES %in% study_br ~ br_labels[ADES],
+      ADES %in% major_nonstudy_bra ~ ADES,
+      TRUE ~ "Other Brazil"
+    )
+  )
+
+# Make sure both ORIG_GROUP and DEST_GROUP are factors (important!)
+flows_grouped <- eur_bra_grouped %>%
+  mutate(
+    ORIG_GROUP = ifelse(ADEP %in% eur_apts, "Study", "Non-Study"),
+    DEST_GROUP = ifelse(ADES %in% bra_apts,  "Study", "Non-Study")
+  )
+
+# prep for parallel sets plot
+flows_long <- flows_grouped |> 
+  # need to gather to feed set_parallel !!!!
+  gather_set_data(x = c("ORIG_NAME","DEST_NAME")) |>
+#add other stuff
+mutate(GROUP_TYPE = case_when(
+    ORIG_GROUP == "Study" ~ "blue"
+  , DEST_GROUP == "Study" ~ "blue"
+  , .default = "gray80"))
+
+## Step 1: Get unique y/group_type mapping
+# axis_fill_map <- flows_long %>%
+#   select(y, GROUP_TYPE) %>%
+#   distinct()
+
+# Step 2: Join back to deduplicated mapping
+# flows_long_fixed <- flows_long %>%
+#   select(-GROUP_TYPE) %>%
+#   left_join(axis_fill_map, by = "y")
+
+flows_long |> mutate(YEAR = 2024) |> 
+  write_csv("./data/BRA-EUR-conns-parallel.csv")
+```
+
+```{r}
+flows_long <- read_csv(here::here("data","BRA-EUR-conns-parallel.csv"), show_col_types = FALSE)
+
+ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
+  geom_parallel_sets(aes(fill = ORIG_GROUP), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.2, fill = "gray90") +
+  geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
+  scale_x_discrete(labels = c("Origin", "Destination")) +
+  scale_fill_manual(values = c("Study" = "blue", "Non-Study" = "lightblue")) +
+  theme_minimal() +
+  labs(
+    # title = "Flight Flows from Europe to Brazil (Study vs Non-Study)",
+    # subtitle = "Grouped by Origin and Destination Study Status",
+    y = "Number of Departures", x = element_blank(), fill = element_blank()
+  ) +
+  theme(legend.position = "inside", legend.position.inside = c(0.1,0.1))
+```
+

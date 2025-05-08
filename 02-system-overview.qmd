@@ -240,6 +240,46 @@ bind_rows(
 ```
 
 
+```{r}
+#| label: fig-BRA-upset-connection
+#| fig-cap: Connections to adjacent countries
+#| out-width: 90%
+
+knitr::include_graphics("./figures/BRA-upset-national-connections.png")
+```
+
+With @fig-BRA-upset-connection we observe just under 46.000 flights in 2024 operated to adjacent countries in South America. 
+A strong segment of the market represents flights to/from Argentina and Chile accounting for about half of the flights departing from the airports in this study. Accordingly, flight to Columbia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Carribean.
+Flights operating from airports not included in this study account for smaller shares.
+This confirms the selection of the study airports for Brazil, as the major airports handle most of the pan-regional traffic with a strong connection to Argentina and Chile.
+
+```{r}
+#| label: fig-BRA-EUR-connections-parallel
+#| fig-cap: Connections between the study regions in 2024
+#| fig-height: 7
+
+flows_long <- read_csv(here::here("data","BRA-EUR-conns-parallel.csv"), show_col_types = FALSE)
+
+ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
+  geom_parallel_sets(aes(fill = ORIG_GROUP), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets_axes(axis.width = 0.2, fill = "gray90") +
+  geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
+  scale_x_discrete(labels = c("Origin", "Destination")) +
+  scale_fill_manual(values = c("Study" = "blue", "Non-Study" = "lightblue")) +
+  theme_minimal() +
+  labs(
+    # title = "Flight Flows from Europe to Brazil (Study vs Non-Study)",
+    # subtitle = "Grouped by Origin and Destination Study Status",
+    y = "Number of Departures", x = element_blank(), fill = element_blank()
+  ) +
+  theme(legend.position = "inside", legend.position.inside = c(0.1,0.1))
+```
+
+@fig-BRA-EUR-connections-parallel shows the connections between Europe and Brazil in 2024. 
+Individual connections of less than 90 flights per year are aggregated into an "other" group. These reflect to a large extent individual flights (e.g. State flights, specific cargo operations), and only contribute to a small extent to the overall  traffic between both regions.    
+Guarulhos (SBGR) and Lisbon (LPPT) are the main airports for connectivity between both regions.
+Due to its prominent role, this edition considers operations at LPPT in a more prominent manner.
+
 Future work may highlight to what extent resources within both regions are bound to establishing basic connectivity and what type of services are provided to accommodate the demand. 
 Further research can explore how both regions can maximise installed capacity, benefit from novel operational or technical concepts, and suggest improvements for ANS provision.
 

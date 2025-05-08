@@ -174,9 +174,9 @@ plot_eur_annual_traffic <- .tfc_eur  |>
 plot_timeline_per_year <- function(.df,
                                    .years,
                                    .fake_year = 666){
-  df <- .df  %>%  
+  df <- .df  |>  
     mutate( DATE2 = DATE, 
-            YEAR = lubridate::year(DATE) |> as.character()) %>% 
+            YEAR = lubridate::year(DATE) |> as.character()) |> 
     filter(YEAR %in% .years)
   
   # inject "fake year" for same x-axis value
@@ -281,7 +281,7 @@ study_apt_lvl <- study_apt_lvl |>
 
 
 get_p_study1 <- function(.years){
-  p_study1 <- study_apt_lvl %>% filter(YEAR %in% .years)  |>
+  p_study1 <- study_apt_lvl |> filter(YEAR %in% .years)  |>
     ggplot() +
     geom_col(aes(x = NAME, y = TOT_FLTS_YEAR, fill = YEAR)
              , position = position_dodge()
@@ -298,7 +298,7 @@ get_p_study1 <- function(.years){
 
 
 fig_bra_apt_tfc <- function(.years){
-  return((p_share_of_network(tmp_annual_share %>% filter(YEAR %in% .years)) + scale_x_discrete(guide = guide_axis(n.dodge = 2))) + 
+  return((p_share_of_network(tmp_annual_share |> filter(YEAR %in% .years)) + scale_x_discrete(guide = guide_axis(n.dodge = 2))) + 
     get_p_study1(.years) + 
     plot_layout(widths = c(1, 4)))
 } 
@@ -422,22 +422,27 @@ airport_per_year <- function(.month_tfc, .apt, .years){
   return(p_tfc_month)
 }
 
-monthly_lppt <- tfc_apts_eur |> 
-  filter(ICAO == "LPPT", year(DATE) %in% 2023:2024) |> 
+get_monthly_apt_tfc <- function(.tfc, .apt, .years){
+  this_monthly <- .tfc |> 
+  filter(ICAO == .apt, year(DATE) %in% .years) |> 
   mutate(TOT_FLTS_MONTH = ARRS + DEPS
          , YM = floor_date(DATE, unit = "month")
          ) |> 
   reframe(TOT_FLTS_MONTH = sum(TOT_FLTS_MONTH), .by = c(ICAO, YM)) |>
   mutate(YEAR = year(YM) |> as.character(), MONTH = month(YM)) 
 
-
+  return(this_monthly)
+}
+  
+monthly_lppt <- get_monthly_apt_tfc(tfc_apts_eur, "LPPT", 2023:2024)
+monthly_eddm <- get_monthly_apt_tfc(tfc_apts_eur, "EDDM", 2023:2024)
 
 ############################################################################################
 # fig-apt-annual-change
 this_max_limit = 500000
 
-get_p_study3_bra <- function(.year, .max_limit = this_max_limit){
-  p_study3_bra <- study_apt_lvl |>
+get_p_study3_bra <- function(.df = study_apt_lvl, .year, .max_limit = this_max_limit){
+  p_study3_bra <- .df |>
     filter(YEAR == as.character(.year)) |>
     ggplot(aes(y = reorder(NAME, TOT_FLTS_YEAR), x = TOT_FLTS_YEAR)) + 
     #geom_col(aes(fill = I("#52854C"))
@@ -451,20 +456,20 @@ get_p_study3_bra <- function(.year, .max_limit = this_max_limit){
 }
 
 
-get_p_study4_bra <- function(.year_ref, .year_comp){
-  ann_var_bra <- study_apt_lvl %>% 
+get_p_study4_bra <- function(.df = study_apt_lvl, .year_ref, .year_comp, .perc_limits){
+  ann_var_bra <- .df |> 
     # comparação entre ano de referência e ano anterior
-    filter(YEAR %in% c(as.character(.year_comp), as.character(.year_ref))) %>% 
-    mutate(YEAR = as.numeric(YEAR)) %>%
+    filter(YEAR %in% c(as.character(.year_comp), as.character(.year_ref))) |> 
+    mutate(YEAR = as.numeric(YEAR)) |>
     tidyr::pivot_wider(
       id_cols = "ICAO",
       names_from = "YEAR", names_prefix = "YR",
       values_from = "TOT_FLTS_YEAR"
-    ) %>% 
+    ) |> 
     mutate(
       YR_DIFF = !!sym(paste0("YR", .year_ref)) - !!sym(paste0("YR", .year_comp)),
       YR_DIFF_P = YR_DIFF / !!sym(paste0("YR", .year_comp))
-    ) %>% 
+    ) |> 
     mutate(COL = case_when(YR_DIFF_P < 0 ~ "#D61A46", TRUE ~ "#98CA32"))
   
   
@@ -479,7 +484,7 @@ get_p_study4_bra <- function(.year_ref, .year_comp){
     labs(x = NULL, y = NULL) +
     scale_y_continuous(
       labels = scales::label_percent(accuracy = 1),
-      limits = c(-1.5, 0.9)
+      limits = .perc_limits
     ) +
     theme(
       legend.position = "none",
@@ -490,8 +495,8 @@ get_p_study4_bra <- function(.year_ref, .year_comp){
 
 
 
-get_p_study3 <- function(.year, .max_limit = this_max_limit){
-  p_study3 <- annual_tfc_apt |>
+get_p_study3 <- function(.df = annual_tfc_apt, .year, .max_limit = this_max_limit){
+  p_study3 <- .df |>
     filter(YEAR == as.character(.year)) |>
     ggplot(aes(y = reorder(NAME, TOT_FLTS_YEAR), x = TOT_FLTS_YEAR)) + 
     geom_col(aes(fill = I(getElement(bra_eur_colours, "EUR")))
@@ -507,21 +512,21 @@ get_p_study3 <- function(.year, .max_limit = this_max_limit){
 
 
 
-get_p_study4 <- function(.year_ref, .year_comp) {
-  ann_var <- annual_tfc_apt  %>%
+get_p_study4 <- function(.df = annual_tfc_apt, .year_ref, .year_comp, .perc_limits) {
+  ann_var <- .df  |>
     filter(
       YEAR %in% c(as.character(.year_comp), as.character(.year_ref))
-    ) %>%
-    mutate(YEAR = as.character(YEAR), YEAR = as.numeric(YEAR)) %>%
+    ) |>
+    mutate(YEAR = as.character(YEAR), YEAR = as.numeric(YEAR)) |>
     tidyr::pivot_wider(
       id_cols = "ICAO",
       names_from = "YEAR", names_prefix = "YR",
       values_from = "TOT_FLTS_YEAR"
-    ) %>%
+    ) |>
     mutate(
       YR_DIFF = !!sym(paste0("YR", .year_ref)) - !!sym(paste0("YR", .year_comp)),
       YR_DIFF_P = YR_DIFF / !!sym(paste0("YR", .year_comp))
-    ) %>%
+    ) |>
     mutate(COL = case_when(YR_DIFF_P < 0 ~ "#D61A46", TRUE ~ "#98CA32"))
   
   p_study4 <- ggplot() +
@@ -535,7 +540,7 @@ get_p_study4 <- function(.year_ref, .year_comp) {
     labs(x = NULL, y = paste(.year_ref, "vs", .year_comp)) +
     scale_y_continuous(
       labels = scales::label_percent(accuracy = 1),
-      limits = c(-0.5, 0.2)
+      limits = .perc_limits
     ) +
     theme(
       legend.position = "none",
@@ -547,19 +552,20 @@ get_p_study4 <- function(.year_ref, .year_comp) {
 
 
 
-annual_change_bra <- function(.year_ref, .year_comp){
-  combo_bra <- (get_p_study3_bra(.year_ref) + labs(x = NULL, y = NULL)) + 
-    get_p_study4_bra(.year_ref, .year_comp) + 
+annual_change_bra <- function(.df = study_apt_lvl, .year_ref, .year_comp, .perc_limits){
+  combo_bra <- (
+    get_p_study3_bra(.df, .year_ref) + labs(x = NULL, y = NULL)) + 
+    get_p_study4_bra(.df, .year_ref, .year_comp, .perc_limits) + 
     plot_layout(widths = c(3, 1))  
   
   return(combo_bra)
 }
 
-annual_change_eur <- function(.year_ref, .year_comp){
+annual_change_eur <- function(.df = annual_tfc_apt, .year_ref, .year_comp, .perc_limits){
   combo_eur <- 
-    (get_p_study3(.year_ref) + labs(y = NULL)  #+ labs(y = "annual traffic 2022")
+    (get_p_study3(.df, .year_ref) + labs(y = NULL)  #+ labs(y = "annual traffic 2022")
     ) + 
-    (get_p_study4(.year_ref, .year_comp) + labs(y = NULL) #+ labs(y = "annual variation 2022/2019")
+    (get_p_study4(.df, .year_ref, .year_comp, .perc_limits) + labs(y = NULL) #+ labs(y = "annual variation 2022/2019")
     ) +
     plot_layout(widths = c(3, 1))  
   
@@ -608,15 +614,15 @@ pk_day_plot <- function(.pk_day_data, .years){
 #########################################################################################
 
 peak_day_from_counts <- function(.counts, .pct = 0.99){
-  peak <- .counts %>% 
+  peak <- .counts |> 
     mutate( YEAR = lubridate::year(DATE)
-            ,TOT  = ARRS + DEPS) %>% 
-    group_by(ICAO, YEAR) %>% 
+            ,TOT  = ARRS + DEPS) |> 
+    group_by(ICAO, YEAR) |> 
     summarise(PEAK_DAY_PCT = quantile(TOT, probs = .pct), .groups = "drop")
 }
 
 add_nbr_rwy <- function(.pdfc){
-  peak <- .pdfc %>% 
+  peak <- .pdfc |> 
     mutate(RWY = case_when(
       ICAO == "EHAM" ~ 6
       ,ICAO %in% c("EDDF","LFPG","LEMD","LIRF") ~ 4
@@ -779,21 +785,21 @@ timeline_peak_day <- function(.years){
 ## Fleet Mix
 
 fleet_mix_from_counts <- function(.counts, .reg){
-  fm <- .counts %>% 
+  fm <- .counts |> 
     mutate(YEAR = lubridate::year(DATE)
-           ,TOT = HEAVY+MED+LIGHT) %>% 
-    group_by(ICAO, YEAR) %>% 
+           ,TOT = HEAVY+MED+LIGHT) |> 
+    group_by(ICAO, YEAR) |> 
     summarise(
       TOT    = sum(HEAVY) + sum(MED) + sum(LIGHT)
       , H_PERC = sum(HEAVY)/TOT
       , M_PERC = sum(MED) / TOT
       , L_PERC = sum(LIGHT)/TOT
-      , .groups = "drop") %>% 
-    mutate(REGION = .reg) %>%
+      , .groups = "drop") |> 
+    mutate(REGION = .reg) |>
     tidyr::pivot_longer(
       cols     = c(H_PERC, M_PERC, L_PERC)
       ,names_to = "WTC"
-      ,values_to= "SHARE") %>%
+      ,values_to= "SHARE") |>
     mutate(WTC = factor(WTC
                         ,levels = c("L_PERC","M_PERC","H_PERC")
                         ,labels = c("Light" ,"Medium","Heavy"))

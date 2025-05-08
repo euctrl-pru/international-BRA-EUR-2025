@@ -9,6 +9,7 @@ library(tidyverse)
 library(lubridate)
 library(ggrepel)
 library(patchwork)
+library(ggforce)
 #-------- supporting packages
 library(flextable)
 library(zoo)
