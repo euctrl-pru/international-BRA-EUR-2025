@@ -290,7 +290,7 @@ punc_mov_month_plot <- function(.punc_monthly,.years, .apt){
     scale_x_discrete(labels = month_names) +
     scale_y_continuous(
       name = "Total Flights",
-      sec.axis = sec_axis(~ . / 30000, name = "Percentage Within M15P15")
+      sec.axis = sec_axis(~ . / 30000, name = "Percentage within -/+15 min")
     ) +
     scale_fill_brewer(palette = "Blues") +     # Paleta automática para as colunas
     scale_color_brewer(palette = "Set1") +     # Paleta automática diferente para as linhas
