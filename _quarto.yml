@@ -24,8 +24,8 @@ book:
   - 05-capacity_and_throughput.qmd
   - 06-efficiency.qmd
   # - 07-environment.qmd
-  - 08-conclusions.qmd
   - 09-studies.qmd
+  - 10-conclusions.qmd
   - 99-references.qmd
   #appendices:
   #- A1-appendix.qmd

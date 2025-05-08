@@ -105,28 +105,33 @@ The recovery pattern is also visible in the peak arrival throughput behaviour.
 #| label: fig-arrival-throughput
 #| fig-cap: Evolution of annual arrival throughput
 
-arrival_tp_plot(c(2019:2024))
+arr_thru_bra_eur |> arrival_tp_plot(c(2019:2024))
 ```
 
-::: callout-note
-only 8 labels each region is appearing on the graph @fig-arrival-throughput
-europe up to 2023. Must be update to 2024 data.
+With @fig-arrival-throughput, a further difference between both regions becomes apparent.
+The peak arrival throughput represents the achieved peak service rate utilising the available arrival runway system capacity. 
+On average, the peak arrival throughput is higher in Europe than in Brazil based on the available infrastructure.
+It is interesting to see that arrival operations at SBGR, SBSP, and Brasilia (SBBR) range at the level of Gatwick (EGKK) and above Lisbon (LPPT).
+At the same time, it offers growth potential when these airports are compared to the achievable arrival throughput at dual independent runway operations at Munich (EDDM) or even Heathrow (EGLL).
 
-:::
-
+While the peak arrival throughout varied in Brazil over the past 6 years, the pattern is more homogeneous.
+Larger variations are explainable with local demand changes.
+However, compared to Europe, Brazil did not show the scale effects of lower air traffic demand during the pandemic phase. 
+In light with the overall traffic recovery also the pressure on the arrival runway system increased at the European airports. 
+Lisbon (LPPT) shows a level of variation. This suggests that even during the pandemic, operational peaks were serviced consistently at the same level.
 
 ## Peak Departure Throughput
 
 In analogy to the previous section, @fig-departure-throughput shows the peak departure throughput.
 The latter is determined as the 95th percentile of the hourly number of departures.
 
-In Brazil, Campinas, Brasilia and Santos Dumont reduced the peak departure in comparison with 2023.
+A similar picture emerges for the peak departure throughput in both regions.
+In Brazil, Campinas , Brasilia and Santos Dumont reduced the peak departure in comparison with 2023.
 Only Curitiba and Porto Alegre mantained the same level as 2023. For others brazilians, the peak departure increased.
+A continual increase of the peak departure throughput is observed at SBGR exceeding in 2024 the pre-pandemic 2019 level. This suggests a concerted effort and more efficient use of the runway system for the departure phase.
 
-
-::: callout-note
-Insert data and text from europe
-:::
+The pattern in Europe is characterised by the continual air traffic revovery for the majority of the airports. 
+A lesser pronounced variation is observed at Lisbon (LPPT) for which the peak departure rate remained fairly stable over the past years.  
 
 
 ```{r}
@@ -136,12 +141,6 @@ Insert data and text from europe
 departure_tp_plot(c(2019:2024))
 ```
 
-::: callout-note
-only 8 labels each region is appearing on the graph @fig-departure-throughput
-europe up to 2023. Must be update to 2024 data.
-
-:::
-
 
 ## Declared Capacity and Peak Throughput
 
@@ -150,29 +149,26 @@ europe up to 2023. Must be update to 2024 data.
 #| label: fig-capvsthru 
 #| fig-cap: Comparison of declared capacity and throughput for arrival phase.
 
-key_year <- 2022
+key_year <- 2024
 
 cap_peak_tp_plot(key_year)
 ```
 
 Comparing the peak declared (arrival) capacity and throughput serviced at the differnt airports reveals a varying picture.
-On average, @fig-capvsthru evidences that the majority of the airports do not yet observe capacity constraints.
-In many instances, the achieved throughput ranges 5 to 10 flights per hour below the maximum declared capacity.
-In 2024, a low utilisation was observed at Galeão (SBGL), Brasilia (SBBR), Rome Fiumicino (LIRF) and Paris Charles de Gaule (LFPG) where the spread between capacity and throughput exceeds 15 flights per hour.
-It is also noteworthy, that a subset of airport services operate at their maximum declared capacity (e.g. SBRJ, SBKP, LSZH).
+On average, @fig-capvsthru evidences that operations at the majority of the airports do not yet observe capacity constraints.
+In many instances, the achieved throughput ranges about 10 flights per hour below the maximum declared capacity.
+In 2024, a low utilisation was observed at Galeão (SBGL), Brasilia (SBBR), and Paris Charles de Gaule (LFPG).
+Here the observed the spread between declared capacity and peak throughput exceeds 15 flights per hour.
+It is also noteworthy, that a subset of airport services operate at their maximum declared capacity (e.g. SBGR, LSZH, EDDF).
 These airports are also characterised by a combination of complexity of the aerodrome layout and operational context.
 It will be interesting to study how these airports facilitate higher levels of demand.
-Sao Paulo (SBSP) is the only airport that serviced a slightly higher peak arrival rate than its declared capacity suggests.
+Higher peak throughput rates than the declared capacity were observed at Amsterdam (EHAM), Congonhas (SBSP), and marginally at Lisbon (LPPT).
+The offset at EHAM and SBSP suggest that declared capacity might be too conservative.
+In the case of Amsterdam (EHAM) there is a political cap on the number of operations per year. This may result in a determined (and declared) hourly rate that does strictly speaking not apply to the operational peak situations. 
 
 The analysis of the spread of the declared capacity vs achieved throughput is useful.
-However, it gives now indication on how often the demand reaches the declared capacity level.
-
-
-::: callout-note
-
-is figures below updated?
-
-:::
+However, it gives not indication on how often the demand reaches the declared capacity level.
+For this purpose, this report determines two characteristics points, i.e., the *BLI* base load index, and the peak load index *PLI*.
 
 ::: {layout="[55,45]"}
 ![Example of ordered hourly throughout in different years](figures/bli-pli-example.png){#fig-bli-pli-example}

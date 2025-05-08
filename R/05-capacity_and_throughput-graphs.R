@@ -361,7 +361,8 @@ plot_timeline <- function(.df, y_legend){
       filter(row_number() %% 2 == 0) |> 
       ungroup()
   )
-  label_data <- label_data %>%
+  
+  label_data <- label_data  |> 
     mutate(vjust = ifelse(label_position == "start", 0.3, 0.3))
   
   vis <- tmp |> 
@@ -375,7 +376,7 @@ plot_timeline <- function(.df, y_legend){
       ,max.overlaps = Inf
       ,direction = "y"
     ) +
-    scale_color_brewer(palette = "Dark2") +
+ #   scale_color_brewer(palette = "Dark2") +
     facet_wrap(. ~ REG) + 
     labs(x = NULL, y = y_legend) +
     guides(color = FALSE)
@@ -383,10 +384,10 @@ plot_timeline <- function(.df, y_legend){
   return(vis)
 }
 
-tmp_thru <- bind_rows(bra_arr_thru, eur_arr_thru)
+arr_thru_bra_eur <- bind_rows(bra_arr_thru, eur_arr_thru)
 
-arrival_tp_plot <- function(.years){
-  tmp_thru <- tmp_thru |> filter(YEAR%in% .years)
+arrival_tp_plot <- function(.thrus, .years){
+  tmp_thru <- .thrus |> filter(YEAR%in% .years)
   p <- tmp_thru |> plot_timeline("peak arrival throughput")
   return(p)
 }
