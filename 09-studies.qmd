@@ -12,7 +12,7 @@ This chapter provides a first summary of the work to help refine the future work
 
 ## Point-Merge Operations
 
-Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimise aircraft arrival sequences, reduce flight times (???), and enhance operational safety. 
+Point Merge System (PMS) is an innovative air traffic sequencing technique designed to optimise aircraft arrival sequences, and enhance operational safety and workload. 
 PMS operates efficiently under high traffic loads without the need for radar vectoring. 
 It relies on a specific Precision-Area Navigation (P-RNAV) route structure, comprising a merge point and equidistant pre-defined sequencing legs. 
 Traffic sequencing is achieved through a “direct-to” instruction to the merge point at the appropriate time. 
@@ -59,16 +59,14 @@ knitr::include_graphics("./figures/afterPMS_rwy20.png")
 
 Monitoring Additional Time in TMA is valuable for assessing the impact of the Point Merge System (PMS) implementation on airspace operational performance. This indicator reflects the extra time an aircraft spends in the TMA compared to an ideal flight profile. A comparison of KPI08 values was conducted for periods before and after the implementation of PMS. For SBGR, the analysis covered the years 2019 (pre-PMS) and 2024 (post-PMS). These periods were chosen to avoid analytical bias, since PMS implementation at Guarulhos took place during the COVID-19 pandemic. The analysis period for LPPT spanned from March 2023 to July 2024. The following graph presents the results obtained. Reference times and additional times were calculated on a monthly basis.
 
-:::{.callout-note}
+<!--
 
-[] convert figures to study data set --> ASMA
+[] convert figures to study data set - ASMA
 [] include runway throughput ~ peak arrival rate ~ consistency during peak hours
 
-:::
-
-![](figures/asma_LPPT.png)
-
-```{r}
+------------------------------------------------- -->
+<!-- ![](figures/asma_LPPT.png) # snapshot from study -->
+<!-- # ASMA based on study data / algorithm 
 lppt_asma <- readr::read_csv("./data/EUR-ASMA-LPPT.csv")
 
 summer_asma_100 <- lppt_asma |> 
@@ -81,25 +79,37 @@ summer_asma_100 <- lppt_asma |>
 
 summer_asma_100 |> mutate(TIK = paste0(MONTH,"-",YEAR) ) |> 
   ggplot() + geom_col(aes(x = TIK, y = AVG_TIME, fill = TYPE))
+-----------------------------------------------------------------    -->
+
+```{r}
+#| label: fig-lppt-asma-monthly
+#| fig-cap: Monthly evolution of the additional time in terminal airspace in LPPT
+
+lppt_study <- read_csv2("./data/LPPT-study-data.csv", show_col_types = FALSE) |> 
+  mutate( RWY = case_when(RWY == "2" ~ "02", .default = RWY)
+         ,MONTH_NUM = match(MONTH, month.abb)
+         ,YM = paste0(YEAR,"-", MONTH_NUM)
+         )
+
+lppt_study |> mutate(YEAR = as.character(YEAR)) |> 
+  
+  ggplot() + 
+  geom_col(aes(x = MONTH_NUM, y = ADD_TIME, fill = YEAR)
+           , position = position_dodge2()) + 
+  scale_y_continuous(limits = c(0,6)) +
+  facet_wrap(.~RWY) +
+  labs(x = "month of year", y = "additional ASMA time [min/arr]"
+       ,fill = element_blank()) +
+  theme(legend.position = "inside", legend.position.inside = c(0.9, 0.95)
+        ,legend.direction = "horizontal")
 ```
+
+
 
 ```{r}
 #| label: fig-sbgr-asma-monthly
 #| fig-cap: Monthly evolution of the additional time in terminal airspace in SBGR
-bra_asmas <- readr::read_csv("./data/BRA-ASMA.csv") |>
-  mutate(YEAR = substr(DATE, 1,4)) |>  
-  filter(AIRPORT == "SBGR", YEAR %in% c("2019","2024"))
 
-bra_asmas |> 
-  mutate(YEAR = substr(DATE, 1,4)) |>  
-  filter(AIRPORT == "SBGR", YEAR %in% c("2019","2024")) |> 
-  
-  ggplot() + 
-  geom_col(aes(x = DATE, y = AVG_ADD, group = AIRPORT))
-```
-
-
-```{r}
 # load the data
 sbgr_2019 <- read_csv("./data/BRA-ASMA-SBGR-2019.csv", show_col_types = FALSE)
 
@@ -108,80 +118,115 @@ sbgr_2019 <- sbgr_2019 |>
          , TOT_REF = SUM_REF, TOT_ADD = SUM_ADD_TIME, AVG_ADD = AVG_ADD_TIME) |> 
   mutate(YEAR = 2019 |> as.character()) 
 
-sbgr_2024  <- read_csv("./data/BRA-ASMA.csv", show_col_types = F) |> mutate(YEAR = substr(DATE, 1, 4)) |> 
+sbgr_2024  <- read_csv("./data/BRA-ASMA.csv", show_col_types = F) |> 
+  mutate(YEAR = substr(DATE, 1, 4)) |> 
   filter(AIRPORT == "SBGR", YEAR == 2024)
 
-sbgr_2024 |> bind_rows(sbgr_2019) |> 
-  mutate(X = substr(DATE, 6,7)) |> 
+sbgr_comb <- sbgr_2024 |> 
+  bind_rows(sbgr_2019) |> 
+  mutate(X = substr(DATE, 6,7))
   
+sbgr_comb |> 
   ggplot() + 
-  geom_col(aes(x = X, y = AVG_ADD, fill = YEAR), position = position_dodge())
+  geom_col(aes(x = X, y = AVG_ADD, fill = YEAR), position = position_dodge()) +
+  scale_y_continuous(limits = c(0,6)) +
+  labs(x = "month of year", y = "additional ASMA time [min/arr]"
+       ,fill = element_blank()) +
+  theme(legend.position = "inside", legend.position.inside = c(0.9, 0.95)
+        ,legend.direction = "horizontal")
 ```
 
-<!-- HERE I CAN WRITE WHAT I WANT -->
+The results presented in @fig-lppt-asma-monthly indicate an increase in additional time in the arrival airspace at LPPT. 
+The additional time is shown for the period following the deployment of the point merge operations covering March through August focussing on the last 40NM around Lisbon.
+The results are also broken out to showcase the behaviour for both landing directions at Lisbonm, i.e., runway 02 and runway 20.
+For both runways, an increase in the additional time can be observed. Aside the results for March that represents the transition to point merge operations, the observed additional time increased on average by about a minute when compared to the pre-deployment year 2023.
+It must be noted that the results for LPPT are point-in-time snapshots and influenced by the start of operations. 
+There might be additional flow control measures in place to support the transition, including additional buffers or alignment patterns. 
+Future work could explore how the actual arrival routes changed based on the newly arrival management technique.
 
-more text
+The operations at SBGR show a clear trend when comparing pre-pandemic traffic levels to the current arrival flows, c.f. @fig-sbgr-asma-monthly.
+A mild seasonal pattern is observable, with the monthly average additional time in terminal airspace ranging post the point-merge implementation lower than in 2019.
+With the summer months a more varied behaviour is observed seen a fluctuation of the obsered additional times. 
 
-<!--
-![](figures/asma_SBGR_2019.png)
-
-![](figures/asma_SBGR_2024.png)
-
-![](figures/asma_SBGR_2019_2024.png) 
-
--->
-
-
-The results indicated an increase in additional time for both airports following the implementation of the PMS. This suggests that, operationally, the PMS enabled a higher occupancy rate within the TMA. By design, the PMS enhances the terminal's capacity to manage and organize inbound traffic more efficiently. However, the runway throughput remained unchanged, as increasing runway capacity would require physical infrastructure modifications. Consequently, although the terminal airspace can now accommodate a greater number of approaches simultaneously, the airport’s ground infrastructure cannot absorb this increased demand at the same pace. This mismatch leads to longer dwell times within the terminal area as aircraft await clearance to land.
-
-**References**
-
-Eurocontrol. (2014). Point Merge: Integration of Arrival Flows Enabling Extensive RNAV Application and Continuous Descent. Eurocontrol Experimental Centre.
-
-FRANZINI, Bruno Monteiro et al. (2024). Analysis of Guarulhos Point Merge Adherence Based On Additional Time In Tma And Trajectory Clustering.. In: Anais do XXI Simpósio de Transporte Aéreo - SITRAER 2024.
-
-ICAO. (2016). Continuous Descent Operations (CDO) Manual. International Civil Aviation Organization.
-
+For the implementation of the PMS, the following observations can be made. 
+Operationally, the PMS enabled a higher occupancy rate within the terminal airspace. 
+By design, the PMS enhances the terminal's capacity to manage and organise inbound traffic more efficiently. 
+However, the runway throughput remained unchanged, as increasing runway capacity would require physical infrastructure modifications or change of the operational concept (i.e., separation minima). 
+Consequently, although the terminal airspace can now accommodate a greater number of approaches simultaneously, the airport’s ground infrastructure cannot absorb this increased demand at the same pace. This mismatch leads to longer dwell times within the terminal area as aircraft await clearance to land.
 
 ## Air Traffic Services at Curitiba and Lisbon Continental
+
+### Overview Curitiba ACC
 
 The Curitiba Area Control Center (ACC-CW) is one of four Area Control Centers strategically distributed across Brazil. 
 Located in the city of Curitiba, in the state of Paraná, ACC-CW plays a crucial role in controlling the airspace of the southern region of the country, ensuring safe and efficient operations for both civil and military aircraft.
 
-ACC-CW's jurisdiction covers the entire portion of the Curitiba Flight Information Region (FIR-CW), excluding the airspace delegated to the Southeast Regional Airspace Control Center (CRCEA-SE). This jurisdiction totals approximately 1.7 million km², representing 7.7% of the airspace delegated to Brazil. Within this airspace, the Air Traffic Control Service, Flight Information Service, and Alert Service are provided.
+ACC-CW's jurisdiction covers the entire portion of the Curitiba Flight Information Region (FIR-CW), excluding the airspace delegated to the South-east Regional Airspace Control Center (CRCEA-SE). This jurisdiction totals approximately 1.7 million km², representing 7.7% of the airspace delegated to Brazil. Within this airspace, the Air Traffic Control Service, Flight Information Service, and Alert Service are provided.
 
 The Air Traffic Control Service is provided to all aircraft flying above FL 150. Additionally, this service is exclusively provided to aircraft flying above FL 120 in CTA 2 (departures and arrivals for Viracopos Airport in Campinas-SP) and CTA 4 (departures and arrivals for Vitória Airport in Espírito Santo).
 
-In 2024, traffic within FIR-CW exceeded 492,000 flights, representing a 25% increase compared to 2023 (394,000 flights). Notably, 11 of the 30 busiest aerodromes in Brazil in 2024 are located within FIR-CW.
+In 2024, traffic within FIR-CW exceeded 492,000 flights, representing a 25% increase compared to 2023 (394,000 flights). Notably, 11 of the 30 busiest aerodromes in Brazil in 2024 are located within FIR-CW (c.f. @fig-bra-acc-tfc).
 
-![](figures/traffic by FIR.png)
+```{r}
+#| label: fig-bra-acc-tfc
+#| fig-cap: Traffic figures for Brazilian ACCs
+#| out-width: 80%
+
+knitr::include_graphics("./figures/traffic by FIR.png")
+```
 
 The FIR-CW encompasses the Terminal Control Areas (TMA) of São Paulo, Rio de Janeiro, Curitiba, Florianópolis, Porto Alegre, Foz do Iguaçu, Campo Grande, Santa Maria, Macaé, Londrina, and Presidente Prudente.
-
 One of the objectives of the cooperation agreement established between DECEA and MUAC—the Rostering Philosophies and Tools Agreement—is to support the implementation of the TOTAL ATM philosophy.
-
 ACC-CW was selected to be the first operational unit in Brazil to implement changes related to new philosophies and methodologies for operational staff rostering. It was also chosen to develop and implement, with the support of MUAC, the Air Traffic Support System for the Use of Human Resources in Operational Needs, known as SATURNO.
 
 The implementation of SATURNO began in March 2025 and is being carried out in phases, with completion expected by the end of the year.
-
 To improve planning for operational position configurations and the allocation of air traffic controllers during shifts, the ACC-CW airspace, currently, is divided into 18 sectors and two regions: North and South.
 
-![](figures/acc_ctb_northsouth.png)
+```{r}
+#| label: fig-ctb-northsouth
+#| fig-cap: ACC-CW area of responsibility
+#| out-width: 80%
 
-Comparison with EUROCONTROL
+knitr::include_graphics("./figures/acc_ctb_northsouth.png")
+``` 
 
-![](figures/comp_acc.png)
+### Center-level comparision Curitiba ACC and Lisbon Continental
 
-Figure above provides an initial side-by-side comparison between DECEA and NAV Portugal (Continental) regarding selected operational characteristics of their Area Control Centers (ACCs). While each organization operates within its own regional and structural context, some key contrasts are worth highlighting.
+```{r}
+#| label: fig-HLC-Curitiba-Lisbon
+#| fig-cap: High-level comparison ACC Curitiba and Lisbon
+#| out-width: 98%
 
-Despite operating within a smaller controlled airspace, NAV Portugal managed a higher volume of IFR ACC movements than DECEA during the same period while handling nearly 25% fewer flight hours. This points to a denser and more concentrated traffic environment, likely driven by Portugal’s geographical location within Europe and the structure of its flight corridors.
+knitr::include_graphics("./figures/comp_acc.png")
+``` 
 
-Another relevant aspect is the number of air traffic controllers (ATCOs) assigned to the operations room. NAV Portugal handles its operational workload in a larger OPS room with only 71 ATCOs, highlighting distinct differences in operational models, levels of automation, and staffing philosophies between the two organizations.
+In light of this report @fig-HLC-Curitiba-Lisbon provides an initial side-by-side comparison between DECEA and NAV Portugal (Continental) regarding selected operational characteristics of their Area Control Centers (ACCs). 
+While each organisation operates within its own regional and structural context, some key characteristics are worth highlighting.
 
-In terms of sector configuration, Curitiba (ACC-CW) operated up to 13 sectors at the end of 2024, compared to a maximum of 9 in Portugal. For the year as a whole, the total number of sector hours was similar, with Portugal recording approximately 2,000 more hours.
+Despite operating within a smaller controlled airspace, NAV Portugal managed a higher volume of IFR ACC movements than DECEA during the same period while handling nearly 25% fewer flight hours. 
+This points to a denser and more concentrated traffic environment, likely driven by Portugal’s geographical location within Europe and the structure of its flight corridors.
 
-These contrasts underscore the importance of accounting for regional characteristics and operational context when interpreting air navigation service metrics or designing systems such as staffing models or control room layouts.
+Another relevant aspect is the number of air traffic controllers (ATCOs) assigned to the operations room. 
+NAV Portugal handles its operational workload in a larger OPS room with only 71 ATCOs, highlighting distinct differences in operational concepts, levels of automation, and staffing philosophies between the two organizations.
 
+In terms of sector configuration, Curitiba operated up to 13 sectors at the end of 2024, compared to a maximum of 9 sectors in Portugal. 
+For the year as a whole, the total number of sector hours was similar, with Portugal recording approximately 2,000 more hours.
 
+This characterisation underscores the importance of accounting for regional characteristics and operational context when interpreting air navigation service metrics or designing systems such as staffing models or control room layouts.
+It will be interesting to expand this initial topic study by addressing the traffic characteristics on the basis of trajectory, flow and sequencing measures applied to handle the traffic within the respective areas of responsibility.
+This will support a refined assessment of the performance benefits from the implemented concept of operations.
 
+## Summary
+
+This chapter highlighted two topics of interest for both parties. 
+It offers a first insight into operational concepts, their implementation, and observed performance benefits.
+
+Point merge is a sequencing technique that gained higher visibility over the past years.
+This initial comparison comprises a snapshot at the system deployed at SBGR and - a recent implementation at - LPPT.
+
+Both groups are interested in advancing the state-of-the-art in assessing network- and center-level aspects. 
+To move towards a more granular comparison, this report showcases two broadly comparable air traffic service units in Brazil and Europe. 
+The comparison allowed for a high-level comparison on a set of harmonised indicators suitable to describe the scope of the service provision. 
+This was useful to characterise the similarities and differences between both units. 
+Future work will revolve around addressing the operational aspects within the respective areas of responsibility and deployed operational flow and sequencing concepts.
 

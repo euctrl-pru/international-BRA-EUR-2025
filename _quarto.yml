@@ -1,7 +1,7 @@
 project:
   type: book
-  #output-dir: docs    # use this output dir for anything updated on the public site
-  output-dir: _book
+  output-dir: docs    # use this output dir for anything updated on the public site
+  #output-dir: _book
 
 # do not show output of code chunks - outside errors
 execute:
@@ -36,21 +36,21 @@ bibliography: references.bib
 format:
   html:
     theme: cosmo
-  # pdf:
-  #   documentclass: scrreport
-  #   papersize: a4
-  #   fig-pos: 'H'
-  #   geometry:
-  #   - top=30mm
-  #   - right=30mm
-  #   - left=30mm
-  #   - bottom=30mm
-  #   - heightrounded
-  #   include-in-header:
-  #     text: |
-  #       \usepackage{pdfpages}
-  #       \pagenumbering{gobble}
-  #  
+  pdf:
+    documentclass: scrreport
+    papersize: a4
+    fig-pos: 'H'
+    geometry:
+    - top=30mm
+    - right=25mm
+    - left=30mm
+    - bottom=30mm
+    - heightrounded
+    include-in-header:
+      text: |
+        \usepackage{pdfpages}
+        \pagenumbering{gobble}
+
   docx:
     toc: true
     number-sections: true

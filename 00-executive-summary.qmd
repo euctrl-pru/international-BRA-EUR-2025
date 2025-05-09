@@ -26,20 +26,13 @@ knitr::include_graphics("./figures/scope-KPA-and-KPI.png")
 The comparison shows similarities and differences in the air navigation service provision and observed performance in both regions. 
 Major take-aways of this report include:
 
-:::{.callout-note}
-CHECK AND UPDATE WITH LATEST VERSION
-:::
-
 * The close collaboration between DECEA and EUROCONTROL is highlighted sharing insights and experiences with the international aviation communities, thus assisting in advancing ATM performance management worldwide.
-* Brazil saw a rise in the ATCOs number, whereas Europe observed a considerable decrease, highlighting a substantial contrast in the systems' responsiveness to the challenges of COVID/re-emerging demand for air traffic.
-* ADD ON NETWORK TAKE-AWAYS 
-<!-- In 2022, the commercial flight distribution reveals that a smaller number of airports manage 80% of commercial takeoffs, with Brazil showing a slightly greater concentration compared to Europe. --> 
-<!-- that sounds weird: Nevertheless, the majority of airports facilitating commercial flights account for only 1% of the total movement in both systems. -->
-* Regarding punctuality, unique trends were evident in both regions, not solely attributable to the extent of traffic resurgence. In Brazil, a consistently higher proportion of flights arrived significantly early, a pattern largely unaffected when comparing 2019 to 2022. Conversely, the documented challenges of European airports in coping with the recovering traffic demand in 2022 highlighted the repercussions of their lower preparedness levels.
-* The recorded throughput at Brazilian airports exhibited less variability amid the pandemic, indicating a sustained demand concentration during peak operational hours. In the European context, innovative operational ideas present the most substantial potential for growth, considering the existing runway systems and associated capacities, which set an upper limit.
-* 
-<!-- The fresh dataset for Brazil reaffirmed past patterns regarding the extra time spent in terminal airspace. Typically, arrival sequencing and limited capacity lead to extended times during the arrival phase. In Europe, reduced air traffic translated to less strain on arrival sequencing. Yet, the notable rise from 2021 to 2022 in multiple airports implies that constraints and heightened sequencing might resurface as demand increases.
--->
+* While the observed performance levels in both regions differ, similarities and understood differences support more targeted discussions on operational concepts. With Europe closing in on pre-pandemic traffic levels and Brazil now consistently observing demand above the pre-pandemic level, this edition also forms the reference for future iterations.
+* Regarding punctuality, unique trends were evident in both regions, not solely attributable to the extent of traffic resurgence. In Brazil, a consistently higher proportion of flights arrived significantly early, a pattern largely unaffected when comparing previous years. Conversely, the documented challenges of European airports in coping with the recovering traffic demand and the record high of network constraints in 2023 and 2024 impact the robustness of the schedule.
+* Overall, Europe showed a higher level of throughput as the higher traffic numbers and constraints require a higher level of pressure on the infrastructure. Nonetheless, the contraints of reaching pre-pandemic traffic levels will require attention in terms of increasing efficiency and reducing capacity constraints with future growth.
+Brazil may benefit from increasing their stance and maintaining current performance levels with the anticipated growth of traffic.
+* This report took a first stab at characterising the regional networks for future topic-centric amendments. This will allow to drive future topic studies and provide essential context.
+As an initial topic-related study, a closer look was taken at two point merge implementations in Brazil and Europe that show different performance outcomes. This is complemented by providing a first look at the operational context of two centres, i.e., Curitiba and Lisbon. This edition helped to frame the work and identify a set of future research questions.
 
 ```{=html}
 <!-- last edition findings 

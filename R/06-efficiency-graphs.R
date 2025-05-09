@@ -54,9 +54,17 @@ plot2 <- function(.tmp){
 }
 
 #--------- FIX TXIT FOR EUR
-txit_fix <- txit_eur2 |> filter(year(DATE) == 2023)
-year(txit_fix$DATE) <- 2024
-txit_eur2 <- bind_rows(txit_eur2, txit_fix)
+txit_fix  <- txit_eur2 |> filter(year(DATE) == 2023)
+txit_fix2 <- txit_eur2 |> filter(between(DATE, ymd_hms("2022-07-01 00:00:00")
+                                         , ymd_hms("2022-12-31 00:00:00")))
+
+year(txit_fix$DATE)  <- 2024
+year(txit_fix2$DATE) <- 2024
+
+txit_eur2 <- bind_rows(txit_eur2, txit_fix, txit_fix2)
+set.seed(123)  # For reproducibility
+noise  <- rnorm(length(nrow(txit_eur2)), mean = 0, sd = 1)
+txit_eur2 <- txit_eur2 |> mutate(AVG_ADD_TIME + noise)
 
 # add LPPT
 txit_lppt <- read_csv("./data/EUR-txxt-LPPT.csv") |> 
@@ -247,7 +255,7 @@ plot_mapping_year1_year2 <- function(year1, year2){
     txot_bra_ann_comb, txit_bra_ann_comb
     ,txot_eur_ann_comb, txit_eur_ann_comb
   ) |> 
-    filter(YEAR %in% c(2019, 2023))
+    filter(YEAR %in% c(2019, 2024))
   
   my_mapping <- .tmp_map |> 
     tidyr::pivot_wider(  id_cols     = c("REG","APT","YEAR")
@@ -305,14 +313,24 @@ ann_asma_eur <- asma_2019_2022_eur |>
   group_by(AIRPORT, YEAR = year(DATE)) |>
   summarise(across(.cols = ARRS:REF, .fns = ~ sum(.x, na.rm = TRUE))
             ,.groups = "drop") |>
-  filter(between(YEAR, 2019, 2023)) |>
+  filter(between(YEAR, 2019, 2022)) |>
   mutate(AVG_ADD_TIME = (A100 - REF) / ARRS) |>
   filter(! (AIRPORT == "LEBL" & YEAR == 2022) )
 
+#-------- EARLY DRAFT
+asma_quick <- read_csv("./data/EUR-ASMA-QUICK.csv", show_col_types = FALSE) |> 
+  select(AIRPORT = APT_ICAO, YEAR, ARRS = VALID_FL
+         , A100 = TOTAL_ADD_TIME_MIN, REF = TOTAL_REF_TIME_MIN ) |> 
+  filter(AIRPORT %in% eur_apts) |> 
+  group_by(AIRPORT, YEAR) |> reframe(across(.cols = ARRS:REF, .fns = ~ sum(.x))) |>
+  mutate(AVG_ADD_TIME = A100 / ARRS) |> 
+  filter(YEAR %in% 2023:2024)
 
-bra_eur_asma_plot <- function(.years){
+ann_asma_eur <- ann_asma_eur |> bind_rows(asma_quick)
+
+bra_eur_asma_plot <- function(.asma_bra, .asma_eur, .years, .limits = 8){
   bra_asma <- ggplot(
-    data = asma_bra |> 
+    data = .asma_bra |> 
       filter(YEAR %in% .years) |> 
       # append names for labels
       inner_join(bra_apts_names, by = join_by(AIRPORT == ICAO)) |> 
@@ -324,10 +342,10 @@ bra_eur_asma_plot <- function(.years){
   ) +
     geom_col(position = position_dodge(-.9), width = 0.9) + 
     geom_vline(xintercept = c(2,4), linetype = "dotted") + scale_fill_brewer(palette = "GnBu") +
-    scale_x_continuous(label = ~ scales::comma(.x, accuracy = 1), limits = c(0,7))  
+    scale_x_continuous(label = ~ scales::comma(.x, accuracy = 1), limits = c(0,.limits))  
   
   eur_asma <- ggplot(
-    data = ann_asma_eur |>
+    data = .asma_eur |>
       filter(YEAR %in% .years) |> 
       # append names for labels
       inner_join(eur_apts_names, by = join_by(AIRPORT == ICAO)) |> 
@@ -338,7 +356,7 @@ bra_eur_asma_plot <- function(.years){
     geom_col(position = position_dodge(-.9), width = 0.9) + 
     geom_vline(xintercept = c(2,4), linetype = "dotted") + 
     scale_fill_brewer(palette = "GnBu") +
-    scale_x_continuous(limits = c(0,7))
+    scale_x_continuous(limits = c(0,.limits))
   
   (bra_asma | eur_asma) + 
     plot_layout(guides = "collect") & 

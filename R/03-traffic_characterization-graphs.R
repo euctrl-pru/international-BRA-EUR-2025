@@ -26,83 +26,84 @@ plot_bra_annual_traffic_function <- function(){
     ggplot(aes(x = DATE)) +
     geom_line(aes(y = MVTS_NORM_ROLLAVG), colour = bra_col) +
     geom_point(aes(y = DLY_FLTS), colour = bra_col, alpha = 0.2, size = 0.2) +
-    # Dashed lines for max and min numbers
-    geom_segment(
-      data = max_min_by_year,
-      aes(x = max_date, xend = max_date, y = 0, yend = max_avg),
-      linetype = "dashed", color = "grey70", size = 0.8
-    ) +
-    geom_segment(
-      data = max_min_by_year,
-      aes(x = min_date, xend = min_date, y = 0, yend = min_avg),
-      linetype = "dashed", color = "grey70", size = 0.8
-    ) +
-    # Insert Point - max and min
-    geom_point(
-      data = max_min_by_year,
-      aes(x = max_date, y = max_avg, color = "High"),
-      size = 3
-    ) +
-    geom_point(
-      data = max_min_by_year,
-      aes(x = min_date, y = min_avg, color = "Low"),
-      size = 3
-    ) +
-    # Labels - max and min
-    geom_label(
-      data = max_min_by_year,
-      aes(x = max_date, y = max_avg, label = max_avg),
-      fill = "darkgreen", color = "white", fontface = "bold", size = 3
-    ) +
-    geom_label(
-      data = max_min_by_year,
-      aes(x = min_date, y = min_avg, label = min_avg),  
-      fill = "red", color = "white", fontface = "bold", size = 3
-    ) +
-    # Breaks - year boundaries
-    scale_x_date(
-      breaks = year_boundaries,                      
-      labels = NULL,                                 
-      expand = c(0, 0)                               
-    ) +
-    # Vertical lines - year boundaries
-    geom_vline(
-      xintercept = year_boundaries,
-      linetype = "solid", color = "grey80", size = 0.5
-    ) +
-    # Dates position - x
-    annotate(
-      "text",
-      x = c(max_min_by_year$max_date, max_min_by_year$min_date),
-      y = -200,  # Vertical position
-      label = format(c(max_min_by_year$max_date, max_min_by_year$min_date), "%d %b"),
-      color = "black",
-      size = 3,
-      angle = 0,
-      hjust = 0.5
-    ) +
-    # Years (years boundaries) position
-    annotate(
-      "text",
-      x = year_boundaries + 180,  
-      y = -1000,                  # Vertical position
-      label = format(year_boundaries, "%Y"),
-      color = "black",
-      size = 3.5,
-      angle = 0,
-      hjust = 0.5
-    ) +
-    # Grid lines - 1000 / 1000 - y ax
-    scale_y_continuous(
-      breaks = seq(0, max(tfc_bra$MVTS_NORM_ROLLAVG, na.rm = TRUE), by = 1000),
-      minor_breaks = NULL
-    ) +
-    # Legend Colors
-    scale_color_manual(
-      name = "",
-      values = c("High" = "darkgreen", "Low" = "red"),
-      labels = c("Highest daily average (7-days) of the year", "Lowest daily average (7-days) of the year")
-    ) +
+    
+    # # Dashed lines for max and min numbers
+    # geom_segment(
+    #   data = max_min_by_year,
+    #   aes(x = max_date, xend = max_date, y = 0, yend = max_avg),
+    #   linetype = "dashed", color = "grey70", size = 0.8
+    # ) +
+    # geom_segment(
+    #   data = max_min_by_year,
+    #   aes(x = min_date, xend = min_date, y = 0, yend = min_avg),
+    #   linetype = "dashed", color = "grey70", size = 0.8
+    # ) +
+    # # Insert Point - max and min
+    # geom_point(
+    #   data = max_min_by_year,
+    #   aes(x = max_date, y = max_avg, color = "High"),
+    #   size = 3
+    # ) +
+    # geom_point(
+    #   data = max_min_by_year,
+    #   aes(x = min_date, y = min_avg, color = "Low"),
+    #   size = 3
+    # ) +
+    # # Labels - max and min
+    # geom_label(
+    #   data = max_min_by_year,
+    #   aes(x = max_date, y = max_avg, label = max_avg),
+    #   fill = "darkgreen", color = "white", fontface = "bold", size = 3
+    # ) +
+    # geom_label(
+    #   data = max_min_by_year,
+    #   aes(x = min_date, y = min_avg, label = min_avg),  
+    #   fill = "red", color = "white", fontface = "bold", size = 3
+    # ) +
+    # # Breaks - year boundaries
+    # scale_x_date(
+    #   breaks = year_boundaries,                      
+    #   labels = NULL,                                 
+    #   expand = c(0, 0)                               
+    # ) +
+    # # Vertical lines - year boundaries
+    # geom_vline(
+    #   xintercept = year_boundaries,
+    #   linetype = "solid", color = "grey80", size = 0.5
+    # ) +
+    # # Dates position - x
+    # annotate(
+    #   "text",
+    #   x = c(max_min_by_year$max_date, max_min_by_year$min_date),
+    #   y = -200,  # Vertical position
+    #   label = format(c(max_min_by_year$max_date, max_min_by_year$min_date), "%d %b"),
+    #   color = "black",
+    #   size = 3,
+    #   angle = 0,
+    #   hjust = 0.5
+    # ) +
+    # # Years (years boundaries) position
+    # annotate(
+    #   "text",
+    #   x = year_boundaries + 180,  
+    #   y = -1000,                  # Vertical position
+    #   label = format(year_boundaries, "%Y"),
+    #   color = "black",
+    #   size = 3.5,
+    #   angle = 0,
+    #   hjust = 0.5
+    # ) +
+    # # Grid lines - 1000 / 1000 - y ax
+    # scale_y_continuous(
+    #   breaks = seq(0, max(tfc_bra$MVTS_NORM_ROLLAVG, na.rm = TRUE), by = 1000),
+    #   minor_breaks = NULL
+    # ) +
+    # # Legend Colors
+    # scale_color_manual(
+    #   name = "",
+    #   values = c("High" = "darkgreen", "Low" = "red"),
+    #   labels = c("Highest daily average (7-days) of the year", "Lowest daily average (7-days) of the year")
+    # ) +
     theme_minimal(base_size = 12) +
     theme(
       panel.grid.major.y = element_line(color = "grey90"), # Only for 1000 / 1000

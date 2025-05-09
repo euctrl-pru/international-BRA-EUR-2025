@@ -76,13 +76,6 @@ txit_bra_per_month()
 txit_eur_per_month()
 ```
 
-
-::: callout-note
-is the graph @fig-eur-txit-timeline.  correct?
-Looks like almost the same information
-
-:::
-
 The evolution of the taxi-in time at the study airports, shown in @fig-bra-txit-timeline and @fig-eur-txit-timeline, reinforces the findings presented in the previous analysis.
 In Brazil, the figures clearly illustrate the increase in average taxi-in times at Porto Alegre (SBPA), Congonhas (SBSP), Salvador (SBSV), and Galeão (SBGL) throughout 2024. Congonhas and Guarulhos consistently maintained the highest levels within the Brazilian group, while Santos Dumont (SBRJ) stands out with a significant improvement, reducing its taxi-in times compared to previous years.
 
@@ -127,8 +120,6 @@ txot_bra_per_month()
 txot_eur_per_month()
 ```
 
-
-
 The trends reinforce the observations from the annual figures.
 
 In Brazil, Santos Dumont (SBRJ) showed a significant improvement in 2024, with taxi-out times decreasing by more than two minutes. For the other airports, monthly variations were relatively small, although a gradual increase can be seen at Curitiba (SBCT) and Galeão (SBGL).
@@ -146,15 +137,6 @@ In Europe, the overall trend is one of improvement, with most airports reducing 
   
 plot_mapping_year1_year2(2023,2024)
 ```
-
-
-::: callout-note
-
-Is figure from 2019 / 2023 or 2023 / 2024 and only lables are not correct?
-Based on this, the text was not updated
-
-:::
-
 
 This analysis builds on the previous sections. 
 @fig-txot-txit-mapping compares the relationship between the taxi-in and taxi-out performance observed.
@@ -184,16 +166,19 @@ Previous research and guidance suggests that reference time can be build for fli
 #| fig-cap: Additional time in terminal airspace
 #| fig-height: 4
 
-bra_eur_asma_plot(c(2023:2024))
+bra_eur_asma_plot(asma_bra,ann_asma_eur, c(2023:2024))
 ```
 
 @fig-asma compares the annual average of additional times in terminal airspace across the study airports.
-On average, the arrival flows at European airports are less constraint than in Brazil.
+On average, the arrival flows in Brazil appear to be less constraint than in Europe.
 
-For most Brazilian airports, a reduction in additional asms times was observed, which is a positive development. A particular highlight is Santos Dumont (SBRJ), where the average additional time decreased by more than one minute compared to the previous year.
+For most Brazilian airports, a reduction in additional times in the terminal airspace was observed, which is a positive development. 
+A particular highlight is Santos Dumont (SBRJ), where the average additional time decreased by more than one minute compared to the previous year.
 
-In contrast, European airports generally experienced a slight increase in taxi-out times between 2023 and 2024.
-
+In contrast, European airports generally experienced a slight increase in their additional times in the terminal airspace between 2023 and 2024.
+This appears to be related to the on-going increase in traffic numbers that put pressure on the arrival management. 
+With observing record years of ATFM delay, flows were generally impacted across the European network in 2023 and 2024.
+This may have amplified the arrival flow as flows generally were disrupted in light of the constraints.
 
 ```{r}
 #| label: fig-asma-vs-traffic-volume
@@ -203,28 +188,29 @@ asma_vs_traffic_volume(c(2023,2024))
 ```
 
 @fig-asma-vs-traffic-volume depicts the change in terms of the average additional time in terminal airspace comparing 2023 and 2024.
-::: callout-note
-The graph doesn have european data.
-The text didnt updated
 
-:::
-The comparison shows the effect of the decline of air traffic on the performance in the European region. 
-The contraction of demand resulted in lower observed additional times accrued by the arriving traffic.
+The comparison shows the effect of the variation of air traffic on the performance in the both region. 
+In general Brazil observed an increase in arrival efficiency evidenced by the lower observed additional times accrued by the arriving traffic.
 For some airports in the Brazil region it can be observed how procedural aspects influence the additional time in terminal airspace.
 For example, despite the variation of the traffic levels considered, the additional time remained fairly stable at SBGR comparing pre- and post-pandemic years.
+
+The European region shows saturation effects characterised by the increasing number of flights.
+On average a shallow increase was observed from 2023 to 2024.
+This requires attention as future traffic demand will increase the pressure on the constraint arrival management processes.
 
 
 ## Summary
 
-This chapter analyzed operational efficiency through the assessment of additional taxi-in and taxi-out times, as well as additional time in terminal airspace.
+This chapter analysed operational efficiency through the assessment of additional taxi-in and taxi-out times, as well as additional time in terminal airspace.
 These indicators provide important insights into how air traffic management systems handle surface and arrival flow operations in the face of increasing demand.
 
 The 2-minute threshold remains a useful reference for taxi-in performance. In 2024, Brazilian airports generally maintained good levels of taxi-in efficiency, with most airports close to or below this threshold, except for Congonhas (SBSP) and Guarulhos (SBGR). Santos Dumont (SBRJ) notably improved its taxi-in performance. In Europe, while most airports kept taxi-in times under control, challenges persisted at London Heathrow (EGLL) and Lisbon (LPPT).
 
 Regarding taxi-out times, Brazilian airports showed a mixed trend. While Santos Dumont (SBRJ) registered a remarkable improvement, other airports such as Congonhas (SBSP) continued to experience high taxi-out times. In Europe, most airports achieved reductions in taxi-out times, except Lisbon (LPPT), where a slight increase was observed.
 
-The mapping of taxi-in and taxi-out times confirmed that overall taxi-out inefficiencies remain more significant than taxi-in inefficiencies. Improvements were more pronounced in Brazil for taxi-in operations, whereas Europe showed stability with exceptions like Heathrow (EGLL) and Rome (LIRF), which still faced increased inefficiencies.
+The mapping of taxi-in and taxi-out times confirmed that overall taxi-out inefficiencies remain more significant than taxi-in inefficiencies. Improvements were more pronounced in Brazil for taxi-in operations, whereas Europe showed stability with exceptions like Heathrow (EGLL), which still faced increased inefficiencies.
 
-The analysis of additional time in terminal airspace further indicated that European airports generally manage arrival flows with less delay compared to Brazilian airports. However, Brazilian airports showed positive trends, with reductions observed at most locations—highlighted again by the strong improvement at Santos Dumont.
+The analysis of additional time in terminal airspace further indicated that European arrivals at European airports observe a slightly higher additional time. 
+Less constraint European arrival sectors manage their arrivals with slightly less delay compared to Brazilian airports. However, Brazilian airports showed positive trends, with reductions observed at most locations—highlighted again by the strong improvement at Santos Dumont.
 
 These findings underscore the ongoing need for continuous monitoring and improvements in ground and arrival management, especially in the context of increasing air traffic demand.

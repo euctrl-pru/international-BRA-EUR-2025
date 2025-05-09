@@ -52,7 +52,8 @@ Across both regions, the share of flights arriving within the -/+ 15 minute wind
 ```{r}
 #| label: fig-arr-punc-comparison-apts
 #| fig.cap: Arrival Punctuality at two comparison study airports 
-#| 
+#| fig-height: 6
+
 comp_apts = c("SBGR","LPPT")
 what_years = c("2023","2024")
 
@@ -186,6 +187,7 @@ Next to the arrival airspace capacity, stronger variations of the scheduled arri
 ```{r}
 #| label: fig-early-vs-late-arrivals
 #| fig-cap: Change of share of early and late arrivals (2023 vs 2024)
+#| fig-height: 6
 
 # note: limits allows to set left and right max ranges
 # keep same limits for BRA and EUR to allow for comparison
@@ -228,6 +230,7 @@ The indicator expresses the percentage of flights that leave the gate within thi
 ```{r}
 #| label: fig-departure-punc
 #| fig-cap: Evolution of departure punctuality at study airports (2023 vs 2024)
+#| fig-height: 6
 
 # debugging delay contributions
 debug_arrs <- FALSE
@@ -306,16 +309,9 @@ The departure performance observed at Guarulhos is in line with the arrival punc
 
 The preceding section highlighted how the general traffic conditions in the previous years influenced the dependability of arrival schedules.
 In this section, we assess the degree of departure punctuality measured as the difference between the scheduled (i.e. planned) departure versus the observed actual off-block time.
-@fig-departure-punc shows the overall departure punctuality at Brazilian and European airports in 2019 compared to 2022.
-Despite traffic levels in 2022 still ranging below their 2019 pre-pandemic levels, the departure punctuality in 2022 was - on average - lower than before COVID.
+@fig-departure-punc shows the overall departure punctuality at Brazilian and European airports in 2023 and 2024.
 
-The difference in departure and arrival punctuality between 2022 and 2019 was significantly more pronounced for Europe indicating an increased strain on the turnaround processes.
-There has been a significant increase in poor performance days, with departure punctuality falling below 50% and arrival punctuality dropping below 60%, occurring more frequently than in 2019.
-On the Brazilian side, the Galeão airport (SBGL) observed the highest share of delayed departure flights.
-It should be noted that the SBGL is the only airport with the Apron Control service directly provided by the airport.
-Some inefficiency in the coordination between Tower and Apron or divergence at the indicator collection point for the location may be contributing to the observed performance.
-
-Departure punctuality appeared slightly higher in Brazil in 2022 in comparison to 2019 and outperforms the punctuality levels observed in Europe. 
+Departure punctuality appeared slightly higher in Brazil in 2024 in comparison to 2023 and outperforms the punctuality levels observed in Europe. 
 It is also noteworthy, that in Brazil there is a higher share of flights blocking off between 15 to 5 minutes before their scheduled time.
 Further research may help to clarify the factors driving this phenomenon.
 
@@ -323,6 +319,7 @@ Further research may help to clarify the factors driving this phenomenon.
 ```{r}
 #| label: fig-early-vs-late-departures
 #| fig-cap: Change of share of early and late departures (2023 vs 2024)
+#| fig-height: 6
 
 # note: limits allows to set left and right max ranges
 # keep same limits for BRA and EUR to allow for comparison
