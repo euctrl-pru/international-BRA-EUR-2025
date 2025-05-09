@@ -24,6 +24,7 @@ It considers a 15-minute window for early or late arrivals and expresses the per
 ```{r}
 #| label: fig-arrival-punc
 #| fig-cap: Evolution of arrival punctuality at study airports (2023 vs 2024)
+#| fig-height: 8
 
 # debugging delay contributions
 debug_arrs <- FALSE
@@ -52,7 +53,6 @@ Across both regions, the share of flights arriving within the -/+ 15 minute wind
 ```{r}
 #| label: fig-arr-punc-comparison-apts
 #| fig.cap: Arrival Punctuality at two comparison study airports 
-#| fig-height: 6
 
 comp_apts = c("SBGR","LPPT")
 what_years = c("2023","2024")
@@ -187,7 +187,7 @@ Next to the arrival airspace capacity, stronger variations of the scheduled arri
 ```{r}
 #| label: fig-early-vs-late-arrivals
 #| fig-cap: Change of share of early and late arrivals (2023 vs 2024)
-#| fig-height: 6
+#| fig-height: 8
 
 # note: limits allows to set left and right max ranges
 # keep same limits for BRA and EUR to allow for comparison
@@ -230,7 +230,7 @@ The indicator expresses the percentage of flights that leave the gate within thi
 ```{r}
 #| label: fig-departure-punc
 #| fig-cap: Evolution of departure punctuality at study airports (2023 vs 2024)
-#| fig-height: 6
+#| fig-height: 8
 
 # debugging delay contributions
 debug_arrs <- FALSE
@@ -319,7 +319,7 @@ Further research may help to clarify the factors driving this phenomenon.
 ```{r}
 #| label: fig-early-vs-late-departures
 #| fig-cap: Change of share of early and late departures (2023 vs 2024)
-#| fig-height: 6
+#| fig-height: 8
 
 # note: limits allows to set left and right max ranges
 # keep same limits for BRA and EUR to allow for comparison

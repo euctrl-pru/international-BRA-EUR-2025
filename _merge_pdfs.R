@@ -5,6 +5,6 @@
 library(pdftools)
 
 pdf_combine(c(
-    "./figures/Brazil-Europe-2019-2023-Cover.pdf"
-  , "./docs/Operational-Comparison-of-ANS-Performance-in-Brazil-and-Europe.pdf"), 
-            output = "report-with-cover.pdf")
+    "./figures/Brazil-Europe-2024-Cover.pdf"
+  , "./docs/Operational-Comparison-of-ANS-Performance-no-cover.pdf"), 
+            output = "Operational-Comparison-of-ANS-in-Brazil-and-Europe-2024.pdf")
