@@ -1,6 +1,5 @@
 ---
 title: "Air Navigation System Characterisation"
-editor: visual
 ---
 
 ```{r}
@@ -14,7 +13,7 @@ Nonetheless, there are several distinctions between the two systems, which help 
 
 ## Organisation of Air Navigation Services
 
-One of the major difference between the air navigation systems of Brazil and Europe is the respective organisational structure.
+One of the major differences between the air navigation systems of Brazil and Europe is the respective organisational structure.
 In Brazil, a single entity serves as the primary air navigation services provider, i.e. the Department of Airspace Control (DECEA).
 In contrast, in Europe, each member state has delegated the responsibility for service provision to either national or local providers.
 
@@ -31,7 +30,7 @@ These regions are further subdivided and managed by five Area Control Centers (A
 
 The non-oceanic airspace in Europe covers an area of 11.5 million square kilometres.
 When it comes to the provision of air traffic services, the European approach involves a multitude of service providers, with 37 distinct en-route Air Navigation Service Providers (ANSPs), each responsible for different geographical regions.
-These services are primarily organised along state boundaries and FIR (Flight Information Region) borders, with a number of limited cross-border agreements in place between adjacent airspaces and air traffic service units.\
+These services are primarily organised along state boundaries and associated FIR borders, with a number of limited cross-border agreements in place between adjacent airspaces and air traffic service units.\
 A noteworthy exception to this predominantly national approach is the Maastricht Upper Area Control, which represents a unique multinational collaboration offering air traffic services in the upper airspace of northern Germany, the Netherlands, Belgium, and Luxembourg.
 
 Civil-military integration levels across European countries vary.
@@ -149,7 +148,10 @@ For example, in 2024, the 10 busiest airports in Brazil handled 61% of all depar
 The spread in shares remains broadly constant up to the 50th rank of all departures and narrows to 30% with the top 100 airports in both regions.
 The latter marking 97% of all departures in Brazil and 67% in Europe.
 
-The latest edition of Brazil’s Annual Performance Report (it can be found on http://performance.decea.mil.br reflects this reality. It now includes 100 airport locations instead of only the top 34, ensuring that almost all flights are included in the analysis. This distribution shows that many aerodromes operate with low traffic volumes. Because of that, it is important to study alternative ways to provide air traffic services.
+The latest edition of Brazil’s Annual Performance Report (it can be found on http://performance.decea.mil.br) reflects this reality.
+It now includes 100 airport locations instead of only the top 34, ensuring that almost all flights are included in the analysis.
+This distribution shows that many aerodromes operate with low traffic volumes.
+Because of that, it is important to study alternative ways to provide air traffic services.
 
 In Brazil, the Aerodrome Flight Information Service (AFIS) is an effective strategy to ensure safety at locations where the traffic does not justify the installation of a control tower (TWR).
 This service, usually provided via radio telephony only, gives essential information to pilots, helping to use resources efficiently and keeping operations safe.
@@ -171,8 +173,7 @@ This ranges from site specific remote tower operations (e.g. Cork/Ireland) to a 
 
 While the view on the concentration of air traffic provides first insights, the level of connectivity is not immediately identifiable.
 
-::: {layout-ncol=2}
-
+::: {layout-ncol="2"}
 ```{r}
 #| label: fig-share-intnl-regional
 #| fig-cap: "Share of international and regional/domestic traffic in 2024"
@@ -216,17 +217,15 @@ bind_rows(bra_reg_intnl, eur_reg_intnl) |> tidyr::drop_na() |>
   
 ```
 
-
 @fig-share-intnl-regional shows the distribution of regional/domestic and international departures.
 For both regions we observe a share of less than 12% of serviced traffic are flights operating to and from the regions.
+The majority of flights operate within the region, i.e., within the domestic Brazilian network and conversely the European network spanning across EUROCONTROL Member States.
+:::
 
-::: 
-
-::: {layout-ncol=2}
-
+::: {layout-ncol="2"}
 ```{r}
 #| label: fig-share-intnl-regions
-#| fig-cap: "Share of international connections in 2024"
+#| fig-cap: "Share of destinations in 2024"
 
 subset_international <- function(.intnl_tfc_shares){
   this_subset <- .intnl_tfc_shares |> 
@@ -243,16 +242,22 @@ bind_rows(
   ggplot() + 
   geom_col(aes(x = LABEL, y = SHARE, fill = LABEL)) + 
   scale_y_continuous(labels = scales::percent_format(), limits = c(0, 0.05)) + 
-  labs(x = element_blank(), y = element_blank()) + 
+  labs(x = element_blank(), y = element_blank()
+       ,fill = element_blank()) + 
   facet_wrap(.~ REGION, scales = "free_x") +
   coord_flip() +
-  theme(legend.position = "top", legend.direction = "horizontal")
+  theme( legend.position = "top", legend.direction = "horizontal"
+        ,legend.justification = "left" # left-aligned
+        ,legend.key.size = unit(3,"mm")
+        )
 ```
 
 From an international perspective both regions are interconnected differently.
 @fig-share-intnl-regions sees a spread of the international traffic to other regions.
-Traffic from Brazil to Europe (i.e., Eurocontrol Member States) accounts for just under 2% of the total traffic volume. Europe has a shallow share of flights going to Southern America.
-
+Traffic from Brazil to Europe (i.e., Eurocontrol Member States) accounts for just under 2% of the total traffic volume in Brazil.
+Connections to other Southern America states represent the major international destinations accounting for about 5%.
+Europe has a shallow share of flights going to Southern America, including Brazil.
+The Middle East, Nothern America, and Africa represent the biggest international markets ranging between 2.3-3.3% of all departures in Europe.
 :::
 
 ```{r}
@@ -265,7 +270,7 @@ knitr::include_graphics("./figures/BRA-upset-national-connections.png")
 
 With @fig-BRA-upset-connection we observe just under 46.000 flights in 2024 operated to adjacent countries in South America.
 A strong segment of the market represents flights to/from Argentina and Chile accounting for about half of the flights departing from the airports in this study.
-Accordingly, flight to Columbia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Carribean.
+Accordingly, flights to Columbia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Carribean.
 Flights operating from airports not included in this study account for smaller shares.
 This confirms the selection of the study airports for Brazil, as the major airports handle most of the pan-regional traffic with a strong connection to Argentina and Chile.
 
@@ -336,13 +341,16 @@ In contrast, Europe's air navigation services are provided by multiple entities 
 
 Also remarkable is the comparison of the number of air traffic controllers between Brazil and Europe during the pandemic.
 This revealed contrasting trends.
-Brazil experienced an increase in ATCOs, while Europe witnessed a notable reduction.
+Brazil experienced an increase in ATCOs in line with the overall traffic growth.
+ATCO numbers in Europe marginally increased in comparison to 2019 in 2023.
 This disparity underscores a significant difference in the systems' responsiveness, partly attributed to Brazil's centralised and rigid hiring process.
-At the same time, European providers operate with greater independence and flexibility enabling easier adjustments to the management of the ATCO workforce.
+At the same time, European providers operate with greater independence with varying organisational setups (public vs private organisation, unions).
+Adjustments of the ATCO workforce tend to be more conservative..
 
-The distribution of commercial flights in 2022 indicates that only a subset of airports handle 80% of commercial take-offs.
+The distribution of commercial flights in 2022 indicated that only a subset of airports handled 80% of commercial take-offs.
+In 2024 - with the stabilising air traffic levels - the top-10 airports in Europe handled 19% of the network departures, while in Brazil the top-10 accounted for 61%; considering the top-100 airports in both regions, this group handled 67% of all departures in Europe, and 97% in Brazil.
 The concentration effect is higher in Brazil than in Europe.
-On the other hand, a high number of airports operating commercial flights represent handle only a marginal share of 1% of the movements in both systems.
+On the other hand, the distribution also showed that a significant number of airports operating commercial flights handle only a marginal share of the movements in both systems.
 This duality may inform decision-makers about potential performance benefit pools with a view to allocate scarce ANS resources and capabilities and ensure the proper balancing of demand and capacity.
 
 This report documents the close collaboration between DECEA and EUROCONTROL.

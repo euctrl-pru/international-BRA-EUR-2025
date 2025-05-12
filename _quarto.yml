@@ -33,6 +33,9 @@ book:
 #bibliography: book.bib   #, packages.bib]
 bibliography: references.bib
 
+#header-includes:
+#  - \setlength{\columnsep}{1cm}
+
 format:
   html:
     theme: cosmo
@@ -50,6 +53,7 @@ format:
       text: |
         \usepackage{pdfpages}
         \pagenumbering{gobble}
+        \setlength{\columnsep}{1cm}
 
   docx:
     toc: true

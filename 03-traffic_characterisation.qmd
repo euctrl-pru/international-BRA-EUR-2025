@@ -15,15 +15,18 @@ source(here::here("_chapter-setup.R"))
 source(here::here("R","03-traffic_characterization-graphs.R"))
 ```
 
-To facilitate operational comparisons, it is crucial to have a good understanding of the level and composition of air traffic.
-The preceding section provided an overview of the context and organisation of air navigation services in Brazil and Europe.
+To facilitate operational benchmarking comparisons, it is crucial to have a good understanding of the level and composition of air traffic.
+The preceding section provided an overview of the context and organisation of air navigation services in Brazil and Europe, and the overall network characteristics.
 This chapter presents some air traffic characteristics for both regions to provide a framework for the observed operational performance in subsequent parts of the report.
 
 ## Network Level Air Traffic
 
-@fig-annual-traffic-timeline shows the regional traffic development in Brazil and Europe.
+@fig-annual-traffic-timeline shows the regional traffic development in Brazil and Europe for the period 2019 to 2024.
  
-For Brazil, it is important to remember that Figure shows the aggregated movements per airport at the whole network level. The shown total does not necessarily reflect the total number of flights. Another important observation related to the data is that Brazil’s number of airports served with the TATIC tool (Tower ATC System) has increased. Despite raising the processed total daily flight number, this difference is mostly transparent for this study as these additional airports handle only a small number of movements on a day-to-day basis.
+For Brazil, it is important to remember that @fig-annual-traffic-timeline shows the aggregated movements per airport at the whole network level.
+The shown total does not necessarily reflect the total number of flights.
+Another important observation related to the data is that Brazil’s number of airports served with the TATIC tool (Tower ATC System) has increased.
+Despite raising the processed total daily flight number, this difference is mostly transparent for this study as these additional airports handle only a small number of movements on a day-to-day basis.
 
 ```{r}
 #| label: fig-annual-traffic-timeline
@@ -35,7 +38,7 @@ plot_bra_annual_traffic_function() / plot_eur_annual_traffic_function()
 
 Brazilian air traffic continues to exceed 2019 levels, marking a phase of real growth, not just post-pandemic recovery. Since 2022, traffic has grown steadily, showing a structured recovery in demand. However, commercial aviation is still adjusting its route network in some regions to fully match 2019 levels.
 
-@fig-annual-traffic-timeline showing the daily evolution of air traffic in Brazil (7-day moving average) highlights the busiest and quietest periods of recent years. Over the past three years, the day with the lowest average traffic in Brazil typically falls on the Wednesday after Carnival. Meanwhile, the annual peak usually happens in late December, close to Christmas, reinforcing a well-established seasonal pattern in the Brazilian air transport market.Overall, despite short-term fluctuations, the general trend is upward, confirming that Brazil is on a steady growth path. It is important to note that the Brazilian data only includes commercial flights (excluding general and military aviation) and is based on UTC time.
+@fig-annual-traffic-timeline shows the daily evolution of air traffic in Brazil (7-day moving average) highlights the busiest and quietest periods of recent years. Over the past three years, the day with the lowest average traffic in Brazil typically falls on the Wednesday after Carnival. Meanwhile, the annual peak usually happens in late December, close to Christmas, reinforcing a well-established seasonal pattern in the Brazilian air transport market.Overall, despite short-term fluctuations, the general trend is upward, confirming that Brazil is on a steady growth path. It is important to note that the Brazilian data only includes commercial flights (excluding general and military aviation) and is based on UTC time.
 
 When we compare this with the European Region, a different dynamic becomes visible. In terms of total network-level air traffic, Europe still lags behind its pre-pandemic levels. However, if current trends continue, the region is expected to reach or slightly surpass 2019 traffic levels by 2025. Low-cost carriers have outperformed mainline airlines in the recovery phase. Their business model allowed for faster adjustments in staffing, crewing, and servicing. At the same time, national support programs for legacy carriers often included conditions such as slot restrictions or reduced domestic operations, which contributed to a decrease in overall network connectivity and frequency between airports.
 
@@ -62,11 +65,12 @@ tfc_bra |> mutate(REG = "BRA") |>
   facet_wrap(.~ REG, ncol = 1, scales = "free_y") 
 ```
 
-@fig-annual-network compares the evolution of daily air traffic in the Brazil and European regions across the last three years. Each line represents a 7-day moving average of flight numbers, allowing seasonal patterns and year-over-year changes to be visualized clearly.
+@fig-annual-network compares the evolution of daily air traffic in the Brazil and European regions across the last three years. Each line represents a 7-day moving average of flight numbers, allowing seasonal patterns and year-over-year changes to be visualised more clearly.
 
 In the Brazilian region, the data shows a consistent upward trend, with each year positioned above the previous one, especially in the first and second quarters. This indicates that Brazil's aviation sector not only recovered from the pandemic but has entered a period of sustained organic growth. The seasonal curve in Brazil is more stable throughout the year, reflecting a demand pattern that is less affected by strong seasonal variations.
 
-In contrast, the European region displays strong seasonality, with pronounced peaks during the summer months (June to September) and sharp drops in winter. This pattern aligns with Europe’s tourism-driven traffic, where demand is concentrated in holiday periods. 
+In contrast, the European region displays strong seasonality, with pronounced peaks during the summer months (June to September) and sharp drops in winter. This pattern aligns with Europe’s tourism-driven traffic, where demand is concentrated in holiday periods.
+While there is a general growth trend during the post-pandemic phase, a clear step change took place between 2022 and 2023. Comparing 2023 to 2024 reveals a shallow, but continual, growth across the year signalling a certain level of saturation in terms of network connections.
 
 The analysis of annual trends also reveals how regional disruptions can impact national networks. In Brazil, traffic volume dropped significantly in May 2024, due to heavy rainfall in the south starting in late April. The floods led to the prolonged closure of Salgado Filho International Airport (SBPA) in Porto Alegre, which remained out of operation until October. This disruption had a clear impact on domestic commercial aviation and reduced overall national traffic during that period.
 
@@ -109,7 +113,7 @@ p_col_annual <- annual_tfc_apt |> mutate(YEAR = as.character(YEAR)) |> get_p1_eu
 p_share + p_col_annual + plot_layout(widths = c(1, 4))
 ```
 
-@fig-eur-apt-level-tfc presents the airport-level traffic evolution for the study airports from 2022 to 2024. The data clearly show different dynamics between the two regions. In Europe, all airports increases in movement levels from 2023 to 2024, reinforcing the region’s ongoing recovery trajectory.
+@fig-eur-apt-level-tfc presents the airport-level traffic evolution for the study airports from 2022 to 2024. The data clearly show different dynamics between the two regions. In Europe, all airports observed increases in movement levels from 2023 to 2024, reinforcing the region’s ongoing recovery trajectory.
 
 The Brazilian scenario is more heterogeneous. While some airports, such as Galeão (SBGL) and Guarulhos (SBGR), registered increases, others—such as Santos Dumont (SBRJ) and Porto Alegre (SBPA) saw declines. Meanwhile, Congonhas (SBSP) and Brasília (SBBR) showed very little variation. This divergence highlights the uneven pace of recovery among Brazil’s major airports, reflecting broader structural and operational differences in the national aviation landscape.
 
@@ -157,13 +161,15 @@ p_lppt_monthly_tfc <- monthly_lppt |> airport_per_year(.apt = "LPPT", .years = 2
 combo1 <- p_sbgr_monthly_tfc + p_eddm_monthly_tfc +
   plot_layout(guides = "collect") &
   theme(legend.position = "top") &
-  scale_y_continuous(limits = c(0, 31000))
+  scale_y_continuous(limits = c(0, 31000)) & 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
   
 
 combo2 <- 
   (p_sbsp_monthly_tfc + theme(legend.position = "none")) +
   (p_lppt_monthly_tfc + theme(legend.position = "none")) &
-  scale_y_continuous(limits = c(0, 25000))
+  scale_y_continuous(limits = c(0, 25000)) & 
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
 
 # combine combos
 combo1 / combo2
@@ -268,8 +274,8 @@ peak_day_comb |>
 ```
 
 Analysing the 2024 peak day data, as presented in @fig-peak-day, with Brazilian and European airports grouped by number of runways, we observe that six European airports operate with three or more runways and are therefore not directly comparable to Brazilian airports. 
-However, it is important to note that in many of these cases, the runway system does not support fully independent operations on all available runways, thus, reducing the available runway system capacity. 
-The serviced peak traffic is also impacted by the runway system configuration.
+However, it is important to note that in many of these cases, the runway system does not support fully independent operations on all available runways.
+Such contraints reduce the available runway system capacity, and thus, the serviced peak traffic is also impacted by the runway system configuration.
 For example, operations at Amsterdam (EHAM) cannot make use of all six runways at the same time.
 Operations at Zurich (LSZH, 3 interdependent runway system) range in the order of single runway operations at Gatwick (EGKK, 1 runway). 
 As a result, peak traffic performance is also shaped by the specific runway configuration.
@@ -362,6 +368,8 @@ Although volumes remained stable overall, individual airports showed notable var
 European peak service rates show the overall recovery pattern and first signs of reaching the available capacity for the major hubs.  
 
 Finally, the fleet mix analysis reinforced the structural differences in how each region operates: Brazil shows a higher presence of light aircraft in some regional airports and a centralised model for long-haul traffic.
-Light-type traffic at the study airports remain the exemption. A higher share of heavy aircraft is observed at the top-European airport in this study. The wider spread of internatinoal connections across all chosen airports shows a less centralised global connectivity model.
+Light-type traffic at the study airports in Europe remain the exemption.
+A higher share of heavy aircraft is observed at the top-European airport in this study.
+The wider spread of internatinoal connections across all chosen airports shows a less centralised global connectivity model.
 
 Together, these findings establish a base to understanding the operational performance indicators in the next chapters.

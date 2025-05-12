@@ -7,11 +7,11 @@ This report and previous editions are available via the web-portals of both orga
 * <https://ansperformance.eu/global/brazil> or 
 * <https://performance.decea.mil.br/>.
 
-This edition expands on the previous comparisons of the Brazilian and European air navigation systems by focussing on the observed performance post COVID by extending the time frame and incorporating additional analyses.
+This edition expands on the previous comparisons of the Brazilian and European air navigation systems by focussing on the observed performance post COVID, extending the time frame, and incorporating additional analyses.
 For example, a more detailed characterisation of the Brazilian and European network is included.
-With the recent deployment of point-merge, operations at Sao Paulo Guarulhos and Lisbon are studied.
+With the recent deployment of point-merge, operations at Sao Paulo Guarulhos and Lisbon are studied and an initial characterisation is provided.
 On the center level, this edition also looks into comparing Curitiba and Lisbon ACC.
-These focussed topics allow to address discussion about performance benefits and may help to highlight the differences between the operations in both regions.
+These focussed topics allow to address discussions about performance benefits and may help to highlight the differences between the operations in both regions.
 
 The report focuses on a subset of the eleven Key Performance Areas identified by the ICAO Global Air Navigation Plan, in particular Predictability, Capacity and Efficiency.
 

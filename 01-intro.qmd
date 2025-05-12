@@ -64,6 +64,7 @@ The latter is tasked with managing air traffic in the densely congested terminal
 ```{r}
 #| label: fig-EUR-airspace
 #| fig-cap: European Airspace and EUROCONTROL Member States
+#| out-width: 90%
 
 knitr::include_graphics("./figures/Europe-ECTRL.png")
 ```

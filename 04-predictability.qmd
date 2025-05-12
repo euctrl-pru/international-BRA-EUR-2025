@@ -21,10 +21,16 @@ This chapter focuses on arrival and departure punctuality as crucial predictabil
 The arrival punctuality shows the predictability of landing operations at airports, based on the scheduled in-block time (SIBT). 
 It considers a 15-minute window for early or late arrivals and expresses the percentage of flights arriving at the gate within that margin.
 
+@fig-arrival-punc shows the 2024 data and reaffirms key structural differences in punctuality behaviour between Brazilian and European airports. 
+Brazilian airports continue to report a high share of early arrivals—more than 15 minutes ahead of schedule—accounting for 20% to 30% of flights. 
+In contrast, while some buffering is discernible, most European airports show early arrival shares below 15%. 
+This pattern, observed consistently over recent years, reflects the use of built-in buffer times in Brazil’s scheduling practices. 
+While these buffers help airlines improve on-time performance records, they can reduce predictability and complicate planning for air traffic management and airport operations.
+
 ```{r}
 #| label: fig-arrival-punc
 #| fig-cap: Evolution of arrival punctuality at study airports (2023 vs 2024)
-#| fig-height: 8
+#| fig-height: 7
 
 # debugging delay contributions
 debug_arrs <- FALSE
@@ -36,13 +42,6 @@ p_2024 <- create_punc_plot("ARR", 2024, debug_arrs)
 p_2023 / p_2024 + plot_layout(guides = "collect") & 
   theme(legend.position = 'top')
 ```
-
-
-@fig-arrival-punc shows the 2024 data and reaffirms key structural differences in punctuality behaviour between Brazilian and European airports. 
-Brazilian airports continue to report a high share of early arrivals—more than 15 minutes ahead of schedule—accounting for 20% to 30% of flights. 
-In contrast, while some buffering is discernible, most European airports show early arrival shares below 15%. 
-This pattern, observed consistently over recent years, reflects the use of built-in buffer times in Brazil’s scheduling practices. 
-While these buffers help airlines improve on-time performance records, they can reduce predictability and complicate planning for air traffic management and airport operations.
 
 Compared to Brazil, Europe observed a high level of delayed arrivals in 2023 and 2024.
 Across all study airports, there is a minimum of 25% of the flights arriving late, an in extreme cases ranging up to 40% at London Gatwick (EGKK) and Lisbon (LPPT).
@@ -69,7 +68,8 @@ monthly_punc_comparison <- bind_rows(
 )
 
 punc_mov_month_plot(monthly_punc_comparison, what_years, comp_apts) +
-  facet_wrap(.~ APT) 
+  facet_wrap(.~ APT) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
 #+     # TODO --------------------------------------
 #  labs(subtitle = "per discussion develop barchart vs traffic change per year side by side")
 ```
@@ -146,8 +146,9 @@ arr_punc_eur <- punc_eur_data |>
 ```{r}
 #| label: fig-puncvstfc
 #| fig-cap: Evolution of arrival punctuality -/+15 min vs traffic
+#| fig-height: 7
 
-arr_punc_bra |> filter(ICAO %in% bra_apts) |> 
+p_bra <- arr_punc_bra |> filter(ICAO %in% bra_apts) |> 
   mutate( YEAR          = year(DATE) |> as.character()
         # ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
         #--- handle fix ---------
@@ -156,11 +157,14 @@ arr_punc_bra |> filter(ICAO %in% bra_apts) |>
          ) |> 
   plot_punc_vs_tfc()
 
-arr_punc_eur |> filter(ICAO %in% eur_apts) |> 
+p_eur <- arr_punc_eur |> filter(ICAO %in% eur_apts) |> 
   mutate( YEAR          = year(DATE) |> as.character()
          ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
          ) |> 
   plot_punc_vs_tfc()
+
+p_bra / p_eur + plot_layout(guides = "collect") & 
+  theme(legend.position = 'top')
 ```
 
 @fig-puncvstfc presents a side-by-side view of airport-level arrival punctuality and movement evolution between 2023 and 2024.
@@ -187,7 +191,7 @@ Next to the arrival airspace capacity, stronger variations of the scheduled arri
 ```{r}
 #| label: fig-early-vs-late-arrivals
 #| fig-cap: Change of share of early and late arrivals (2023 vs 2024)
-#| fig-height: 8
+#| fig-height: 7
 
 # note: limits allows to set left and right max ranges
 # keep same limits for BRA and EUR to allow for comparison
@@ -230,7 +234,7 @@ The indicator expresses the percentage of flights that leave the gate within thi
 ```{r}
 #| label: fig-departure-punc
 #| fig-cap: Evolution of departure punctuality at study airports (2023 vs 2024)
-#| fig-height: 8
+#| fig-height: 7
 
 # debugging delay contributions
 debug_arrs <- FALSE
@@ -297,7 +301,8 @@ monthly_punc_comparison <- bind_rows(
 )
 
 punc_mov_month_plot(monthly_punc_comparison, what_years, comp_apts) +
-  facet_wrap(.~ APT) 
+  facet_wrap(.~ APT) +
+  scale_x_discrete(guide = guide_axis(n.dodge = 2))
 #+     # TODO --------------------------------------
 #  labs(subtitle = "per discussion develop barchart vs traffic change per year side by side")
 ```
@@ -319,7 +324,7 @@ Further research may help to clarify the factors driving this phenomenon.
 ```{r}
 #| label: fig-early-vs-late-departures
 #| fig-cap: Change of share of early and late departures (2023 vs 2024)
-#| fig-height: 8
+#| fig-height: 7
 
 # note: limits allows to set left and right max ranges
 # keep same limits for BRA and EUR to allow for comparison
