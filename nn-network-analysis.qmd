@@ -103,7 +103,7 @@ eur_mvts <- eur_mvts |> dplyr::bind_rows() |> prep_eur_network_data()
 ```
 
 
-
+our airports loaded below - run script first then come back here
 
 ```{r}
 calc_summary_routes_dep <- function(.mvts){
@@ -115,6 +115,10 @@ calc_summary_routes_dep <- function(.mvts){
     dplyr::arrange(dplyr::desc(NBR_DES))
   
   return(this_summary)
+}
+
+if(!exists("icao_iso_other")){
+  icao_iso_other <- readr::read_csv("./data/country-icao-iso-etc.csv", show_col_types = F)
 }
 
 bra_deps_routes <- bra_mvts |> calc_summary_routes_dep() |> mutate(REGION = "BRA")
@@ -524,14 +528,16 @@ append_adep_regions <- function(
 
 ```{r}
 eur_mvts |> append_adep_regions() |> 
-  append_ades_regions() |> filter(year(DATE) == 2024) |> 
-  arrow::write_parquet(sink = here::here("data_proc","EUR-network-connectivity-2024.parquet"))
+  append_ades_regions() |> filter(year(DATE) == 2024) 
+
+# eur_mvts |> 
+#   arrow::write_parquet(sink = here::here("data_proc","EUR-network-connectivity-2024.parquet"))
 
 bra_mvts <- bra_mvts |> trim_ANAC() |> append_iso_adep_ades() |> 
   append_adep_regions() |> 
   append_ades_regions()
 
-bra_mvts |> arrow::write_parquet(sink = here::here("data_proc","BRA-network-connectivity-2024.parquet"))
+# bra_mvts |> arrow::write_parquet(sink = here::here("data_proc","BRA-network-connectivity-2024.parquet"))
 ```
 
 
@@ -610,7 +616,7 @@ eur_mvts_intnl <- eur_mvts |>
   arrange(desc(DEPS))
 
 #eur_mvts_intnl |> mutate(REGION = "EUR", YEAR = 2024) |> 
-  write_csv("./data/EUR-network-conns-intnl.csv")
+#  write_csv("./data/EUR-network-conns-intnl.csv")
 ```
 
 
@@ -625,7 +631,7 @@ bra_neighbours <- tribble(
   ~ISO2, ~CNTRY_NAME
   , "AR", "Argentina"
   , "CL", "Chile"
-  , "CO", "Columbia"
+  , "CO", "Colombia"
   , "UY", "Uruguay")
 
 bra_upset <- bra_mvts |> 
@@ -669,8 +675,10 @@ plot_bra_upset <- bra_upset |> upset(
             )
             ,text_mapping = aes(
               label = paste0(
-                 !!get_size_mode('exclusive_intersection'),"\n"
-                ,!!upset_text_percentage())
+                 !!get_size_mode('exclusive_intersection')
+                # ,"\n"
+                # ,!!upset_text_percentage()
+                )
             )
             , text = list(size = 9 , size.unit = "pt")
         )

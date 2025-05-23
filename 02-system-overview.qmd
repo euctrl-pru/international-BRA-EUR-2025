@@ -270,7 +270,7 @@ knitr::include_graphics("./figures/BRA-upset-national-connections.png")
 
 With @fig-BRA-upset-connection we observe just under 46.000 flights in 2024 operated to adjacent countries in South America.
 A strong segment of the market represents flights to/from Argentina and Chile accounting for about half of the flights departing from the airports in this study.
-Accordingly, flights to Columbia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Carribean.
+Accordingly, flights to Colombia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Carribean.
 Flights operating from airports not included in this study account for smaller shares.
 This confirms the selection of the study airports for Brazil, as the major airports handle most of the pan-regional traffic with a strong connection to Argentina and Chile.
 
@@ -279,10 +279,15 @@ This confirms the selection of the study airports for Brazil, as the major airpo
 #| fig-cap: Connections between the study regions in 2024
 #| fig-height: 7
 
-flows_long <- read_csv(here::here("data","BRA-EUR-conns-parallel.csv"), show_col_types = FALSE)
+flows_long <- read_csv(
+  here::here("data","BRA-EUR-conns-parallel.csv")
+  , show_col_types = FALSE
+  ) |> 
+  #------ correct for link color ------------
+mutate(LINK = ifelse(ORIG_GROUP == "Study" & DEST_GROUP == "Study", "Study", "Non-Study"),.before = ORIG_GROUP)
 
 ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
-  geom_parallel_sets(aes(fill = ORIG_GROUP), alpha = 0.6, axis.width = 0.1) +
+  geom_parallel_sets(aes(fill = LINK), alpha = 0.6, axis.width = 0.1) +
   geom_parallel_sets_axes(axis.width = 0.2, fill = "gray90") +
   geom_parallel_sets_labels(angle = 0, size = 3, colour = "black") +
   scale_x_discrete(labels = c("Origin", "Destination")) +

@@ -51,7 +51,7 @@ Across both regions, the share of flights arriving within the -/+ 15 minute wind
 
 ```{r}
 #| label: fig-arr-punc-comparison-apts
-#| fig.cap: Arrival Punctuality at two comparison study airports 
+#| fig.cap: Total flights and arrival punctuality at two comparison study airports 
 
 comp_apts = c("SBGR","LPPT")
 what_years = c("2023","2024")
@@ -145,7 +145,7 @@ arr_punc_eur <- punc_eur_data |>
 
 ```{r}
 #| label: fig-puncvstfc
-#| fig-cap: Evolution of arrival punctuality -/+15 min vs traffic
+#| fig-cap: Evolution of arrival punctuality -/+15 min vs arrival traffic
 #| fig-height: 7
 
 p_bra <- arr_punc_bra |> filter(ICAO %in% bra_apts) |> 
@@ -153,7 +153,8 @@ p_bra <- arr_punc_bra |> filter(ICAO %in% bra_apts) |>
         # ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
         #--- handle fix ---------
         , WITHIN_M15P15 = FIX15 / N_VALID
-        #-----------------------------------------------------
+        #--- correct total number of flights to arrivals -- devide by 2
+        , N_VALID = N_VALID / 2
          ) |> 
   plot_punc_vs_tfc()
 
@@ -319,6 +320,59 @@ In this section, we assess the degree of departure punctuality measured as the d
 Departure punctuality appeared slightly higher in Brazil in 2024 in comparison to 2023 and outperforms the punctuality levels observed in Europe. 
 It is also noteworthy, that in Brazil there is a higher share of flights blocking off between 15 to 5 minutes before their scheduled time.
 Further research may help to clarify the factors driving this phenomenon.
+
+```{r}
+# prepare depature punctuality 
+
+which_years <- 2023:2024
+#----------- prep BRA ----------------------
+dep_punc_bra <- punc_mov_month_bra |> 
+  mutate(DATE = paste0(YEAR, "-", sprintf("%02d", MONTH),"-01") |> 
+                lubridate::as_datetime()
+         ,FIX15 = (TOT_FLTS_MONTH * WITHIN_M15P15)
+         ) |> 
+  filter(PHASE == "DEP", lubridate::year(DATE) %in% which_years)
+
+dep_punc_bra <- dep_punc_bra |> 
+  filter(year(DATE) %in% which_years) |> 
+  select(ICAO = APT, DATE, PHASE, N_VALID = TOT_FLTS_MONTH, WITHIN_M15P15, FIX15) |>
+  punc_aggregate("DEP","year")
+
+#---------- prep EUR -----------------------
+dep_punc_eur <- punc_eur_data |> 
+  filter(year(DATE) %in% which_years) |> 
+  punc_append_slots() |> select(ICAO, DATE, PHASE, N_VALID, WITHIN_M15P15) |>  
+  punc_aggregate("DEP", "year") 
+```
+
+```{r}
+#| label: fig-puncvstfc-dep
+#| fig-cap: Evolution of departure punctuality -/+15 min vs departure traffic
+#| fig-height: 7
+
+punc_limits <- c(0,.75)
+
+p_bra <- dep_punc_bra |> filter(ICAO %in% bra_apts) |> 
+  mutate( YEAR          = year(DATE) |> as.character()
+        # ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
+        #--- handle fix ---------
+        , WITHIN_M15P15 = FIX15 / N_VALID
+        #--- correct total number of flights to arrivals -- devide by 2
+        , N_VALID = N_VALID / 2
+         ) |> 
+  plot_punc_vs_tfc(.share_limits = punc_limits)
+
+p_eur <- dep_punc_eur |> filter(ICAO %in% eur_apts) |> 
+  mutate( YEAR          = year(DATE) |> as.character()
+         ,WITHIN_M15P15 = WITHIN_M15P15 / N_VALID
+         ) |> 
+  plot_punc_vs_tfc(.share_limits = punc_limits)
+
+p_bra / p_eur + plot_layout(guides = "collect") & 
+  theme(legend.position = 'top')
+```
+
+In analogy to the previous section, @fig-puncvstfc-dep shows a side-by-side view of departure punctuality and movement evolution between 2023 and 2024 for each of the study airports.
 
 
 ```{r}

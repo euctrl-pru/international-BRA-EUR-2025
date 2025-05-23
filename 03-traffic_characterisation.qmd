@@ -33,7 +33,12 @@ Despite raising the processed total daily flight number, this difference is most
 #| fig-cap: Regional daily air traffic
 #| warning: false
 
-plot_bra_annual_traffic_function() / plot_eur_annual_traffic_function()
+p_bra <- plot_annual_network_tfc(tfc_bra, bra_col) +
+  labs(subtitle = "Brazil Region daily movement (rolling 7-day average)")
+p_eur <- plot_annual_network_tfc(tfc_eur, eur_col) +
+  labs(subtitle = "European Region daily movement (rolling 7-day average)")
+
+p_bra / p_eur
 ```
 
 Brazilian air traffic continues to exceed 2019 levels, marking a phase of real growth, not just post-pandemic recovery. Since 2022, traffic has grown steadily, showing a structured recovery in demand. However, commercial aviation is still adjusting its route network in some regions to fully match 2019 levels.
@@ -93,7 +98,7 @@ fig_bra_apt_tfc(c(2022,2023,2024))
 
 ```{r}
 #| label: fig-eur-apt-level-tfc
-#| fig-cap: Europeaan airport level traffic
+#| fig-cap: European airport level traffic
 #| warning: false
 
 # TODO - move data loading to here

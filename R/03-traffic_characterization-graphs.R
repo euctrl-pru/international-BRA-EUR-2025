@@ -60,12 +60,12 @@ plot_bra_annual_traffic_function <- function(){
     #   aes(x = min_date, y = min_avg, label = min_avg),  
     #   fill = "red", color = "white", fontface = "bold", size = 3
     # ) +
-    # # Breaks - year boundaries
+    # Breaks - year boundaries
     # scale_x_date(
-    #   breaks = year_boundaries,                      
-    #   labels = NULL,                                 
-    #   expand = c(0, 0)                               
-    # ) +
+    #   breaks = year_boundaries,
+    #   labels = NULL,
+    #   expand = c(0, 0)
+    #  ) +
     # # Vertical lines - year boundaries
     # geom_vline(
     #   xintercept = year_boundaries,
@@ -167,6 +167,18 @@ plot_eur_annual_traffic <- .tfc_eur  |>
   labs(x = NULL, y = NULL,  subtitle = "European Region daily movement (rolling 7-day average)")
 
   return(plot_eur_annual_traffic)
+}
+
+
+plot_annual_network_tfc <- function(.tfc, .col = eur_col){
+  plot_annual_tfc_timeline <- .tfc  |> 
+    ggplot(aes(x = DATE)) +
+    geom_line(aes(y = MVTS_NORM_ROLLAVG), colour = .col) +
+    geom_point(aes(y = DLY_FLTS), colour = .col, alpha = 0.2, size = 0.2) +
+    scale_y_continuous(limits = c(0,NA)) +
+    labs(x = NULL, y = NULL) 
+  
+  return(plot_annual_tfc_timeline)
 }
 
 
