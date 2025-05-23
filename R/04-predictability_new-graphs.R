@@ -391,10 +391,50 @@ punc_mov_apt_plot <- function(.years){
 ####################################################################################################
 ########### Early vs Late
 ####################################################################################################
+prepare_earlylate <- function(.comb_punc, .phase, .year){
+  prep <- .comb_punc |> 
+    dplyr::filter(PHASE %in% .phase, YEAR %in% .year) |> 
+    dplyr::select(APT, PHASE, YEAR, REGION, EARLY, LATE) |> 
+    tidyr::pivot_longer(cols = c("EARLY","LATE"), names_to = "SLOT", values_to = "SHARE") |>
+    dplyr::mutate(SHARE = ifelse(SLOT == "EARLY", - SHARE, SHARE)) 
+  return(prep)
+}
 
+plot_earlylate_horiz_bar <- function(.prepped_data, .limits){
+  # prepare utils
+  if(unique(.prepped_data$PHASE) == "ARR") 
+    my_cap <- paste("early vs late arrivals in ", unique(.prepped_data$YEAR))
+  if(unique(.prepped_data$PHASE) == "DEP") 
+    my_cap <- paste("early vs late departures in ", unique(.prepped_data$YEAR))
+  
+  # construct plot
+  this_plot <- .prepped_data |> 
+    ggplot(aes(x = SHARE, y = APT, fill = SLOT)) +
+    geom_col() + 
+    scale_x_continuous(
+      limits = .limits
+      ,labels = scales::percent_format(accuracy = 1)
+    ) +
+    scale_fill_manual(
+      values = c(EARLY = "blue",LATE = "red") 
+      ,labels = c("early", "late")
+    ) +
+    theme(legend.position = "top") +
+    labs(x = element_blank(), y = element_blank() 
+         ,fill = element_blank(), caption = my_cap
+    )
+  
+  return(this_plot)
+}
+
+
+############## OLD ----------------------------------------------
 plot_early_vs_late <- function(.early_vs_late, .phase, .year
                                , .limits = c(-.5,0.4)
-                               , .pretty_label_number = 3){
+                               , .pretty_label_number = 3
+                               , # Define color palette as a named vector
+                                 .status_colors = c(EARLY = "blue", LATE = "red")
+                               ){
   if(.phase == "ARR") my_cap <- paste("early vs late arrivals in ", .year)
   if(.phase == "DEP") my_cap <- paste("early vs late departures in ", .year)
   
@@ -404,6 +444,8 @@ plot_early_vs_late <- function(.early_vs_late, .phase, .year
   pretty_breaks <- pretty(tmp$SLOT_ON_X, n = .pretty_label_number)
   # set max range
   range_limits <- .limits #c(min(tmp$SLOT_ON_X), max(tmp$SLOT_ON_X))
+  # control sequence of colors
+  this_colours <- factor(.status_colors, levels = c("EARLY","LATE"))
   
   viz <- tmp |> 
     ggplot() + 
@@ -417,6 +459,10 @@ plot_early_vs_late <- function(.early_vs_late, .phase, .year
       , breaks =         pretty_breaks
       , labels = paste0( pretty_breaks|> abs() *100, "%")
     ) +
+    scale_fill_manual(
+       values = this_colours
+      ,labels = names(this_colours)
+    )
     labs(x = NULL, y = NULL, fill = NULL
          ,caption = my_cap ) +
     theme( legend.position = "top"

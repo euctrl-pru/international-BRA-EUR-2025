@@ -198,16 +198,21 @@ Next to the arrival airspace capacity, stronger variations of the scheduled arri
 # keep same limits for BRA and EUR to allow for comparison
 # .limits defaults to c(-0.5, 0.5) ~ 50%
 
-comb_punc <- bind_rows(punc_bra, punc_eur)
+comb_punc   <- bind_rows(punc_bra, punc_eur)
+this_limits <- c(-0.3, 0.45)
 
-p2023<-create_earlylate_plot(comb_punc, "ARR",2023, .limits = c(-0.3, 0.45)) + 
-  facet_wrap(. ~ REGION, scales = "free_y")
-p2024<-create_earlylate_plot(comb_punc, "ARR",2024, .limits = c(-0.3, 0.45)) + 
+p2023 <-comb_punc |> 
+  prepare_earlylate("ARR", 2023) |> 
+  plot_earlylate_horiz_bar(.limits = this_limits) + 
   facet_wrap(. ~ REGION, scales = "free_y")
 
+p2024<-comb_punc |> 
+  prepare_earlylate("ARR", 2024) |> 
+  plot_earlylate_horiz_bar(.limits = this_limits) + 
+  facet_wrap(. ~ REGION, scales = "free_y")
 
 (p2023 / p2024) + plot_layout(guides = "collect") & 
-  theme(legend.position = 'top')
+  theme(legend.position = 'top', legend.key.size = unit(4, "mm"))
 ```
 
 @fig-early-vs-late-arrivals compares the share of early and late arrivals at each study airport, considering arrivals more than 15 minutes ahead of or behind schedule (-15 min or +15 min) in 2023 and 2024.
@@ -384,15 +389,21 @@ In analogy to the previous section, @fig-puncvstfc-dep shows a side-by-side view
 # keep same limits for BRA and EUR to allow for comparison
 # .limits defaults to c(-0.5, 0.5) ~ 50%
 
-comb_punc <- bind_rows(punc_bra, punc_eur)
+comb_punc   <- bind_rows(punc_bra, punc_eur)
+this_limits <- c(-0.05, 0.55)
 
-p2023<-create_earlylate_plot(comb_punc, "DEP",2023, .limits = c(-0.1, 0.6)) + 
+p2023 <-comb_punc |> 
+  prepare_earlylate("DEP", 2023) |> 
+  plot_earlylate_horiz_bar(.limits = this_limits) + 
   facet_wrap(. ~ REGION, scales = "free_y")
-p2024<-create_earlylate_plot(comb_punc, "DEP",2024, .limits = c(-0.1, 0.6)) + 
+
+p2024<-comb_punc |> 
+  prepare_earlylate("DEP", 2024) |> 
+  plot_earlylate_horiz_bar(.limits = this_limits) + 
   facet_wrap(. ~ REGION, scales = "free_y")
 
 (p2023 / p2024) + plot_layout(guides = "collect") & 
-  theme(legend.position = 'top')
+  theme(legend.position = 'top', legend.key.size = unit(4, "mm"))
 ```
 
 The change of the share of early and late departures in 2023 and 2024 is shown in @fig-early-vs-late-departures.
