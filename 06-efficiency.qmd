@@ -135,7 +135,7 @@ In Europe, the overall trend is one of improvement, with most airports reducing 
 #| label: fig-txot-txit-mapping
 #| fig-cap: Mapping of additional taxi-in and taxi-out times
   
-plot_mapping_year1_year2(2023,2024)
+plot_mapping_year1_year2(2023,2024) 
 ```
 
 This analysis builds on the previous sections. 

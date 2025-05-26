@@ -55,7 +55,7 @@ p1 <- bra_cap  |> peak_cap_plot(bra_apts_names, lb, ub, lab_size)
 p2 <- eur_cap  |> peak_cap_plot(eur_apts_names, lb, ub, lab_size)
 
 # Combinação dos gráficos
-p1 | p2
+p1 | p2 & theme(plot.subtitle = element_text(size = 8))
 ```
 
 The capacity of airports (and the associated runway system) is predominantly influenced by their infrastructure.
@@ -76,7 +76,7 @@ A potential area for further research could be a closer investigation of the ope
 
 ```{r}
 #| label: fig-peak-declared-cpacity
-#| fig-cap: !expr glue::glue("Peak declared capacity {this_year}")
+#| fig-cap: !expr glue::glue("Peak declared capacity {this_year} [flights/hour]")
 
 generate_capacity_plot(bra_cap, eur_cap, 2024)
 ```
@@ -103,7 +103,8 @@ The recovery pattern is also visible in the peak arrival throughput behaviour.
 
 ```{r}
 #| label: fig-arrival-throughput
-#| fig-cap: Evolution of annual arrival throughput
+#| fig-cap: Evolution of annual arrival throughput at study airports
+
 
 arr_thru_bra_eur |> arrival_tp_plot(c(2019:2024))
 ```

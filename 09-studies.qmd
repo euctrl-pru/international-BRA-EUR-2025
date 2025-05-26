@@ -25,7 +25,7 @@ This method simplifies controller tasks, reduces communication and workload, enh
 ```{r}
 #| label: fig-point-merge
 #| fig.cap: Point-merge overview
-#| 
+#| out-width: 60%
 knitr::include_graphics("./figures/Point Merge Structure.png")
 ```
 
@@ -87,6 +87,7 @@ summer_asma_100 |> mutate(TIK = paste0(MONTH,"-",YEAR) ) |>
 
 lppt_study <- read_csv2("./data/LPPT-study-data.csv", show_col_types = FALSE) |> 
   mutate( RWY = case_when(RWY == "2" ~ "02", .default = RWY)
+         ,RWY = paste("RWY", RWY)  
          ,MONTH_NUM = match(MONTH, month.abb)
          ,YM = paste0(YEAR,"-", MONTH_NUM)
          )
@@ -96,12 +97,15 @@ lppt_study |> mutate(YEAR = as.character(YEAR)) |>
   ggplot() + 
   geom_col(aes(x = MONTH_NUM, y = ADD_TIME, fill = YEAR)
            , position = position_dodge2()) + 
+  scale_x_continuous(breaks = 3:8, labels = month.abb[3:8]) +
   scale_y_continuous(limits = c(0,6)) +
   facet_wrap(.~RWY) +
-  labs(x = "month of year", y = "additional ASMA time [min/arr]"
+  labs( x = element_blank(), y = "additional ASMA time [min/arr]"
        ,fill = element_blank()) +
-  theme(legend.position = "inside", legend.position.inside = c(0.8, 0.95)
-        ,legend.direction = "horizontal")
+  theme( legend.position = "inside", legend.position.inside = c(0.9, 0.95)
+        ,legend.direction = "horizontal"
+        ,legend.key.size = unit(3, "mm")
+        )
 ```
 
 
@@ -124,16 +128,18 @@ sbgr_2024  <- read_csv("./data/BRA-ASMA.csv", show_col_types = F) |>
 
 sbgr_comb <- sbgr_2024 |> 
   bind_rows(sbgr_2019) |> 
-  mutate(X = substr(DATE, 6,7))
+  mutate(X = substr(DATE, 6,7) |> as.numeric())
   
 sbgr_comb |> 
   ggplot() + 
   geom_col(aes(x = X, y = AVG_ADD, fill = YEAR), position = position_dodge()) +
+  scale_x_continuous(breaks = 1:12, labels = month.abb) +
   scale_y_continuous(limits = c(0,6)) +
-  labs(x = "month of year", y = "additional ASMA time [min/arr]"
+  labs( x = element_blank(), y = "additional ASMA time [min/arr]"
        ,fill = element_blank()) +
-  theme(legend.position = "inside", legend.position.inside = c(0.8, 0.95)
-        ,legend.direction = "horizontal")
+  theme(legend.position = "inside", legend.position.inside = c(0.9, 0.95)
+        ,legend.direction = "horizontal"
+         ,legend.key.size = unit(3, "mm"))
 ```
 
 The results presented in @fig-lppt-asma-monthly indicate an increase in additional time in the arrival airspace at LPPT. 

@@ -288,12 +288,11 @@ plot_mapping_year1_year2 <- function(year1, year2){
                    ,legend.text     = ggplot2::element_text(size = 8)
                    ,legend.key.size = ggplot2::unit(0.3, "cm")
     ) +
-    ggplot2::guides(shape = FALSE) +
+    # tweak legend for shape and color to be the "same" (i.e., here empty name)
+    ggplot2::guides(shape = guide_legend(""), colour = guide_legend("") ) +
     ggplot2::labs(   x = "average additional taxi-out time [min/dep]"
-                     , y = "average additional taxi-in time [min/arr]"
-                     ,color = NULL # "year"
-    ) #+
-  #scale_fill_brewer(palette = "GnBu")
+                   , y = "average additional taxi-in time [min/arr]"
+    )  #  +scale_fill_brewer(palette = "GnBu")
   return(my_mapping)
 }
 

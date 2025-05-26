@@ -287,12 +287,13 @@ generate_capacity_plot <- function(
               hjust = 0, color = "white", size = 3) +
     facet_grid(RWY ~ ., as.table = FALSE, switch = "y", scales = "free", space = "free") +
     bra_eur_theme_bw +
-    labs(
-      y = NULL, fill = "Region"
+    labs( x = element_blank(), y = element_blank()
+        , fill = "Region"
     ) +
     theme(
-      legend.position = c(0.9, 0.1),
-      axis.ticks = element_blank()
+       legend.position = c(0.9, 0.12), legend.key.size = unit(3, "mm")
+      ,legend.title = element_text(size = 9) , legend.text = element_text(size = 8)
+      ,axis.ticks = element_blank()
     )
   
   return(this_plot)
