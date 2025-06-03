@@ -257,6 +257,11 @@ plot_mapping_year1_year2 <- function(year1, year2){
   ) |> 
     filter(YEAR %in% c(2019, 2024))
   
+  plot <- plot_change(.tmp_map)
+  return(plot)
+}
+
+plot_change <- function(.tmp_map){  
   my_mapping <- .tmp_map |> 
     tidyr::pivot_wider(  id_cols     = c("REG","APT","YEAR")
                          , names_from  = "PHASE"

@@ -178,7 +178,16 @@ In 2024, traffic within FIR-CW exceeded 492,000 flights, representing a 25% incr
 #| fig-cap: Traffic figures for Brazilian ACCs
 #| out-width: 80%
 
-knitr::include_graphics("./figures/traffic by FIR.png")
+#knitr::include_graphics("./figures/traffic by FIR.png")
+tfc <-  readxl::read_excel("./data/ACC-CTB-MOV.xlsx") |> 
+  dplyr::rename(YEAR = Month) |> 
+  tidyr::drop_na() |> tidyr::pivot_longer(cols = Jan:Dec, names_to = "MONTH") |>
+  dplyr::mutate(DATE = paste0(YEAR,"-", MONTH, "-01") |> lubridate::ymd())
+
+tfc |> ggplot() + 
+  geom_path(aes(x = DATE, y = value, group = ACC, color = ACC)) + 
+  scale_y_continuous(limits = c(0,NA)) +
+  labs(x = element_blank(), y = "monthly traffic")
 ```
 
 The FIR-CW encompasses the Terminal Control Areas (TMA) of São Paulo, Rio de Janeiro, Curitiba, Florianópolis, Porto Alegre, Foz do Iguaçu, Campo Grande, Santa Maria, Macaé, Londrina, and Presidente Prudente.
