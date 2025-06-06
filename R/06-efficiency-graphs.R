@@ -250,43 +250,38 @@ txot_eur_ann_comb <- txot_eur_ann |> select(REG, APT, PHASE, YEAR, AVG_ADD_TIME)
   mutate(PHASE = "TXOT")
 
 
-plot_mapping_year1_year2 <- function(year1, year2){
-  .tmp_map <- bind_rows(
-    txot_bra_ann_comb, txit_bra_ann_comb
-    ,txot_eur_ann_comb, txit_eur_ann_comb
-  ) |> 
-    filter(YEAR %in% c(2019, 2024))
-  
-  plot <- plot_change(.tmp_map)
-  return(plot)
-}
-
-plot_change <- function(.tmp_map){  
-  my_mapping <- .tmp_map |> 
+prep_change_plot_year1_year2 <- function(.txit_txot, .year1, .year2){
+  tmp <- .txit_txot |> 
+    dplyr::filter(YEAR %in% c(.year1, .year2)) |> 
+ 
     tidyr::pivot_wider(  id_cols     = c("REG","APT","YEAR")
                          , names_from  = "PHASE"
                          , values_from = "AVG_ADD_TIME") |> 
-    dplyr::mutate(YEAR = as.character(YEAR), LABEL = ifelse(YEAR == 2019, APT, NA)) |> 
+    dplyr::mutate(YEAR = as.character(YEAR), LABEL = ifelse(YEAR == .year2, APT, NA)) 
+  
+  return(tmp)
+}
+
+plot_change <- function(.tmp_map, .x, .y, .grp, .chg_var = YEAR, .facet_var = REG){  
+  my_mapping <- .tmp_map |> 
     
-    ggplot2::ggplot(aes(x = TXOT, y = TXIT)) + 
+    ggplot2::ggplot(aes(x = {{ .x }}, y = {{ .y }} )) + 
     ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "dashed", colour = "grey60") +
-    #coord_equal() +
-    #geom_abline()
-    ggplot2::geom_path(aes(group = APT), colour = "grey70") + 
-    ggplot2::geom_point(aes(shape = YEAR, colour = YEAR), size = 2) + 
+    ggplot2::geom_path(aes(group = {{ .grp }}), colour = "lightblue") + 
+    ggplot2::geom_point(aes(shape = {{ .chg_var }}, colour = {{ .chg_var }} ), size = 2) + 
     ggplot2::scale_colour_manual(values = c("lightblue","blue")) +
     ggrepel::geom_label_repel(aes(label = LABEL)
-                              , nudge_x = -1
+                             # , nudge_y = 0.5
                               , force = 100
                               , max.overlaps = Inf
-                              , box.padding = .25
+                              , box.padding = .15
                               , na.rm = TRUE
                               , colour = "grey70", segment.colour = "grey70"
                               ,size = 3 # set small font size
     ) + 
     ggplot2::scale_x_continuous(limits = c(0,NA)) +
     ggplot2::scale_y_continuous(limits= c(0, NA)) +
-    ggplot2::facet_grid(. ~REG) +
+    ggplot2::facet_grid(cols = ggplot2::vars( {{ .facet_var }} )) +
     # bra_eur_theme_minimal +
     ggplot2::theme(legend.position = "top"
                    ,legend.title    = ggplot2::element_text(size = 8) 
@@ -373,22 +368,25 @@ bra_eur_asma_plot <- function(.asma_bra, .asma_eur, .years, .limits = 8){
 
 # Comparison of additional time in terminal airspace
 
-asma_vs_traffic_volume <- function(.years){
-  ann_asma_bra <- asma_bra
+prep_asma_vs_traffic_volume <- function(.asma_bra, .ann_asma_eur, .years){
+  ann_asma_bra <- .asma_bra
   
   comp_asma_bra <- ann_asma_bra |> 
     filter(YEAR %in% .years) |> 
     select(AIRPORT, REG = REGION, YEAR, N_VALID, AVG_ADD_TIME = AVG_ADD_ASMA)
   
-  comp_asma_eur <- ann_asma_eur |> mutate(REG = "EUR") |> 
-    mutate(YEAR = ifelse(YEAR == 2022, 2023, YEAR)) |> 
+  comp_asma_eur <- .ann_asma_eur |> mutate(REG = "EUR") |> 
+    #mutate(YEAR = ifelse(YEAR == 2022, 2023, YEAR)) |> 
     filter(YEAR %in% .years) |> 
     select(AIRPORT, REG, YEAR, N_VALID = ARRS, AVG_ADD_TIME)
   
   comp_asma <- bind_rows(comp_asma_bra, comp_asma_eur)
-  
-  
-  asma_tfc <- comp_asma %>% 
+
+  return(comp_asma)
+}
+
+plot_asma_vs_traffic_multiyear <- function(.comp_asma){  
+  plot_asma_tfc <- .comp_asma |> 
     ggplot() +
     geom_point(aes(x = N_VALID, y = AVG_ADD_TIME, color = REG))  +
     scale_y_continuous(limits = c(0, NA)) +
@@ -406,9 +404,80 @@ asma_vs_traffic_volume <- function(.years){
          ,color = "Region") +
     bra_eur_theme_minimal
   
-  asma_tfc  
+  plot_asma_tfc  
 }
 
+# CHECK HOW TO MERGE THIS WITH ABOVE
+
+plot_asma_vs_traffic_change <- function(.asma, .x,.y, .grp, .chg_var = YEAR, .facet_var = REG){
+  this_plot <- .asma |> 
+    ggplot2::ggplot(ggplot2::aes(x = {{.x}}, y = {{.y}}, group = {{.grp}})) +
+    ggplot2::geom_path(color = "lightblue") +
+    ggplot2::geom_point(ggplot2::aes(shape = {{.chg_var}}, color = {{.chg_var}}), size = 2) +
+    
+    ggplot2::scale_colour_manual(values = c("lightblue","blue")) +
+    # deconflict labels
+    ggrepel::geom_label_repel(aes(label = LABEL)
+                              , nudge_y = -0.5
+                              , force = 180
+                              , max.overlaps = Inf
+                              , box.padding = .15
+                              , na.rm = TRUE
+                              , colour = "grey70", segment.colour = "grey70"
+                              ,size = 3 # set small font size
+    ) +
+    # define limits
+    ggplot2::scale_x_continuous(limits = c(0,NA), labels = scales::label_number(scale = 0.001, suffix = "k")) +
+    ggplot2::scale_y_continuous(limits= c(0, NA)) +
+    # facet plot
+    ggplot2::facet_grid(cols = ggplot2::vars({{.facet_var}})) +
+    # tweak legend for shape and color to be the "same" (i.e., here empty name)
+    ggplot2::guides(shape = guide_legend(""), colour = guide_legend("") ) +
+    ggplot2::labs(   x = "arrival traffic"
+                   , y = "average additional time in terminal airspace [min/arr]"
+    ) +
+    # set and define legend
+    ggplot2::theme(legend.position = "top"
+                   ,legend.title    = ggplot2::element_text(size = 8) 
+                   ,legend.text     = ggplot2::element_text(size = 8)
+                   ,legend.key.size = ggplot2::unit(0.3, "cm")
+    )
+  this_plot
+}
+
+plot_change2 <- function(.tmp_map, .x, .y, .grp, .chg_var = YEAR, .facet_var = REG){  
+  my_mapping <- .tmp_map |> 
+    
+    ggplot2::ggplot(aes(x = {{ .x }}, y = {{ .y }} )) + 
+    ggplot2::geom_abline(intercept = 0, slope = 1, linetype = "dashed", colour = "grey60") +
+   # ggplot2::geom_path(aes(group = {{ .grp }}), colour = "lightblue") + 
+    ggplot2::geom_point(aes(shape = {{ .chg_var }}, colour = {{ .chg_var }} ), size = 2) + 
+    ggplot2::scale_colour_manual(values = c("lightblue","blue")) +
+    ggrepel::geom_label_repel(aes(label = LABEL)
+                              # , nudge_y = 0.5
+                              , force = 100
+                              , max.overlaps = Inf
+                              , box.padding = .15
+                              , na.rm = TRUE
+                              , colour = "grey70", segment.colour = "grey70"
+                              ,size = 3 # set small font size
+    ) + 
+    ggplot2::scale_x_continuous(limits = c(0,NA)) +
+    ggplot2::scale_y_continuous(limits= c(0, NA)) +
+  #  ggplot2::facet_grid(cols = ggplot2::vars( {{ .facet_var }} )) +
+    # bra_eur_theme_minimal +
+    ggplot2::theme(legend.position = "top"
+                   ,legend.title    = ggplot2::element_text(size = 8) 
+                   ,legend.text     = ggplot2::element_text(size = 8)
+                   ,legend.key.size = ggplot2::unit(0.3, "cm")
+    ) +
+    # tweak legend for shape and color to be the "same" (i.e., here empty name)
+    ggplot2::guides(shape = guide_legend(""), colour = guide_legend("") ) +
+    ggplot2::labs(   x = "average additional taxi-out time [min/dep]"
+                     , y = "average additional taxi-in time [min/arr]"
+    )  #  +scale_fill_brewer(palette = "GnBu")
+  return(my_mapping)
+}
 
 
 

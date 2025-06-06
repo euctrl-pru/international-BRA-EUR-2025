@@ -1,12 +1,11 @@
 # Foreword {.unnumbered}
 
-
-
 ![](figures/foreword-combined.png)
 
 ```{r}
 #| label: shakehands
-#| out-width: 80%
-#| out-height: 60%
-knitr::include_graphics("./figures/DGCEA-PRC.jpeg")
+#| fig-cap: ""
+#| fig-align: "center"
+#| out-width: 55%
+knitr::include_graphics("./figures/DGCEA-PRC.jpg")
 ```

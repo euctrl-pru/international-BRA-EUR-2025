@@ -130,12 +130,18 @@ In Europe, the overall trend is one of improvement, with most airports reducing 
 
 ## Mapping Additional Taxi-in and Taxi-out Times
 
-
 ```{r}
 #| label: fig-txot-txit-mapping
 #| fig-cap: Mapping of additional taxi-in and taxi-out times
-  
-plot_mapping_year1_year2(2023,2024) 
+
+# combine txits and txots
+all_txxts <- dplyr::bind_rows(
+     txot_bra_ann_comb, txit_bra_ann_comb
+    ,txot_eur_ann_comb, txit_eur_ann_comb
+  ) 
+
+plot_data <- all_txxts |> prep_change_plot_year1_year2(2023, 2024)
+plot_change(plot_data, TXOT, TXIT, APT)
 ```
 
 This analysis builds on the previous sections. 
@@ -143,9 +149,9 @@ This analysis builds on the previous sections.
 
 It also shows that on average taxi-out operations accrued more additional time than taxi-in operations (data points range below the dotted unit line, and as shown in the previous sections).
 
-For most of the airports, the overall performance shows a reduction in additional taxi-out times (i.e. characterised by a leftshift along the x-axis).
+For most of the European airports, the overall performance shows a reduction in additional taxi-out times (i.e. characterised by a leftshift along the x-axis). The noteable exemption is Lisbon (LPPT) that observed an increase in taxi-out time in 2024.
 
-A significant improvement in taxi-in performance can be obsered in Brazil across all study airports (i.e. decreasing trend along y-axis). 
+A varied picture of taxi-in performance can be obsered in Brazil across all study airports (i.e. decreasing trend along y-axis). 
 This is contrasted by the behaviour in Europe. 
 The majority of European airports observed no significant change in their taxi-in performance (i.e. no vertical trend).
 The noteworthy exemption is London Heathrow (EGLL). 
@@ -184,7 +190,18 @@ This may have amplified the arrival flow as flows generally were disrupted in li
 #| label: fig-asma-vs-traffic-volume
 #| fig-cap: Comparison of additional time in terminal airspace
 
-asma_vs_traffic_volume(c(2023,2024))
+# ------------ old scatter plot ----------------------
+# data
+asma_vs_traffic <- prep_asma_vs_traffic_volume(asma_bra, ann_asma_eur, c(2023,2024))
+# old plot
+# asma_vs_traffic |> plot_asma_vs_traffic_multiyear()
+
+# new change plot presentation
+asma_vs_traffic |> 
+  mutate( YEAR  = as.character(YEAR)
+         ,LABEL = ifelse(YEAR == max(YEAR), AIRPORT, NA)
+         ) |> 
+  plot_asma_vs_traffic_change(N_VALID, AVG_ADD_TIME, AIRPORT)
 ```
 
 @fig-asma-vs-traffic-volume depicts the change in terms of the average additional time in terminal airspace comparing 2023 and 2024.
