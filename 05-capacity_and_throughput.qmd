@@ -171,12 +171,98 @@ The analysis of the spread of the declared capacity vs achieved throughput is us
 However, it gives not indication on how often the demand reaches the declared capacity level.
 For this purpose, this report determines two characteristics points, i.e., the *BLI* base load index, and the peak load index *PLI*.
 
+```{r}
+#| label: prep-bli-pli-lppt-sbgr
+
+#load data
+sbgr_bli_pli <- arrow::read_parquet("./data/BRA-SBGR-THRU-BLI-PLI.parquet") |> 
+  mutate(REG = "BRA")
+lppt_bli_pli <- read_csv("./data/EUR-THRU-analytic-2019-2014-LPPT.csv", show_col_types = FALSE) |> 
+  rename(BIN_HR = BIN, THRU_ARRS = ARRS, THRU_DEPS = DEPS, TOT_THRU = FLTS) |> 
+  mutate( YEAR = lubridate::year(BIN_HR)
+         ,MAX_CAP = 40, PLI = TOT_THRU >= 0.8 * MAX_CAP
+         ,BLI = TOT_THRU >= 0.2 * MAX_CAP
+         ,REG = "EUR")
+
+comb_bli_pli <- bind_rows(sbgr_bli_pli, lppt_bli_pli)
+
+years_to_show <- c(2019, 2023, 2024)
+
+prep_ordered_thrus <- function(.thrus, .show_these_years = years_to_show){
+  this_order <- .thrus |> 
+    dplyr::filter(YEAR %in% .show_these_years) |> 
+    dplyr::group_by(ICAO, YEAR)  |> 
+    dplyr::arrange(desc(TOT_THRU), .by_group = TRUE) |> 
+    dplyr::mutate(RANK = row_number()) |> ungroup() 
+  this_order
+  }
+
+plot_ordered_thrus <- function(.ordered_thrus){
+  this_plot <- .ordered_thrus |> 
+    dplyr::mutate(YEAR = as.character(YEAR)) |> 
+    
+    ggplot2::ggplot(ggplot2::aes(x = RANK, y = TOT_THRU
+                                 , group = YEAR, color = YEAR)
+                    ) + 
+    ggplot2::geom_step()
+  
+  this_plot
+}
+```
+
+```{r}
+#| label: fig-bli-pli-lppt-sbgr
+#| fig-cap: "Ranked hourly throughput at LPPT and SBGR"
+
+cap_levels <-  tribble(~REG, ~ICAO, ~PLI_THR, ~BLI_THR, 
+                     "BRA", "SBGR", 48 , 12, 
+                     "EUR", "LPPT", 32, 8
+                     )
+
+comb_bli_pli |> 
+  prep_ordered_thrus() |> 
+  plot_ordered_thrus() + 
+    facet_wrap(.~ ICAO) +
+    labs(color = ggplot2::element_blank(), x = element_blank()
+         ,y = "hourly throughput") +
+    theme(legend.position = c(0.9,0.9)) +
+    geom_hline(data = cap_levels, aes(yintercept = PLI_THR), linetype = "dashed") +
+    geom_hline(data = cap_levels, aes(yintercept = BLI_THR), linetype = "dotted") +
+    geom_text(
+    data = cap_levels |> mutate(YEAR = "2024", LABEL = "peak (80% max cap)", X = 7600)
+    ,aes(x = X, y = PLI_THR, label = LABEL),vjust = -1, show.legend = F, size = 8/.pt
+    ) +
+    geom_text(
+    data = cap_levels |> mutate(YEAR = "2024", LABEL = "base (20% max cap)", X = 600)
+    ,aes(x = X, y = BLI_THR, label = LABEL), vjust = -1, show.legend = F, size = 8/.pt
+    , hjust = 0)
+    
+```
+
+<!--
 ::: {layout="[55,45]"}
 ![Example of ordered hourly throughout in different years](figures/bli-pli-example.png){#fig-bli-pli-example}
 
 -   @fig-bli-pli-example shows the ordered set of hourly throughputs for the past years.
 -   this allows to identify when the achieved total throughput ranges above characteristics levels (i.e. base load index := 20% of max capcaity, peak load index := 80% of max capacity)
 :::
+
+-->
+
+Comparing the achieved hourly throughput at Guarulhos (SBGR) and Lisbon (LPPT), @fig-bli-pli-lppt-sbgr depicts a higher level of peak throughput traffic numbers at SBGR.
+The overall patterns are similar across the studied years.
+Lisbon (LPPT) observed an increase in its overall traffic throughputs as the hourly throughputs for 2023 and 2024 exceed the pre-pandemic levels of 2019.
+Guarulhos (SBGR) experienced a bounce-back with the continual increase in its hourly throughput between 2023 and 2024 catching up with the pre-COVID levels.
+
+In terms of demand pressure, Lisbon observed for a higher share of hours with throughputs above 80% of its declared capacity than SBGR.
+As the overall ordered throughput shows a gradual reduction gradient Guarulhos (SBGR) combined with a large spread of the peak and base level, there exists available capacity at the airport.
+Lisbon shows a narrower spread.
+On top, the existence of night flying restrictions is clearly visible for LPPT with its distribution tail.
+
+@fig-bli-pli-lppt-sbgr shows that multiple factors influence the interplay between the declared capacity and observed throughputs. 
+Similar to comparing only the number of runways and not the runway system utilisation, focussing on the difference between declared capacities, demand periods and operating conditions does not readily allow to compare operations at different airports.
+For this report, we define peak operating conditions, if the total hourly throughput reaches or exceeds 80% of the declared capacity levels, and accordingly, base load levels, if 20% of more are observed. 
+The peak load index (PLI) accounts then for the number of operating hours at or above the peak level, and respectively, the base load index (BLI) for hours at or above the 20% base traffic level.    
 
 ```{r}
 #| label: fig-bli-pli
@@ -185,7 +271,7 @@ For this purpose, this report determines two characteristics points, i.e., the *
 bli_pli_plot(c(2019:2024))
 ```
 
-@fig-bli-pli provides an overview of the utilisation of the available capacity during the course of a year.
+@fig-bli-pli summarises the observed utilisation of the available (i.e., declared) capacity at the study airports in the different reagions.
 In Brazil, we observe a high utilisation of the capacity at Sao Paulo (SBSP) and Rio de Janeiro (SBRJ) in 2023 compared to earlier years (e.g. 2022).
 However, it must be noted that both aerodromes are characterised by a relatively conservative and low capacity declaration.
 The major hub in Brazil, SBGR shows a relatively high base-load-index (BLI), however rarely observed peak loads back in 2019.
