@@ -146,19 +146,17 @@ plot_change(plot_data, TXOT, TXIT, APT)
 
 This analysis builds on the previous sections. 
 @fig-txot-txit-mapping compares the relationship between the taxi-in and taxi-out performance observed.
-
 It also shows that on average taxi-out operations accrued more additional time than taxi-in operations (data points range below the dotted unit line, and as shown in the previous sections).
 
-For most of the European airports, the overall performance shows a reduction in additional taxi-out times (i.e. characterised by a leftshift along the x-axis). The noteable exemption is Lisbon (LPPT) that observed an increase in taxi-out time in 2024.
-
-A varied picture of taxi-in performance can be obsered in Brazil across all study airports (i.e. decreasing trend along y-axis). 
+For most of the European airports, the overall performance shows a reduction in additional taxi-out times (i.e., characterised by a left-shift along the x-axis). 
+The notable exemption is Lisbon (LPPT) that observed an increase in taxi-out time in 2024.
+A varied picture of taxi-in performance can be observed in Brazil across all study airports (c.f. varying trend along y-axis). 
 This is contrasted by the behaviour in Europe. 
 The majority of European airports observed no significant change in their taxi-in performance (i.e. no vertical trend).
-The noteworthy exemption is London Heathrow (EGLL). 
-EGLL faced a significant increase in average additional taxi-in time in 2023 in comparison to the pre-pandemic performance level observed in 2019.
-The lower performance in terms of taxi-in is observed in @fig-eur-txit-timeline which shows a strong increase in the second half of 2023.
+Movements at London Heathrow (EGLL) saw a change of about one additional minute per arrival when comparing the change from 2023 to 2024
+The changes in performance in terms of taxi-in is observed in @fig-bra-txit-timeline and @fig-eur-txit-timeline which show some increases in the second half of 2023 and 2024.
 @fig-txot-txit-mapping also shows that the overall taxi-performance in Europe tends to show lower levels of variation between pre-pandemic and post-pandemic.
-Exemptions are London Heathrow (EGLL) and Rome Fiumincino (LIRF) that saw a discernible rise in taxi-in inefficiencies and exceeding the levels observed at Brazilian study airports.
+On average the observed level of additional taxi-in time appeared to be similar in Brazil and Europe with the exemption of the constrained hubs.
 
 
 ## Additional Time in Terminal Airspace

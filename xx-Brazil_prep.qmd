@@ -1240,6 +1240,53 @@ bli_pli_bra <- hourly_thrus_bra |>
 write_csv(bli_pli_bra, "./data_proc/BRA-BLI-PLI.csv")
 ```
 
+recalc BLI/PLI for SBGR and chapter 5
+
+```{r}
+bli_pli_apts <- "SBGR"
+
+get_ANAC_for_apts <- function(.apts = bli_pli_apts, .years){
+  flights_ANAC <- flightsbr::read_flights(.years)
+}
+
+rq <- get_ANAC_for_apts("SBGR", c(2019,2023,2024)) 
+rq2 <- rq |> tibble::tibble() |> 
+  dplyr::select(
+    ADEP = sg_icao_origem,
+    ADES = sg_icao_destino,
+    ATOT_HR = hr_partida_real,
+    ATOT_DATE = dt_partida_real,
+    ALDT_HR = hr_chegada_real,
+    ALDT_DATE = dt_chegada_real,
+  #  FUEL_BURN = lt_combustivel,
+    TYPE = sg_equipamento_icao,
+    # REGIAO_DEP = nm_regiao_origem,
+    # PAIS_ORIGEM = nm_pais_origem,
+    # REGIAO_ARR = nm_regiao_destino,
+    # PAIS_DESTINO = nm_pais_destino,
+    # TEMPO_DE_VOO = nr_horas_voadas
+) |> 
+  mutate( ATOT = lubridate::ymd_hms(paste(ATOT_DATE, ATOT_HR), tz = "UTC")
+         ,ALDT = lubridate::ymd_hms(paste(ALDT_DATE, ALDT_HR), tz = "UTC")
+         ) |> 
+  filter(ADEP %in% bli_pli_apts)
+
+turn_thrus <- function(.mvts, .apt = "SBGR"){
+  arrs <- .mvts |> 
+    dplyr::filter(ADES == .apt) |> 
+    dplyr::mutate(ICAO = .apt, BIN = floor_date(ALDT, unit = "hour"), YEAR = lubridate::year(BIN)) |>
+    dplyr::group_by(ICAO, BIN) |> reframe(ARRS = dplyr::n())
+  
+  deps <- .mvts |> 
+    dplyr::filter(ADEP == .apt) |> 
+    dplyr::mutate(ICAO = .apt, BIN = floor_date(ATOT, unit = "hour"), YEAR = lubridate::year(BIN)) |>
+    dplyr::group_by(ICAO, BIN) |> reframe(DEPS = dplyr::n())
+  
+  comb <- dplyr::full_join(arrs, deps, by = dplyr::join_by(ICAO, BIN))
+}
+```
+
+
 
 # CHAP 6 - Efficiency
 
