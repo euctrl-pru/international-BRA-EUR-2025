@@ -13,7 +13,7 @@ source(here::here("R","04-predictability_new-graphs.R"))
 
 The preceding sections have demonstrated that both systems exhibit unique reactions to the broader developments in air transport.
 Predictability plays a crucial role impacting both the strategic phase, where airline schedules are formulated, and the operational phase, where Air Navigation Service Providers (ANSPs) and stakeholders manage the balance between demand and capacity.
-Higher levels of predictability stands to be advantageous for ANSPs, mainly when serving airspace users, as it contributes to highly efficient operations, even during periods of peak demand.
+Higher levels of predictability stand to be advantageous for ANSPs, mainly when serving airspace users, as it contributes to highly efficient operations, even during periods of peak demand.
 This chapter focuses on arrival and departure punctuality as crucial predictability indicators.
 
 ## Arrival Punctuality
@@ -170,7 +170,7 @@ p_bra / p_eur + plot_layout(guides = "collect") &
 
 @fig-puncvstfc presents a side-by-side view of airport-level arrival punctuality and movement evolution between 2023 and 2024.
 
-As presented above, while differences exist in the share of early and late arrivals, the number of flights arriving within -/+15 minutes of their scheduled time ranged ranged higher in Brazil than in Europe.
+As presented above, while differences exist in the share of early and late arrivals, the number of flights arriving within -/+15 minutes of their scheduled time ranged higher in Brazil than in Europe.
 For 2023 and 2024, a 60% share of operations serves as a useful threshold. 
 The majority of European arrival operations at the study airports failed to meet this threshold with the highest offset observed at London Gatwick (EGKK), Heathrow (EGLL), and Lisbon (LPPT).
 This is contrasted by the success rate observed across the Brazilian study airports.
@@ -254,14 +254,15 @@ p_2023 / p_2024 + plot_layout(guides = "collect") &
 ```
 
 @fig-departure-punc presents the departure punctuality results for the study airports. 
-The 2024 data shows that, overall, airports perform better in managing outbound traffic, although challenges remain.
+The 2024 data show that, overall, airports perform better in managing outbound traffic, although challenges remain.
 Different from arrival punctuality, where Brazilian airports showed a high share of early arrivals and wide variability across the network—departure punctuality metrics appear comparatively stronger, especially in terms of flights departing within the punctuality (-/+ 15 min) time window.
 
-One example is Santos Dumont Airport (SBRJ), where near to 50% of departures occurred 5 to 15 minutes ahead of schedule, reinforcing a consistent tendency toward early operations. On the other hand, Galeão Airport (SBGL) was one of the highest shares of delayed departures of flights leaving more than 15 minutes behind schedule.These two airports operate in close proximity and have undergone significant operational changes in recent years, which likely contribute to the contrasting performance. 
+One example is Santos Dumont Airport (SBRJ), where near to 50% of departures occurred 5 to 15 minutes ahead of schedule, reinforcing a consistent tendency toward early operations. On the other hand, Galeão Airport (SBGL) was one of the highest shares of delayed departures of flights leaving more than 15 minutes behind schedule.
+These two airports operate in close proximity and have undergone significant operational changes in recent years, which likely contribute to the contrasting performance. 
 
 Moreover, seasonal weather conditions—such as summer thunderstorms, wind gusts, and windshear, especially in Brazil’s South-east region, can disrupt operations, increase runway occupancy time, or require frequent runway changes, further affecting predictability.
 
-In summary, while departure punctuality shows a slightly more favorable scenario compared to arrival operations, maintaining high performance levels still demands continuous improvements—especially at high-density airports. Operational planning, weather adaptation, and runway configuration remain key factors for enhancing outbound flight reliability.
+In summary, while departure punctuality shows a slightly more favourable scenario compared to arrival operations, maintaining high performance levels still demands continuous improvements—especially at high-density airports. Operational planning, weather adaptation, and runway configuration remain key factors for enhancing outbound flight reliability.
 
 
 <!-- RETIRED - CHECK WHETHER WE DO THIS IN THE FUTURE ~ TIMELINE OF PUNC window

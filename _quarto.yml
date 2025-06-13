@@ -1,7 +1,7 @@
 project:
   type: book
-  #output-dir: docs    # use this output dir for anything updated on the public site
-  output-dir: _book
+  output-dir: docs    # use this output dir for anything updated on the public site
+  #output-dir: _book
 
 # do not show output of code chunks - outside errors
 execute:
@@ -13,8 +13,9 @@ book:
   author: 
     - DECEA Performance Section
     - EUROCONTROL Performance Review Unit
-  date: May 2025             # during drafting: today
-  downloads: [pdf, docx]
+  date: "31 May 2025"             # during drafting: today
+  date-format: "D MMMM YYYY"
+  downloads: pdf # [pdf, docx]
   chapters:
   - index.qmd
   - 00-foreword.qmd

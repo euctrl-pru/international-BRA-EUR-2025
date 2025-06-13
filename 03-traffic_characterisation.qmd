@@ -43,7 +43,8 @@ p_bra / p_eur
 
 Brazilian air traffic continues to exceed 2019 levels, marking a phase of real growth, not just post-pandemic recovery. Since 2022, traffic has grown steadily, showing a structured recovery in demand. However, commercial aviation is still adjusting its route network in some regions to fully match 2019 levels.
 
-@fig-annual-traffic-timeline shows the daily evolution of air traffic in Brazil (7-day moving average) highlights the busiest and quietest periods of recent years. Over the past three years, the day with the lowest average traffic in Brazil typically falls on the Wednesday after Carnival. Meanwhile, the annual peak usually happens in late December, close to Christmas, reinforcing a well-established seasonal pattern in the Brazilian air transport market.Overall, despite short-term fluctuations, the general trend is upward, confirming that Brazil is on a steady growth path. It is important to note that the Brazilian data only includes commercial flights (excluding general and military aviation) and is based on UTC time.
+@fig-annual-traffic-timeline shows the daily evolution of air traffic in Brazil (7-day moving average) highlights the busiest and quietest periods of recent years. Over the past three years, the day with the lowest average traffic in Brazil typically falls on the Wednesday after Carnival. Meanwhile, the annual peak usually happens in late December, close to Christmas, reinforcing a well-established seasonal pattern in the Brazilian air transport market.
+Overall, despite short-term fluctuations, the general trend is upward, confirming that Brazil is on a steady growth path. It is important to note that the Brazilian data only includes commercial flights (excluding general and military aviation) and is based on UTC time.
 
 When we compare this with the European Region, a different dynamic becomes visible. In terms of total network-level air traffic, Europe still lags behind its pre-pandemic levels. However, if current trends continue, the region is expected to reach or slightly surpass 2019 traffic levels by 2025. Low-cost carriers have outperformed mainline airlines in the recovery phase. Their business model allowed for faster adjustments in staffing, crewing, and servicing. At the same time, national support programs for legacy carriers often included conditions such as slot restrictions or reduced domestic operations, which contributed to a decrease in overall network connectivity and frequency between airports.
 
@@ -86,7 +87,7 @@ While Brazil shows less seasonal fluctuation overall, Europe's variation in traf
 The previous section showed the air traffic development on the network level.
 As airports represent nodes in this overall network, changes to the overall traffic situation will ripple down to the airport level.
 This demand on terminal and airport air navigation services forms a substantial input to understand how the operational performance measures in this report developed over time for the selected study airports.
-This reports looks in particular at the performance levels observed at 10 key airports in each region (c.f. scope)
+This report looks at the performance levels observed at 10 key airports in each region (c.f. scope)
 
 
 ```{r}
@@ -141,7 +142,9 @@ annual_change_bra(study_apt_lvl, 2024,2023,scale_limits) / annual_change_eur(ann
 ```
 
 
-The 2024 air traffic analysis highlights the importance of understanding the structural differences between the Brazilian and European networks. While Guarulhos (SBGR) remains the busiest airport in Brazil, its traffic volume is comparable to that of the fifth and sixth busiest airports in Europe— Munich and Gatwick. This shows that direct comparisons between the top airports in each region may not fully reflect their operational realities. Factors such as the number of runways, network architecture, and traffic density create unique operational complexities in each case.
+The 2024 air traffic analysis highlights the importance of understanding the structural differences between the Brazilian and European networks. While Guarulhos (SBGR) remains the busiest airport in Brazil, its traffic volume is comparable to that of the fifth and sixth busiest airports in Europe— Munich and Gatwick. 
+This shows that direct comparisons between the top airports in each region may not fully reflect their operational realities. 
+Factors such as the number of runways, network architecture, and traffic density create unique operational complexities in each case.
 
 
 In Brazil, the largest traffic drop in 2024 occurred at Porto Alegre Airport (SBPA), which was directly impacted by major flooding in May and remained closed until October. Many flights were redirected to nearby airports in southern Brazil, which are not included in the scope of this comparison with Europe. Another change was the increase in traffic at Galeão International Airport (SBGL), which rose to sixth place among Brazil’s busiest airports. This shift was mainly driven by restrictions applied at Santos Dumont Airport (SBRJ), leading to a reallocation of flights from SBRJ to SBGL. As a result, SBRJ saw a decline, while SBGL experienced gradual growth in operations. This redistribution not only affects annual totals but will also have direct impacts on other indicators, such as the peak day of operations, which will be discussed later in this report.
@@ -198,7 +201,7 @@ Guarulhos’ performance becomes more relevant when compared to the busiest airp
 Similar traffic levels were observed at Munich (EDDM) in Europe in 2024 highlighting the different realities of each region. 
 This comparison helps illustrate the structural complexity and differences between the two systems. 
 While Brazil concentrates much of its traffic in a number of key airports like SBGR, Europe sees a more varied spread of operations across a larger network of major airports. 
-The group of latter airport often operate a more robust infrastructure (such as more runways). 
+The group of latter airports often operate a more robust infrastructure (such as more runways). 
 Therefore, a direct comparisons between the “top” airports in each region may not accurately reflect their unique operational contexts.
 
 
@@ -280,7 +283,7 @@ peak_day_comb |>
 
 Analysing the 2024 peak day data, as presented in @fig-peak-day, with Brazilian and European airports grouped by number of runways, we observe that six European airports operate with three or more runways and are therefore not directly comparable to Brazilian airports. 
 However, it is important to note that in many of these cases, the runway system does not support fully independent operations on all available runways.
-Such contraints reduce the available runway system capacity, and thus, the serviced peak traffic is also impacted by the runway system configuration.
+Such constraints reduce the available runway system capacity, and thus, the serviced peak traffic is also impacted by the runway system configuration.
 For example, operations at Amsterdam (EHAM) cannot make use of all six runways at the same time.
 Operations at Zurich (LSZH, 3 interdependent runway system) range in the order of single runway operations at Gatwick (EGKK, 1 runway). 
 As a result, peak traffic performance is also shaped by the specific runway configuration.
@@ -290,7 +293,7 @@ This difference can be attributed to more robust infrastructure and operational 
 Additional benefits are exploited by dedicated operational concepts. 
 For example, London Heathrow implemented time-based separation on final which adds to achieving a high level of runway system throughput even in high wind situations.
 
-This show the importance of analysing peak day traffic as a complementary indicator to average daily movements, especially during periods of recovery or operational adjustments.
+This shows the importance of analysing peak day traffic as a complementary indicator to average daily movements, especially during periods of recovery or operational adjustments.
 Future research may highlight the impact of the runway system configuration on the service rate under the associated runway use.
 
 ## Fleet Mix
@@ -313,7 +316,7 @@ plot_fleet_mix(fm_apts, key_year)
 
 @fig-fleet-mix confirms the dominance of the “medium” aircraft category at the airports analysed in both Brazil and Europe. 
 Fleet mix plays a key role in airport capacity, directly impacting traffic flow and operational efficiency. 
-Generally, a higher share of “heavy” aircraft can reduce runway throughput due to wake turbulence separation requirements and longer landing and takeoff times.
+Generally, a higher share of “heavy” aircraft can reduce runway throughput due to wake turbulence separation requirements and longer landing and take-off times.
 
 In Brazil, the main international hubs, Guarulhos (SBGR), Galeão (SBGL), and Campinas (SBKP), showed a 15% to 20% share of “heavy” aircraft, reinforcing their role as the country’s key international gateways. 
 Campinas, in particular, stands out as the main hub for Azul Linhas Aéreas and also handles a large volume of cargo operations, which contributes to its diverse fleet profile and operational complexity.
@@ -375,6 +378,6 @@ European peak service rates show the overall recovery pattern and first signs of
 Finally, the fleet mix analysis reinforced the structural differences in how each region operates: Brazil shows a higher presence of light aircraft in some regional airports and a centralised model for long-haul traffic.
 Light-type traffic at the study airports in Europe remain the exemption.
 A higher share of heavy aircraft is observed at the top-European airport in this study.
-The wider spread of internatinoal connections across all chosen airports shows a less centralised global connectivity model.
+The wider spread of international connections across all chosen airports shows a less centralised global connectivity model.
 
 Together, these findings establish a base to understanding the operational performance indicators in the next chapters.

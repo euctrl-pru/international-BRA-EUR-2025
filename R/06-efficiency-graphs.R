@@ -434,7 +434,7 @@ plot_asma_vs_traffic_change <- function(.asma, .x,.y, .grp, .chg_var = YEAR, .fa
     # tweak legend for shape and color to be the "same" (i.e., here empty name)
     ggplot2::guides(shape = guide_legend(""), colour = guide_legend("") ) +
     ggplot2::labs(   x = "arrival traffic"
-                   , y = "average additional time in terminal airspace [min/arr]"
+                   , y = "avg. add. time in terminal airspace [min/arr]"
     ) +
     # set and define legend
     ggplot2::theme(legend.position = "top"

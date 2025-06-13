@@ -9,7 +9,7 @@ source(here::here("R","06-efficiency-graphs.R"))
 
 Operational efficiency is a critical component in assessing the management and execution of operations. It provides insights in the management of arrival and departure flows and the associated separation and synchronisation activities. 
 Inefficiencies can have an impact on user operations in terms of delays or excessive fuel burn.
-In light of the previous chapters it is therefore interesting to study how the available capacity was utilised to service demand during the different flight phases.
+In light of the previous chapters, it is therefore interesting to study how the available capacity was utilised to service demand during the different flight phases.
 
 The measures reported in this comparison report are based on the observed travel time for surface operations (i.e. taxi-in and taxi-out) and during the arrival phase. 
 These travel times are compared with an associated reference time for a group of flights showing similar operational characteristics. 
@@ -162,7 +162,7 @@ On average the observed level of additional taxi-in time appeared to be similar 
 ## Additional Time in Terminal Airspace
 
 The additional time in terminal airspace is calculated as the difference of the actual flying time from entering the sequencing area (i.e. 100NM radius around the airport) to the actual landing time.
-Previous research and guidance suggests that reference time can be build for flights sharing similar operational characteristics (entry sector, aircraft class, and landing runway).
+Previous research and guidance suggest that reference time can be built for flights sharing similar operational characteristics (entry sector, aircraft class, and landing runway).
 
 
 ```{r}
@@ -204,9 +204,9 @@ asma_vs_traffic |>
 
 @fig-asma-vs-traffic-volume depicts the change in terms of the average additional time in terminal airspace comparing 2023 and 2024.
 
-The comparison shows the effect of the variation of air traffic on the performance in the both region. 
+The comparison shows the effect of the variation of air traffic on the performance in both regions. 
 In general Brazil observed an increase in arrival efficiency evidenced by the lower observed additional times accrued by the arriving traffic.
-For some airports in the Brazil region it can be observed how procedural aspects influence the additional time in terminal airspace.
+For some airports in the Brazil region, it can be observed how procedural aspects influence the additional time in terminal airspace.
 For example, despite the variation of the traffic levels considered, the additional time remained fairly stable at SBGR comparing pre- and post-pandemic years.
 
 The European region shows saturation effects characterised by the increasing number of flights.

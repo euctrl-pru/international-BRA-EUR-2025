@@ -83,15 +83,15 @@ Another key difference affecting performance in both regions for this report is 
 Unlike in Europe, it is interesting to note that Brazil ended 2022 already servicing air traffic movements above the pre-pandemic level.
 There is a continual increase in air traffic in Brazil accounting now for 21,4% of more traffic than in 2019.
 <!-- However, as will be shown later, much of this growth was due to the strong increase in general aviation and only to a lower extent in commercial aviation.\ --> Overall, the volume of air traffic also rebounded in Europe.
-At the end of 2023, the level reached about 90% of the pre-pandemc air traffic, and with 2024 the gap is closing to about 96%.
+At the end of 2023, the level reached about 90% of the pre-pandemic air traffic, and with 2024 the gap is closing to about 96%.
 These recovery numbers are impacted by the geo-political developments.
-Due to the Russion invasion of Ukraine, a certain share of flights are currently banned to operate to/from Europe.
+Due to the Russian invasion of Ukraine, a certain share of flights is currently banned to operate to/from Europe.
 
 Both regions operate with similar operational concepts, procedures and supporting technology.
 Considering the non-oceanic dimension of the airspace, Brazil services an area about 22% smaller than Europe.
 Brazil, with lower traffic density related to airspace, finds probably a more challenging cost-benefit ratio to maintain communication coverage and surveillance for regions with low-traffic.
 The higher traffic density in Europe may cross all aspects of flight management.
-In particular, the European region faces more considerable challenges in coordinating efforts to adress operational constraints and service the current demand.
+In particular, the European region faces more considerable challenges in coordinating efforts to address operational constraints and service the current demand.
 
 ## Network Characterisation
 
@@ -161,7 +161,7 @@ Also, in 2024, demand for air traffic services continued to grow.
 This shows the need to review and improve how services are organized in Brazil.
 Expanding the use of the AFIS model in strategic areas may be a cost-effective and safe way to meet future needs and make better use of SISCEAB’s resources.
 
-The more spread out distribution in Europe showcases the historical development of the European network.
+The more spread-out distribution in Europe showcases the historical development of the European network.
 The traditional focus on national hubs and carriers resulted in the development of a higher number of major aerodromes (typically servicing the capital, major metropoles, or economic centers) interconnecting with other national hubs across the continent.
 There exists a mix of the organisation of smaller operations in Europe.
 Dependent on the national or local setup, the resources of the national service provider are often complemented by local service providers.
@@ -257,7 +257,7 @@ From an international perspective both regions are interconnected differently.
 Traffic from Brazil to Europe (i.e., Eurocontrol Member States) accounts for just under 2% of the total traffic volume in Brazil.
 Connections to other Southern America states represent the major international destinations accounting for about 5%.
 Europe has a shallow share of flights going to Southern America, including Brazil.
-The Middle East, Nothern America, and Africa represent the biggest international markets ranging between 2.3-3.3% of all departures in Europe.
+The Middle East, Northern America, and Africa represent the biggest international markets ranging between 2.3-3.3% of all departures in Europe.
 :::
 
 ```{r}
@@ -270,7 +270,7 @@ knitr::include_graphics("./figures/BRA-upset-national-connections.png")
 
 With @fig-BRA-upset-connection we observe just under 46.000 flights in 2024 operated to adjacent countries in South America.
 A strong segment of the market represents flights to/from Argentina and Chile accounting for about half of the flights departing from the airports in this study.
-Accordingly, flights to Colombia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Carribean.
+Accordingly, flights to Colombia and Uruguay from the study airports account for a smaller fraction, and there is a multitude of other connections to South America and the Caribbean.
 Flights operating from airports not included in this study account for smaller shares.
 This confirms the selection of the study airports for Brazil, as the major airports handle most of the pan-regional traffic with a strong connection to Argentina and Chile.
 
@@ -303,7 +303,7 @@ ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
 
 @fig-BRA-EUR-connections-parallel shows the connections between Europe and Brazil in 2024.
 Individual connections of less than 90 flights per year are aggregated into an "other" group.
-These reflect to a large extent individual flights (e.g. State flights, specific cargo operations), and only contribute to a small extent to the overall traffic between both regions.\
+These largely reflect specific individual flights (e.g. State flights, special cargo operations), and only contribute to a small extent to the overall traffic between both regions.\
 Guarulhos (SBGR) and Lisbon (LPPT) are the main airports for connectivity between both regions.
 Due to its prominent role, this edition considers operations at LPPT in a more prominent manner.
 
@@ -341,7 +341,7 @@ Updated dashboards, previous work, and supporting historical data are available 
 
 While both regions operate on similar operational concepts and technologies, there exists key characteristics and distinctions in both regions.
 One of the key differences is the overall organisation of air navigation services.
-Brazil's air navigation services are centralised under DECEA, overseeing all airspace control and contributing to national defense.
+Brazil's air navigation services are centralised under DECEA, overseeing all airspace control and contributing to national defence.
 In contrast, Europe's air navigation services are provided by multiple entities and ANSPs operating predominantly within their national state boundaries and FIR borders.
 
 Also remarkable is the comparison of the number of air traffic controllers between Brazil and Europe during the pandemic.
@@ -350,7 +350,7 @@ Brazil experienced an increase in ATCOs in line with the overall traffic growth.
 ATCO numbers in Europe marginally increased in comparison to 2019 in 2023.
 This disparity underscores a significant difference in the systems' responsiveness, partly attributed to Brazil's centralised and rigid hiring process.
 At the same time, European providers operate with greater independence with varying organisational setups (public vs private organisation, unions).
-Adjustments of the ATCO workforce tend to be more conservative..
+Adjustments of the ATCO workforce tend to be more conservative.
 
 The distribution of commercial flights in 2022 indicated that only a subset of airports handled 80% of commercial take-offs.
 In 2024 - with the stabilising air traffic levels - the top-10 airports in Europe handled 19% of the network departures, while in Brazil the top-10 accounted for 61%; considering the top-100 airports in both regions, this group handled 67% of all departures in Europe, and 97% in Brazil.

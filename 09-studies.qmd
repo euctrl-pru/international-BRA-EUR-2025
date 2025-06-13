@@ -144,7 +144,7 @@ sbgr_comb |>
 
 The results presented in @fig-lppt-asma-monthly indicate an increase in additional time in the arrival airspace at LPPT. 
 The additional time is shown for the period following the deployment of the point merge operations covering March through August focussing on the last 40NM around Lisbon.
-The results are also broken out to showcase the behaviour for both landing directions at Lisbonm, i.e., runway 02 and runway 20.
+The results are also broken out to showcase the behaviour for both landing directions at Lisbon, i.e., runway 02 and runway 20.
 For both runways, an increase in the additional time can be observed. Aside the results for March that represents the transition to point merge operations, the observed additional time increased on average by about a minute when compared to the pre-deployment year 2023.
 It must be noted that the results for LPPT are point-in-time snapshots and influenced by the start of operations. 
 There might be additional flow control measures in place to support the transition, including additional buffers or alignment patterns. 
@@ -152,7 +152,7 @@ Future work could explore how the actual arrival routes changed based on the new
 
 The operations at SBGR show a clear trend when comparing pre-pandemic traffic levels to the current arrival flows, c.f. @fig-sbgr-asma-monthly.
 A mild seasonal pattern is observable, with the monthly average additional time in terminal airspace ranging post the point-merge implementation lower than in 2019.
-With the summer months a more varied behaviour is observed seen a fluctuation of the obsered additional times. 
+With the summer months a more varied behaviour is observed seen a fluctuation of the observed additional times. 
 
 For the implementation of the PMS, the following observations can be made. 
 Operationally, the PMS enabled a higher occupancy rate within the terminal airspace. 
@@ -205,7 +205,7 @@ To improve planning for operational position configurations and the allocation o
 knitr::include_graphics("./figures/acc_ctb_northsouth.png")
 ``` 
 
-### Center-level comparision Curitiba ACC and Lisbon Continental
+### Center-level comparison Curitiba ACC and Lisbon Continental
 
 ```{r}
 #| label: fig-HLC-Curitiba-Lisbon

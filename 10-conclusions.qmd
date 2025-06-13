@@ -7,7 +7,7 @@ bibliography: references.bib
 source(here::here("_chapter-setup.R"))
 ```
 
-This forth edition of the Brazil-Europe operational ANS performance comparison report builds on the joint project between the Performance Section of DECEA and the Performance Review Unit of EUROCONTROL.
+This fourth edition of the Brazil-Europe operational ANS performance comparison report builds on the joint project between the Performance Section of DECEA and the Performance Review Unit of EUROCONTROL.
 The collaboration aims at fostering the understanding and support the further development of approaches to measure operational performance in both regions.
 This report builds on a subset of indicators and metrics established under the umbrella of ICAO’s Global Air Navigation Plan @icao_doc9750_2019.
 The work is also used to showcase the application of the GANP indicators within a bi-regional and multi-regional project.
@@ -45,7 +45,7 @@ Operational efficiency is measured in this report in the form of the additional 
 On average, taxi-in operations are less constrained than taxi-out operations.
 The observed performance varies across the airports and timeframe.
 In terms of arrival management, air traffic in Brazil observed higher additional times in the terminal airspace.
-This report showed that the scale effect of lower air traffic are potentially masked by the effects of airspace redesign in Brazil.
+This report showed that the scale effect of lower air traffic is potentially masked by the effects of airspace redesign in Brazil.
 In the European region, it appears that the higher level of air traffic demand puts pressure on the arrival management and sequencing, and 2022 marks a return to higher additional times within the terminal airspace.
 Further research can help to identify drivers and performance enablers.
 
