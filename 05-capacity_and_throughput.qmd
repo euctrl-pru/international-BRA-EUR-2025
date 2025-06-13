@@ -268,20 +268,33 @@ The peak load index (PLI) accounts then for the number of operating hours at or 
 #| label: fig-bli-pli
 #| fig-cap: Capacity utilisation (base load index vs peak load index)
 
-bli_pli_plot(c(2019:2024))
+eur_bli_pli <- list.files("data", pattern = "^EUR-BLI-PLI", full.names = T) |> 
+  purrr::map(.f = ~ read_csv(.x, show_col_types = FALSE)) |> bind_rows() |> 
+  mutate(REG = "EUR")
+
+bli_pli     <- bind_rows(bli_pli_bra, eur_bli_pli)   # bra loaded with supp R scripts
+
+bli_pli_plot(bli_pli, 2019:2024) +
+  theme(legend.position = c(0.07, 0.8), legend.key.height = unit(4, "mm"))
 ```
 
-@fig-bli-pli summarises the observed utilisation of the available (i.e., declared) capacity at the study airports in the different reagions.
-In Brazil, we observe a high utilisation of the capacity at Sao Paulo (SBSP) and Rio de Janeiro (SBRJ) in 2023 compared to earlier years (e.g. 2022).
-However, it must be noted that both aerodromes are characterised by a relatively conservative and low capacity declaration.
+
+
+@fig-bli-pli summarises the observed utilisation of the available (i.e., declared) capacity at the study airports in the different regions.
+Based on this report, it appears that airports showing a BLI of higher than 0.75 observe a consistent level of demand across the operating hours, congestion due to peak operating conditions kick in with a PLI of 0.3. The lower range suggesting a strong banks, while higher levels of the PLI demonstrating a consistent use of the available capacity.
+In Brazil, we observe a high utilisation of the capacity at Sao Paulo (SBSP) in 2023 and 2024 comparable to pre-COVID levels in 2019.
+For a majority of the airport across the years, no substantial peak loads were measured.
+This suggests that there is substantial capacity to sustain future growth of air traffic.
+Rio de Janeiro observed moderate loads confirming the role of the airport within the Brazilian system. 
+that both aerodromes are characterised by a relatively conservative and low capacity declaration.
 The major hub in Brazil, SBGR shows a relatively high base-load-index (BLI), however rarely observed peak loads back in 2019.
-The associated values for 2022 or 2023 still range below the pre-pandemic performance.
-Within the European context, a high utilisation of the available system capacity was observed for London Heathrow, Frankfurt, and Gatwick in 2019 with a BLI above 0.8 and the associated PLI above 0.4 (top right quadrant).
-It is noteworthy that in the European region in 2023 only London Heathrow returned to similar levels of capacity utilisation.
+Within the European context, a high utilisation of the available system capacity was observed for London Heathrow, Frankfurt, Gatwick, and Lisbon in 2019, 2023, and 2024 with a BLI above 0.8 and the associated PLI above 0.3 (top right quadrant).
+This suggests that for many of these airports the daily traffic loads returned to similar levels of capacity utilisation than pre-COVID.
 For the majority of European airports, the peak load index ranges relatively low.
-This suggests that most of the airports operate currently concentrated short peaks or have not yet seen a return to pre-pandemic patterns.
+This suggests that most of the airports operate currently concentrated short peaks or having growth potential available in terms of traffic load.
+
 Using a regression analysis, we can also see a difference in the trend in Europe in comparison to Brazil.
-Amongst the study airports, there is a higher share of airports with a more peak operating hours than in Brazil. 
+Amongst the study airports, there is a higher share of European airports with more peak operating hours than in Brazil. 
 This might be related to the overall role of the airports and underlying connectivity structure and demand levels already described in earlier chapters.
 Future work on understanding the drivers between operational concepts and demand may reveal further characteristics of the service provision in both systems.
 

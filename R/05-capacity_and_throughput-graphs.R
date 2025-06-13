@@ -493,13 +493,14 @@ cap_peak_tp_plot <- function(key_year){
 # load data
 bli_pli_bra <- read_csv("./data/BRA-BLI-PLI.csv") |> mutate(REG = "BRA")
 bli_pli_eur <- read_csv("./data/EUR-BLI-PLI.csv") |> mutate(REG = "EUR")
+bli_pli     <- bind_rows(bli_pli_bra, bli_pli_eur)
 
-
-bli_pli_plot <- function(.years){
-  bli_pli <- bind_rows(bli_pli_bra, bli_pli_eur) |> 
-    filter(YEAR %in% .years) |> mutate(YEAR = as.factor(YEAR))
+bli_pli_plot <- function(.bli_pli_df, .years){
+   this_data <- .bli_pli_df |> 
+    filter(YEAR %in% .years) |> 
+     mutate(YEAR = as.factor(YEAR))
   
-  p <- bli_pli |> 
+  p <- this_data |> 
     mutate(LABEL = paste(ICAO, YEAR)) |> 
     ggplot(aes(x = BLI, y = PLI, color = YEAR)) + 
     geom_point() + 
@@ -514,8 +515,8 @@ bli_pli_plot <- function(.years){
     facet_wrap(. ~ REG) +
     theme(legend.position = "top") +
     stat_smooth(aes(group = REG),method = "lm", formula = y ~ I(x^5), size = 0.5, linetype = "dashed", color = "grey50" , se = FALSE) +
-    geom_hline(yintercept = 0.3, color = "grey80") +
-    geom_vline(xintercept = 0.75, color= "grey80") +
+    geom_hline(yintercept = 0.3, color = "grey40", linetype = "dotted") +
+    geom_vline(xintercept = 0.75, color= "grey40", linetype = "dotted") +
     labs(color = NULL) +
     theme(panel.spacing.x = unit(1, "cm", data = NULL)) 
   
