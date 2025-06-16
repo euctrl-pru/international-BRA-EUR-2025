@@ -238,6 +238,11 @@ format:
         \usepackage{pdfpages}
         \pagenumbering{gobble}
         \setlength{\columnsep}{1cm}
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[L]{\leftmark}
+        \fancyhead[R]{}
+        \fancyfoot[L]{}
 
   docx:
     toc: true
