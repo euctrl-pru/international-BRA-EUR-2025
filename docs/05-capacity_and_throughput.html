@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Operational Comparison of ANS Performance - 5&nbsp; Capacity and Throughput</title>
+<title>5&nbsp; Capacity and Throughput – Operational Comparison of ANS Performance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,16 +57,16 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-47c3f049e42a003ed61c08f1e1b18ecb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -92,41 +92,296 @@ div.csl-indent {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./media/EUROCONTROL-logo-standard-rgb.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-aiu-home" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">AIU Home</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-aiu-home">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu"><i class="bi bi-house-fill" role="img">
+</i> 
+ <span class="dropdown-text"><strong>Home</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/traffic/">
+ <span class="dropdown-text"><i class="fas fa-plane-departure"></i> <strong>Traffic</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/Economics/DailyTrafficVariation-States.html"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text"> Daily Traffic Dashboard</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/traffic/statfor/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Traffic Forecast</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/">
+ <span class="dropdown-text"><i class="fas fa-leaf"></i> <strong>Efficiency &amp; Environment</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/emissions/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">CO<sub>2</sub> emissions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/hfe/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Horizontal Flight Efficiency</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/vfe/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Vertical Flight Efficiency</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/asma/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Terminal Holdings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/taxiout/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Taxi-out</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/">
+ <span class="dropdown-text"><i class="fas fa-euro-sign"></i> <strong>Economics</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/ServiceUnits/Dashboard/EnRouteMainDashboard.html"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Service Units</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/ServiceUnits/Dashboard/EnRouteUnitRates.html"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Unit Rates and Costs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/ACE/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ATM Cost Effectiveness</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/finance/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ANSPs Financial Situation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/cba/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">CBA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/">
+ <span class="dropdown-text"><i class="fas fa-user-friends"></i> <strong>Stakeholder views</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/airport/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Airport View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/ansp/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ANSP View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/fab/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">FAB View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/state/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">State View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/publications/">
+ <span class="dropdown-text"><i class="fas fa-book"></i> <strong>Publications</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/data/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/reference/">
+ <span class="dropdown-text"><i class="fas fa-hands-helping"></i> <strong>Reference</strong></span></a>
+  </li>  
+        <li class="dropdown-header"><i class="fas fa-external-link-alt"></i> <strong>External</strong></li>
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/prudata/dashboard/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Single European Sky Portal</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www4.icao.int/ganpportal/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ICAO GANP</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/about/prc/">
+ <span class="dropdown-text">About the PRC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/about/us/">
+ <span class="dropdown-text">About the PRU</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/post/">
+ <span class="dropdown-text">Release notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/about/disclaimer/">
+ <span class="dropdown-text">Disclaimer</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-areas" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Areas</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-areas">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/traffic/">
+ <span class="dropdown-text">Traffic</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/capacity/">
+ <span class="dropdown-text">Capacity &amp; delays</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/">
+ <span class="dropdown-text">Efficiency &amp; environment</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/">
+ <span class="dropdown-text">Economics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-views" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Views</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-views">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/airport/">
+ <span class="dropdown-text">Airports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/ansp/">
+ <span class="dropdown-text">Air Navigation Service Provider</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/fab/">
+ <span class="dropdown-text">Functional Airspace Block</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/state/">
+ <span class="dropdown-text">State</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://ansperformance.eu/publications/"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://ansperformance.eu/data/"> 
+<span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-reference" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Reference</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-reference">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/data/">
+ <span class="dropdown-text">Data downloads</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/definition/">
+ <span class="dropdown-text">Definitions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/methodology/">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/acronym/">
+ <span class="dropdown-text">Acronyms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/bibliography/">
+ <span class="dropdown-text">Bibliography</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="https://www4.icao.int/ganpportal/">
+ <span class="dropdown-text"><i class="fas fa-xs fa-external-link-alt"></i> ICAO GANP</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">SES</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ses">    
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/prudata/dashboard/">
+ <span class="dropdown-text"><i class="fas fa-xs fa-external-link-alt"></i> Single European Sky (SES) Portal</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="./Operational-Comparison-of-ANS-Performance.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./05-capacity_and_throughput.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Capacity and Throughput</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Operational Comparison of ANS Performance</a> 
-        <div class="sidebar-tools-main">
-    <a href="./Operational-Comparison-of-ANS-Performance.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
-</div>
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -249,7 +504,7 @@ div.csl-indent {
 <p><a href="#fig-capsovertime" class="quarto-xref">Figure&nbsp;<span>5.1</span></a> shows the evolution of the declared capacity for the airport services in this comparison report. Throughout the last years, no substantial change in the peak declared capacity was observed at European airports. In Brazil, on the other hand, 2019 and 2020 showed a revised capacity declaration at most of the Brazilian airports. In 2018 CGNA had developed a refined method for the determination of the runway system capacity.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-capsovertime" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-capsovertime" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-capsovertime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-capsovertime-1.png" class="img-fluid figure-img" width="672">
@@ -266,7 +521,7 @@ Figure&nbsp;5.1: Evolution of Declared Capacities at study airports.
 <p>As mentioned above, the capacity declaration/determination process takes into account the varying local conditions and constraints. It balances the need to accommodate growth vs policy priorities and public interests. A potential area for further research could be a closer investigation of the operational concepts deployed and the variations of the declared capacity with the local runway system characteristics.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-peak-declared-cpacity" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-peak-declared-cpacity" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-peak-declared-cpacity-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-peak-declared-cpacity-1.png" class="img-fluid figure-img" width="672">
@@ -285,7 +540,7 @@ Figure&nbsp;5.2: Peak declared capacity 2024 [flights/hour]
 <p><a href="#fig-arrival-throughput" class="quarto-xref">Figure&nbsp;<span>5.3</span></a> compares the observed annual peak arrival throughput at the study airports in Brazil and Europe. On average, the busiest hour of the Brazilian airports under study did not suffer a significant reduction. This signals that peak arrival demand remained fairly constant during the pandemic. An increased arrival peak throughput was serviced at Brasilia (SBBR), Campinas (SBKP), Rio de Janeiro (SBRJ), and Confins (SBCF). Services at Galeão (SBGL) observed a significant shift in the traffic pattern. The peak arrival throughput fell sharply with the pandemic and has not yet recovered. This overall picture is contrasted by the pandemic related drop of overall traffic at European airports. The overall reduction resulted in significantly lower peak hours. The recovery pattern is also visible in the peak arrival throughput behaviour.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-arrival-throughput" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-arrival-throughput" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-arrival-throughput-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-arrival-throughput-1.png" class="img-fluid figure-img" width="672">
@@ -307,7 +562,7 @@ Figure&nbsp;5.3: Evolution of annual arrival throughput at study airports
 <p>The pattern in Europe is characterised by the continual air traffic recovery for the majority of the airports. A lesser pronounced variation is observed at Lisbon (LPPT) for which the peak departure rate remained fairly stable over the past years.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-departure-throughput" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-departure-throughput" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-departure-throughput-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-departure-throughput-1.png" class="img-fluid figure-img" width="672">
@@ -324,7 +579,7 @@ Figure&nbsp;5.4: Evolution of departure throughput at study airports
 <h2 data-number="5.4" class="anchored" data-anchor-id="declared-capacity-and-peak-throughput"><span class="header-section-number">5.4</span> Declared Capacity and Peak Throughput</h2>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-capvsthru" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-capvsthru" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-capvsthru-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-capvsthru-1.png" class="img-fluid figure-img" width="672">
@@ -340,7 +595,7 @@ Figure&nbsp;5.5: Comparison of declared capacity and throughput for arrival phas
 <p>The analysis of the spread of the declared capacity versus the achieved throughput is useful. However, it provides no indication on how often the demand reaches the declared capacity level. For this purpose, this report determines two characteristics points, i.e., the <em>BLI</em> base load index, and the peak load index <em>PLI</em>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-bli-pli-lppt-sbgr" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-bli-pli-lppt-sbgr" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bli-pli-lppt-sbgr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-bli-pli-lppt-sbgr-1.png" class="img-fluid figure-img" width="672">
@@ -366,7 +621,7 @@ Figure&nbsp;5.6: Ranked hourly throughput at LPPT and SBGR
 <p><a href="#fig-bli-pli-lppt-sbgr" class="quarto-xref">Figure&nbsp;<span>5.6</span></a> shows that multiple factors influence the interplay between the declared capacity and observed throughputs. Similar to comparing only the number of runways and not the runway system utilisation, focussing on the difference between declared capacities, demand periods and operating conditions does not readily allow to compare operations at different airports. For this report, we define peak operating conditions, if the total hourly throughput reaches or exceeds 80% of the declared capacity levels, and accordingly, base load levels, if 20% of more are observed. The peak load index (PLI) accounts then for the number of operating hours at or above the peak level, and respectively, the base load index (BLI) for hours at or above the 20% base traffic level.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-bli-pli" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-bli-pli" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-bli-pli-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="05-capacity_and_throughput_files/figure-html/fig-bli-pli-1.png" class="img-fluid figure-img" width="672">
@@ -433,18 +688,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -476,7 +720,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -511,7 +793,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -559,7 +845,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -787,12 +1072,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04-predictability.html" class="pagination-link  aria-label=" &lt;span="">
+      <a href="./04-predictability.html" class="pagination-link" aria-label="Predictability">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Predictability</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./06-efficiency.html" class="pagination-link" aria-label="<span class='chapter-number'>6</span>&nbsp; <span class='chapter-title'>Efficiency</span>">
+      <a href="./06-efficiency.html" class="pagination-link" aria-label="Efficiency">
         <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Efficiency</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>

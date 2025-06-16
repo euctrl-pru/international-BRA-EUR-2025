@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.549">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Operational Comparison of ANS Performance - 1&nbsp; Introduction</title>
+<title>1&nbsp; Introduction – Operational Comparison of ANS Performance</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -57,16 +57,16 @@ div.csl-indent {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-47c3f049e42a003ed61c08f1e1b18ecb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
-  "location": "sidebar",
+  "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
-  "panel-placement": "start",
-  "type": "textbox",
+  "panel-placement": "end",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -92,41 +92,296 @@ div.csl-indent {
 
 </head>
 
-<body class="nav-sidebar floating">
+<body class="nav-sidebar floating nav-fixed">
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./media/EUROCONTROL-logo-standard-rgb.svg" alt="" class="navbar-logo">
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-aiu-home" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">AIU Home</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-aiu-home">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu"><i class="bi bi-house-fill" role="img">
+</i> 
+ <span class="dropdown-text"><strong>Home</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/traffic/">
+ <span class="dropdown-text"><i class="fas fa-plane-departure"></i> <strong>Traffic</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/Economics/DailyTrafficVariation-States.html"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text"> Daily Traffic Dashboard</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/traffic/statfor/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Traffic Forecast</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/">
+ <span class="dropdown-text"><i class="fas fa-leaf"></i> <strong>Efficiency &amp; Environment</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/emissions/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">CO<sub>2</sub> emissions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/hfe/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Horizontal Flight Efficiency</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/vfe/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Vertical Flight Efficiency</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/asma/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Terminal Holdings</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/taxiout/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Taxi-out</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/">
+ <span class="dropdown-text"><i class="fas fa-euro-sign"></i> <strong>Economics</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/ServiceUnits/Dashboard/EnRouteMainDashboard.html"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Service Units</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/ServiceUnits/Dashboard/EnRouteUnitRates.html"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Unit Rates and Costs</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/ACE/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ATM Cost Effectiveness</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/finance/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ANSPs Financial Situation</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/cba/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">CBA</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/">
+ <span class="dropdown-text"><i class="fas fa-user-friends"></i> <strong>Stakeholder views</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/airport/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Airport View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/ansp/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ANSP View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/fab/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">FAB View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/state/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">State View</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/publications/">
+ <span class="dropdown-text"><i class="fas fa-book"></i> <strong>Publications</strong></span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/data/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Data</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/reference/">
+ <span class="dropdown-text"><i class="fas fa-hands-helping"></i> <strong>Reference</strong></span></a>
+  </li>  
+        <li class="dropdown-header"><i class="fas fa-external-link-alt"></i> <strong>External</strong></li>
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/prudata/dashboard/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">Single European Sky Portal</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www4.icao.int/ganpportal/"><i class="bi bi-arrow-return-right" role="img">
+</i> 
+ <span class="dropdown-text">ICAO GANP</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-about" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">About</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-about">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/about/prc/">
+ <span class="dropdown-text">About the PRC</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/about/us/">
+ <span class="dropdown-text">About the PRU</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/post/">
+ <span class="dropdown-text">Release notes</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/about/disclaimer/">
+ <span class="dropdown-text">Disclaimer</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-areas" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Areas</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-areas">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/traffic/">
+ <span class="dropdown-text">Traffic</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/capacity/">
+ <span class="dropdown-text">Capacity &amp; delays</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/efficiency/">
+ <span class="dropdown-text">Efficiency &amp; environment</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/economics/">
+ <span class="dropdown-text">Economics</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-views" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Views</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-views">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/airport/">
+ <span class="dropdown-text">Airports</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/ansp/">
+ <span class="dropdown-text">Air Navigation Service Provider</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/fab/">
+ <span class="dropdown-text">Functional Airspace Block</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/dashboard/stakeholder/state/">
+ <span class="dropdown-text">State</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="https://ansperformance.eu/publications/"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://ansperformance.eu/data/"> 
+<span class="menu-text">Data</span></a>
+  </li>  
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-reference" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">Reference</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-reference">    
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/data/">
+ <span class="dropdown-text">Data downloads</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/definition/">
+ <span class="dropdown-text">Definitions</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/methodology/">
+ <span class="dropdown-text">Methodology</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/acronym/">
+ <span class="dropdown-text">Acronyms</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://ansperformance.eu/bibliography/">
+ <span class="dropdown-text">Bibliography</span></a>
+  </li>  
+        <li><hr class="dropdown-divider"></li>
+        <li>
+    <a class="dropdown-item" href="https://www4.icao.int/ganpportal/">
+ <span class="dropdown-text"><i class="fas fa-xs fa-external-link-alt"></i> ICAO GANP</span></a>
+  </li>  
+    </ul>
+  </li>
+  <li class="nav-item dropdown ">
+    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-ses" role="link" data-bs-toggle="dropdown" aria-expanded="false">
+ <span class="menu-text">SES</span>
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="nav-menu-ses">    
+        <li>
+    <a class="dropdown-item" href="https://www.eurocontrol.int/prudata/dashboard/">
+ <span class="dropdown-text"><i class="fas fa-xs fa-external-link-alt"></i> Single European Sky (SES) Portal</span></a>
+  </li>  
+    </ul>
+  </li>
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="./Operational-Comparison-of-ANS-Performance.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-intro.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
-        <i class="bi bi-search"></i>
-      </button>
     </div>
   </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
-    <div class="pt-lg-2 mt-2 text-left sidebar-header">
-    <div class="sidebar-title mb-0 py-0">
-      <a href="./">Operational Comparison of ANS Performance</a> 
-        <div class="sidebar-tools-main">
-    <a href="./Operational-Comparison-of-ANS-Performance.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
-</div>
-    </div>
-      </div>
-        <div class="mt-2 flex-shrink-0 align-items-center">
-        <div class="sidebar-search">
-        <div id="quarto-search" class="" title="Search"></div>
-        </div>
-        </div>
     <div class="sidebar-menu-container"> 
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
@@ -266,7 +521,7 @@ This report represents the fourth edition of a jointly developed comparison repo
 <p>DECEA is the cornerstone of the Brazilian Airspace Control System (SISCEAB). The department provides air navigation services for the vast airspace jurisdiction covering 22 million square kilometres, including oceanic areas. The Brazilian airspace is further divided into five Flight Information Regions (FIR) and the areas of responsibility of these integrated Centres for Air Defence and Air Traffic Control (CINDACTA) are depicted in <a href="#fig-BRA-airspace" class="quarto-xref">Figure&nbsp;<span>1.1</span></a>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-BRA-airspace" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-BRA-airspace" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-BRA-airspace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./figures/BRAZIL_CINDACTA_AND_CRCEA.png" class="img-fluid figure-img" width="557">
@@ -281,7 +536,7 @@ Figure&nbsp;1.1: Brazilian Airspace Structure/FIRs (CINDACTAs)
 <p>The CINDACTAs merge civilian air traffic control with military air defence operations. In addition to the CINDACTAs, there’s the Regional Center of Southeast Airspace Control (CRCEA-SE). The latter is tasked with managing air traffic in the densely congested terminal areas of São Paulo and Rio de Janeiro.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-EUR-airspace" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-EUR-airspace" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-EUR-airspace-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./figures/Europe-ECTRL.png" class="img-fluid figure-img" style="width:90.0%">
@@ -305,30 +560,30 @@ In Brazil, the selected airports play a significant role for the national and re
 For the European context, the study airports comprise the busiest airports in several states exhibiting a mix of national, regional, and international air traffic. These airports are also characterised by varying operational constraints that make them excellent candidates for an international comparison. All of these airports are subject to the performance monitoring under the EUROCONTROL Performance Review System and provide movement related data on the basis of a harmonised data specification.</p>
 <p><a href="#fig-scope-airports" class="quarto-xref">Figure&nbsp;<span>1.3</span></a> provides an overview of the location of the chosen study airports within both regions. The airports are also listed in <a href="#tbl-scopetable" class="quarto-xref">Table&nbsp;<span>1.1</span></a>.</p>
 <div class="cell">
-<div id="tbl-scopetable" class="cell quarto-float anchored">
+<div id="tbl-scopetable" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-scopetable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS performance comparison
 </figcaption>
 <div aria-describedby="tbl-scopetable-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
-<div id="oidphlhmuu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#oidphlhmuu table {
+<div id="heorsuivpu" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#heorsuivpu table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#oidphlhmuu thead, #oidphlhmuu tbody, #oidphlhmuu tfoot, #oidphlhmuu tr, #oidphlhmuu td, #oidphlhmuu th {
+#heorsuivpu thead, #heorsuivpu tbody, #heorsuivpu tfoot, #heorsuivpu tr, #heorsuivpu td, #heorsuivpu th {
   border-style: none;
 }
 
-#oidphlhmuu p {
+#heorsuivpu p {
   margin: 0;
   padding: 0;
 }
 
-#oidphlhmuu .gt_table {
+#heorsuivpu .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -354,12 +609,12 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-left-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_caption {
+#heorsuivpu .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#oidphlhmuu .gt_title {
+#heorsuivpu .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -371,7 +626,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-bottom-width: 0;
 }
 
-#oidphlhmuu .gt_subtitle {
+#heorsuivpu .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -383,7 +638,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-top-width: 0;
 }
 
-#oidphlhmuu .gt_heading {
+#heorsuivpu .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -395,13 +650,13 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-right-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_bottom_border {
+#heorsuivpu .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_col_headings {
+#heorsuivpu .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -416,7 +671,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-right-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_col_heading {
+#heorsuivpu .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -436,7 +691,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   overflow-x: hidden;
 }
 
-#oidphlhmuu .gt_column_spanner_outer {
+#heorsuivpu .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -448,15 +703,15 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   padding-right: 4px;
 }
 
-#oidphlhmuu .gt_column_spanner_outer:first-child {
+#heorsuivpu .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#oidphlhmuu .gt_column_spanner_outer:last-child {
+#heorsuivpu .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#oidphlhmuu .gt_column_spanner {
+#heorsuivpu .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -468,11 +723,11 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   width: 100%;
 }
 
-#oidphlhmuu .gt_spanner_row {
+#heorsuivpu .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#oidphlhmuu .gt_group_heading {
+#heorsuivpu .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -498,7 +753,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   text-align: left;
 }
 
-#oidphlhmuu .gt_empty_group_heading {
+#heorsuivpu .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -513,15 +768,15 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   vertical-align: middle;
 }
 
-#oidphlhmuu .gt_from_md > :first-child {
+#heorsuivpu .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#oidphlhmuu .gt_from_md > :last-child {
+#heorsuivpu .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#oidphlhmuu .gt_row {
+#heorsuivpu .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -540,7 +795,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   overflow-x: hidden;
 }
 
-#oidphlhmuu .gt_stub {
+#heorsuivpu .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -553,7 +808,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   padding-right: 5px;
 }
 
-#oidphlhmuu .gt_stub_row_group {
+#heorsuivpu .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -567,15 +822,15 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   vertical-align: top;
 }
 
-#oidphlhmuu .gt_row_group_first td {
+#heorsuivpu .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#oidphlhmuu .gt_row_group_first th {
+#heorsuivpu .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#oidphlhmuu .gt_summary_row {
+#heorsuivpu .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -585,16 +840,16 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   padding-right: 5px;
 }
 
-#oidphlhmuu .gt_first_summary_row {
+#heorsuivpu .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_first_summary_row.thick {
+#heorsuivpu .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#oidphlhmuu .gt_last_summary_row {
+#heorsuivpu .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -604,7 +859,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-bottom-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_grand_summary_row {
+#heorsuivpu .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -614,7 +869,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   padding-right: 5px;
 }
 
-#oidphlhmuu .gt_first_grand_summary_row {
+#heorsuivpu .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -624,7 +879,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-top-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_last_grand_summary_row_top {
+#heorsuivpu .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -634,11 +889,11 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-bottom-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_striped {
+#heorsuivpu .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#oidphlhmuu .gt_table_body {
+#heorsuivpu .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -647,7 +902,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-bottom-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_footnotes {
+#heorsuivpu .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -661,7 +916,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-right-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_footnote {
+#heorsuivpu .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -670,7 +925,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   padding-right: 5px;
 }
 
-#oidphlhmuu .gt_sourcenotes {
+#heorsuivpu .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -684,7 +939,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   border-right-color: #D3D3D3;
 }
 
-#oidphlhmuu .gt_sourcenote {
+#heorsuivpu .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -692,79 +947,70 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
   padding-right: 5px;
 }
 
-#oidphlhmuu .gt_left {
+#heorsuivpu .gt_left {
   text-align: left;
 }
 
-#oidphlhmuu .gt_center {
+#heorsuivpu .gt_center {
   text-align: center;
 }
 
-#oidphlhmuu .gt_right {
+#heorsuivpu .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#oidphlhmuu .gt_font_normal {
+#heorsuivpu .gt_font_normal {
   font-weight: normal;
 }
 
-#oidphlhmuu .gt_font_bold {
+#heorsuivpu .gt_font_bold {
   font-weight: bold;
 }
 
-#oidphlhmuu .gt_font_italic {
+#heorsuivpu .gt_font_italic {
   font-style: italic;
 }
 
-#oidphlhmuu .gt_super {
+#heorsuivpu .gt_super {
   font-size: 65%;
 }
 
-#oidphlhmuu .gt_footnote_marks {
+#heorsuivpu .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#oidphlhmuu .gt_asterisk {
+#heorsuivpu .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#oidphlhmuu .gt_indent_1 {
+#heorsuivpu .gt_indent_1 {
   text-indent: 5px;
 }
 
-#oidphlhmuu .gt_indent_2 {
+#heorsuivpu .gt_indent_2 {
   text-indent: 10px;
 }
 
-#oidphlhmuu .gt_indent_3 {
+#heorsuivpu .gt_indent_3 {
   text-indent: 15px;
 }
 
-#oidphlhmuu .gt_indent_4 {
+#heorsuivpu .gt_indent_4 {
   text-indent: 20px;
 }
 
-#oidphlhmuu .gt_indent_5 {
+#heorsuivpu .gt_indent_5 {
   text-indent: 25px;
-}
-
-#oidphlhmuu .katex-display {
-  display: inline-flex !important;
-  margin-bottom: 0.75em !important;
-}
-
-#oidphlhmuu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
-  height: 0px !important;
 }
 </style>
 
-<table class="gt_table do-not-create-environment cell table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table do-not-create-environment cell caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
-<tr class="header gt_col_headings">
+<tr class="gt_col_headings header">
 <th id="Brazil" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Brazil</th>
 <th id="Europe" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Europe</th>
 </tr>
@@ -821,7 +1067,7 @@ Table&nbsp;1.1: List of study airports for the Brazil / Europe operational ANS p
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-scope-airports" class="quarto-figure quarto-figure-center quarto-float anchored">
+<div id="fig-scope-airports" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-scope-airports-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="./figures/_scope-airports-map.png" class="img-fluid figure-img" style="width:90.0%">
@@ -911,18 +1157,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -954,7 +1189,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -989,7 +1262,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -1037,7 +1314,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1265,12 +1541,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./00-executive-summary.html" class="pagination-link  aria-label=" executive="" summary"="">
+      <a href="./00-executive-summary.html" class="pagination-link" aria-label="Executive Summary">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Executive Summary</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./02-system-overview.html" class="pagination-link" aria-label="<span class='chapter-number'>2</span>&nbsp; <span class='chapter-title'>Air Navigation System Characterisation</span>">
+      <a href="./02-system-overview.html" class="pagination-link" aria-label="Air Navigation System Characterisation">
         <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Air Navigation System Characterisation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
