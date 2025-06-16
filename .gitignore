@@ -9,8 +9,9 @@
 *.Rproj
 
 # remove annoying temp files from rendering
-*_files/
-figures/~$*
+#*_files/
+#figures/~$*
+## Comment from QG: We actually need these files as they are part of the website :)
 
 # remove _book from tracking
 _book/
