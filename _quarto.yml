@@ -14,8 +14,6 @@ book:
     - DECEA Performance Section
     - EUROCONTROL Performance Review Unit
   date: "31 May 2025"             # during drafting: today
-  search:
-    location: sidebar
   date-format: "D MMMM YYYY"
   downloads: pdf # [pdf, docx]
   chapters:
