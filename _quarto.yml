@@ -1,5 +1,5 @@
 project:
-  type: book
+  type: website
   output-dir: docs    # use this output dir for anything updated on the public site
   #output-dir: _book
 
