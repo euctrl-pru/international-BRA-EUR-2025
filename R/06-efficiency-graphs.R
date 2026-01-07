@@ -9,7 +9,7 @@ txit_bra <-  read_csv("./data/BRA-TXIT.csv", show_col_types = FALSE)|>
   mutate(REG = "BRA")
 
 txit_eur2 <- read_csv("./data/BRA-EUR-EUR-TXXT-2019-2023Q2.csv", show_col_types = F) |>
-  filter(ICAO %in% eur_apts) |> 
+  #filter(ICAO %in% eur_apts) |> 
   filter(PHASE == "ARR") |> mutate(REG = "EUR") |> 
   select(REG, APT = ICAO, PHASE, DATE, MVTS = N_VALID_1922, ADD_TIME = ADD_TIME_1922
          ,AVG_ADD_TIME = AVG_ADD_TIME_1922)
@@ -64,7 +64,7 @@ year(txit_fix2$DATE) <- 2024
 txit_eur2 <- bind_rows(txit_eur2, txit_fix, txit_fix2)
 set.seed(123)  # For reproducibility
 noise  <- rnorm(length(nrow(txit_eur2)), mean = 0, sd = 1)
-txit_eur2 <- txit_eur2 |> mutate(AVG_ADD_TIME + noise)
+txit_eur2 <- txit_eur2 |> mutate(AVG_ADD_TIME = AVG_ADD_TIME + noise)
 
 # add LPPT
 txit_lppt <- read_csv("./data/EUR-txxt-LPPT.csv") |> 
@@ -153,7 +153,7 @@ txot <- read_csv("./data/BRA-TXOT.csv", show_col_types = FALSE) |>
 txot_bra <- txot
 
 txot_eur <- read_csv("./data/BRA-EUR-EUR-TXXT-2019-2023Q2.csv", show_col_types = F) |>
-  filter(ICAO %in% eur_apts, year(DATE) >= 2019) |> 
+  #filter(ICAO %in% eur_apts, year(DATE) >= 2019) |> 
   filter(PHASE == "DEP") |> mutate(REG = "EUR") |> 
   select(REG, APT = ICAO, PHASE, DATE, MVTS = N_VALID_1922, ADD_TIME = ADD_TIME_1922
          ,AVG_ADD_TIME = AVG_ADD_TIME_1922)
