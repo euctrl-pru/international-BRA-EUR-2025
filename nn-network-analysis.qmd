@@ -103,7 +103,68 @@ eur_mvts <- eur_mvts |> dplyr::bind_rows() |> prep_eur_network_data()
 ```
 
 
-our airports loaded below - run script first then come back here
+Prepare airport lookup table based on OurAirports.    
+Patch for missing ICAO location indicators
+
+```{r}
+oa_url <- "https://raw.githubusercontent.com/davidmegginson/ourairports-data/refs/heads/main/airports.csv"
+oa <- readr::read_csv(oa_url, show_col_types = F) 
+oa <- oa |> 
+  dplyr::filter(!is.na(icao_code)) |> 
+  dplyr::select(ICAO = icao_code, NAME = name, CNTRY_ISO = iso_country)
+
+# patch oa
+patch_oa <- tibble::tribble(
+  ~ ICAO, ~ NAME, ~ CNTRY_ISO
+  ,"SBCO", "tbd" ,"BR"
+  ,"SBJD", "tbd", "BR"    
+  ,"SBJI", "tbd", "BR"
+  ,"SBMI", "tbd", "BR"
+ ,"SBMT" , "tbd", "BR"
+ ,"SBPO", "tbd", "BR"
+ ,"SBRD" , "tbd", "BR"
+ ,"SBSG" , "tbd", "BR"
+ ,"SBSI", "tbd", "BR"
+ ,"SBSO", "tbd", "BR"
+,"SBUY", "tbd", "BR"
+,"SBVC" , "tbd", "BR"
+,'GQNN', NA , "MR"    # Maritania
+,'SDAG', NA ,'BR'
+,'SDIY', NA ,'BR'
+,'SDJV', NA ,'BR'
+,'SDLO', NA ,'BR'
+,'SDVZ', NA ,'BR'
+,'SIFC', NA ,'BR'
+,'SIRI', NA ,'BR'
+,'SIUA', NA ,'BR'
+,'SIXE', NA ,'BR'
+,'SJZA', NA ,'BR'
+,'SN6L', NA ,'BR'
+,'SNAB', NA ,'BR'
+,'SNBA', NA ,'BR'
+,'SNCL', NA ,'BR'
+,"SNEB", NA, "BR"
+,"SNIG" , NA, "BR"
+,"SNJM"  , NA, "BR"
+,"SNLN" , NA, "BR"
+,"SNRJ"  , NA, "BR"
+,"SNSM"  , NA, "BR"
+,"SNSS"  , NA, "BR"
+,"SNTS"  , NA, "BR"
+,"SNWS"  , NA, "BR"
+,"SNZR"  , NA, "BR"
+,"SSBN"  , NA, "BR"
+,"SSGG"  , NA, "BR"
+,"SSQO"  , NA, "BR"
+,"SSRS"  , NA, "BR"
+,"SSVL"  , NA, "BR"
+,"SWBE"  , NA, "BR"
+,"SWKQ"  , NA, "BR"
+,"SWYN"  , NA, "BR"
+,"SYEC"  , NA, "GN"
+)
+oa <- oa |> dplyr::bind_rows(patch_oa)
+```
 
 ```{r}
 calc_summary_routes_dep <- function(.mvts){
@@ -573,7 +634,7 @@ tmp <- bra_mvts |>
 
 tmp <- tmp |> filter(CUM_SHARE <= 0.8)
 tiks <- names(tmp)[-c(1:4)]
-tmp |> upset(tiks)
+# THROWS ERROR tmp |> upset(tiks)
 ```
 
 
@@ -695,10 +756,11 @@ plot_bra_upset <- bra_upset |> upset(
   # remove the sizes/query part ... not sure what it adds
   set_sizes = FALSE
 )
-plot_bra_upset
+# THROWS ERROR - CHECK plot_bra_upset
 ```
 
-```{r}
+```{}
+# save plot for report
 plot_bra_upset |> ggsave(filename = "./figures/BRA-upset-national-connections.png", width = 8, height = 5, bg = "white")
 ```
 
@@ -798,7 +860,10 @@ ggplot(eur_bra_grouped, aes(axis1 = ORIG_GROUP, axis2 = DEST_GROUP, y = DEPS)) +
 
 ```
 
-```{r}
+
+## Exploration to get to alluvial plot of connections
+
+```{}
 library(ggforce)
 
 library(ggplot2)
@@ -829,7 +894,7 @@ ggplot(flows_grouped) +
 
 ```
 
-```{r}
+```{}
 flows_grouped <-  eur_bra_grouped |> 
   mutate(
     ORIG_STUDY = ifelse(ADEP %in% eur_apts, "Study", "Non-Study"),
@@ -855,7 +920,7 @@ ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
 
 ```
 
-```{r}
+```{}
 ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
   geom_parallel_sets(aes(fill = ORIG_STUDY), alpha = 0.6, axis.width = 0.1) +
   geom_parallel_sets_axes(axis.width = 0.1, fill = "gray90") +
@@ -874,7 +939,7 @@ ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
 
 ```
 
-```{r}
+```{}
 ggplot(flows_long, aes(x = x, id = id, split = y, value = DEPS)) +
   geom_parallel_sets(aes(fill = ORIG_STUDY), alpha = 0.6, axis.width = 0.1) +
   geom_parallel_sets_axes(axis.width = 0.1, fill = "gray90") +
@@ -1001,10 +1066,12 @@ mutate(GROUP_TYPE = case_when(
 # flows_long_fixed <- flows_long %>%
 #   select(-GROUP_TYPE) %>%
 #   left_join(axis_fill_map, by = "y")
+```
+
+write out prep results
 
 flows_long |> mutate(YEAR = 2024) |> 
   write_csv("./data/BRA-EUR-conns-parallel.csv")
-```
 
 ```{r}
 flows_long <- read_csv(here::here("data","BRA-EUR-conns-parallel.csv"), show_col_types = FALSE)
